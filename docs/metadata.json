@@ -1,5 +1,5 @@
 {
-    "name": "{Your Package}",
-    "description": "{package description}",
+    "name": "Translatable",
+    "description": "Adds multi-lingual to Laravel models",
     "version": "1"
 }

@@ -1,17 +1,17 @@
 {
-    "name": "javaabu/{your-package}",
-    "description": "{package description}",
-    "homepage": "https://github.com/Javaabu/{your-package}",
+    "name": "javaabu/translatable",
+    "description": "Adds multi-lingual to Laravel models",
+    "homepage": "https://github.com/Javaabu/translatable",
     "license": "MIT",
     "keywords": [
         "javaabu",
         "laravel",
-        "{your_package}"
+        "translatable"
     ],
     "authors": [
         {
-            "name": "{author_name}",
-            "email": "{author_email}",
+            "name": "Xylam",
+            "email": "jailam@javaabu.com",
             "role": "Developer"
         }
     ],
@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Javaabu\\{YourPackage}\\": "src/"
+            "Javaabu\\Translatable\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Javaabu\\{YourPackage}\\Tests\\": "tests/"
+            "Javaabu\\Translatable\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -40,7 +40,7 @@
         },
         "laravel": {
             "providers": [
-                "Javaabu\\{YourPackage}\\{YourPackage}ServiceProvider"
+                "Javaabu\\Translatable\\TranslatableServiceProvider"
             ]
         }
     },
