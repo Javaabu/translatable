@@ -10,5 +10,17 @@ return [
     |
     */
 
-    // TODO
+    'fields_ignored_for_translation' => [
+        'id',
+        'translations',
+        'lang',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ],
+    'allowed_translation_locales' => [
+        'en' => 'English',
+        'dv' => 'Dhivehi',
+        'jp' => 'Japanese',
+    ]
 ];
