@@ -4,7 +4,6 @@ namespace Javaabu\Translatable\Tests\TestSupport\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
-use Javaabu\Translatable\Tests\TestSupport\Models\Article;
 use Javaabu\Translatable\Tests\TestSupport\Models\Author;
 use Javaabu\Translatable\Tests\TestSupport\Models\Post;
 
@@ -15,10 +14,12 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->title(),
-            'slug' => $this->faker->slug(),
-            'body' => $this->faker->paragraph(5),
-            'lang' => $this->faker->languageCode(),
+            'title' => fake()->title(),
+            'slug' => fake()->slug(),
+            'body' => fake()->paragraph(5),
+            'lang' => fake()->locale(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 
