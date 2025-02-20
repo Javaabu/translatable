@@ -4,35 +4,33 @@ namespace Javaabu\Translatable\Tests\TestSupport\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Javaabu\Translatable\JsonTranslatable\IsJsonTranslatable;
-use Javaabu\Translatable\Tests\TestSupport\Factories\ArticleFactory;
+use Javaabu\Translatable\DbTranslatable\IsDbTranslatable;
+use Javaabu\Translatable\Tests\TestSupport\Factories\PostFactory;
 use Javaabu\Translatable\Translatable;
 
-class Article extends Model implements Translatable
+class Post extends Model implements Translatable
 {
     use HasFactory;
     use SoftDeletes;
-    use IsJsonTranslatable;
+    use IsDbTranslatable;
 
-    protected $fillable = [
-        'translations',
-    ];
-
-    protected $casts = [
-        'translations' => 'array',
-    ];
-
-    protected static function newFactory(): ArticleFactory
+    protected static function newFactory(): PostFactory
     {
-        return new ArticleFactory();
+        return new PostFactory();
+    }
+
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Author::class);
     }
 
     public function getTranslatables(): array
     {
         return [
             'title',
-            'body',
+            'body'
         ];
     }
 

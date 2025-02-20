@@ -12,7 +12,6 @@ return [
 
     'fields_ignored_for_translation' => [
         'id',
-        'translations',
         'lang',
         'created_at',
         'updated_at',
