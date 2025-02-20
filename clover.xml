@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1740051330">
+  <project timestamp="1740051330">
+    <file name="/home/runner/work/translatable/translatable/src/Abstract/IsTranslatable.php">
+      <class name="Javaabu\Translatable\Abstract\IsTranslatable" namespace="global">
+        <metrics complexity="15" methods="9" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="21" elements="33" coveredelements="29"/>
+      </class>
+      <line num="16" type="method" name="getNonTranslatables" visibility="public" complexity="1" crap="1" count="4"/>
+      <line num="18" type="stmt" count="4"/>
+      <line num="20" type="stmt" count="4"/>
+      <line num="22" type="stmt" count="4"/>
+      <line num="30" type="method" name="getAllNonTranslatables" visibility="public" complexity="1" crap="1" count="2"/>
+      <line num="32" type="stmt" count="2"/>
+      <line num="41" type="method" name="isNonTranslatablePivot" visibility="public" complexity="1" crap="1" count="2"/>
+      <line num="43" type="stmt" count="2"/>
+      <line num="52" type="method" name="isDefaultTranslationLocale" visibility="public" complexity="1" crap="1" count="16"/>
+      <line num="54" type="stmt" count="16"/>
+      <line num="63" type="method" name="isAllowedTranslationLocale" visibility="public" complexity="1" crap="1" count="16"/>
+      <line num="65" type="stmt" count="16"/>
+      <line num="73" type="method" name="getAllowedTranslationLocales" visibility="public" complexity="1" crap="1" count="18"/>
+      <line num="75" type="stmt" count="18"/>
+      <line num="84" type="method" name="isTranslatable" visibility="public" complexity="1" crap="1" count="16"/>
+      <line num="86" type="stmt" count="16"/>
+      <line num="97" type="method" name="getFieldAndLocale" visibility="public" complexity="3" crap="3" count="11"/>
+      <line num="99" type="stmt" count="11"/>
+      <line num="101" type="stmt" count="11"/>
+      <line num="102" type="stmt" count="8"/>
+      <line num="105" type="stmt" count="6"/>
+      <line num="106" type="stmt" count="6"/>
+      <line num="109" type="method" name="getAttribute" visibility="public" complexity="5" crap="5.68" count="12"/>
+      <line num="112" type="stmt" count="12"/>
+      <line num="113" type="stmt" count="0"/>
+      <line num="115" type="stmt" count="0"/>
+      <line num="116" type="stmt" count="0"/>
+      <line num="120" type="stmt" count="12"/>
+      <line num="121" type="stmt" count="2"/>
+      <line num="125" type="stmt" count="11"/>
+      <line num="126" type="stmt" count="11"/>
+      <line num="127" type="stmt" count="6"/>
+      <line num="131" type="stmt" count="9"/>
+      <metrics loc="134" ncloc="79" classes="1" methods="9" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="24" coveredstatements="21" elements="33" coveredelements="29"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/DbTranslatable/DbTranslatableSchema.php">
+      <class name="Javaabu\Translatable\DbTranslatable\DbTranslatableSchema" namespace="global">
+        <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+      </class>
+      <line num="9" type="method" name="columns" visibility="public" complexity="1" crap="1" count="36"/>
+      <line num="11" type="stmt" count="36"/>
+      <line num="13" type="stmt" count="36"/>
+      <metrics loc="16" ncloc="16" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/DbTranslatable/IsDbTranslatable.php">
+      <class name="Javaabu\Translatable\DbTranslatable\IsDbTranslatable" namespace="global">
+        <metrics complexity="24" methods="8" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="43" elements="64" coveredelements="46"/>
+      </class>
+      <line num="13" type="method" name="getFieldsIgnoredForTranslation" visibility="public" complexity="1" crap="1" count="3"/>
+      <line num="15" type="stmt" count="3"/>
+      <line num="16" type="stmt" count="3"/>
+      <line num="17" type="stmt" count="3"/>
+      <line num="18" type="stmt" count="3"/>
+      <line num="21" type="method" name="translations" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="22" type="stmt" count="0"/>
+      <line num="25" type="method" name="defaultTranslation" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="26" type="stmt" count="0"/>
+      <line num="29" type="method" name="isDefaultTranslation" visibility="public" complexity="1" crap="1" count="7"/>
+      <line num="31" type="stmt" count="7"/>
+      <line num="34" type="method" name="translate" visibility="public" complexity="10" crap="10.80" count="6"/>
+      <line num="37" type="stmt" count="6"/>
+      <line num="38" type="stmt" count="0"/>
+      <line num="42" type="stmt" count="6"/>
+      <line num="43" type="stmt" count="0"/>
+      <line num="47" type="stmt" count="6"/>
+      <line num="48" type="stmt" count="0"/>
+      <line num="52" type="stmt" count="6"/>
+      <line num="53" type="stmt" count="1"/>
+      <line num="56" type="stmt" count="6"/>
+      <line num="58" type="stmt" count="0"/>
+      <line num="61" type="stmt" count="6"/>
+      <line num="62" type="stmt" count="6"/>
+      <line num="63" type="stmt" count="6"/>
+      <line num="64" type="stmt" count="6"/>
+      <line num="65" type="stmt" count="6"/>
+      <line num="66" type="stmt" count="6"/>
+      <line num="67" type="stmt" count="6"/>
+      <line num="71" type="stmt" count="6"/>
+      <line num="72" type="stmt" count="3"/>
+      <line num="75" type="stmt" count="4"/>
+      <line num="78" type="method" name="getDefaultTranslationLocale" visibility="public" complexity="1" crap="1" count="8"/>
+      <line num="83" type="stmt" count="8"/>
+      <line num="86" type="method" name="clearTranslations" visibility="public" complexity="5" crap="5.31" count="2"/>
+      <line num="88" type="stmt" count="2"/>
+      <line num="90" type="stmt" count="1"/>
+      <line num="91" type="stmt" count="1"/>
+      <line num="94" type="stmt" count="1"/>
+      <line num="95" type="stmt" count="0"/>
+      <line num="97" type="stmt" count="1"/>
+      <line num="98" type="stmt" count="0"/>
+      <line num="99" type="stmt" count="0"/>
+      <line num="101" type="stmt" count="1"/>
+      <line num="102" type="stmt" count="1"/>
+      <line num="103" type="stmt" count="1"/>
+      <line num="104" type="stmt" count="1"/>
+      <line num="105" type="stmt" count="1"/>
+      <line num="111" type="method" name="hasTranslation" visibility="public" complexity="4" crap="4.30" count="1"/>
+      <line num="113" type="stmt" count="1"/>
+      <line num="114" type="stmt" count="0"/>
+      <line num="118" type="stmt" count="1"/>
+      <line num="119" type="stmt" count="0"/>
+      <line num="122" type="stmt" count="1"/>
+      <line num="123" type="stmt" count="0"/>
+      <line num="124" type="stmt" count="0"/>
+      <line num="126" type="stmt" count="1"/>
+      <line num="127" type="stmt" count="1"/>
+      <line num="128" type="stmt" count="1"/>
+      <line num="129" type="stmt" count="1"/>
+      <line num="130" type="stmt" count="1"/>
+      <line num="131" type="stmt" count="1"/>
+      <line num="132" type="stmt" count="1"/>
+      <line num="133" type="stmt" count="1"/>
+      <metrics loc="137" ncloc="124" classes="1" methods="8" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="56" coveredstatements="43" elements="64" coveredelements="46"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/JsonTranslatable/IsJsonTranslatable.php">
+      <class name="Javaabu\Translatable\JsonTranslatable\IsJsonTranslatable" namespace="global">
+        <metrics complexity="16" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="35" coveredelements="35"/>
+      </class>
+      <line num="18" type="method" name="getFieldsIgnoredForTranslation" visibility="public" complexity="1" crap="1" count="3"/>
+      <line num="20" type="stmt" count="3"/>
+      <line num="21" type="stmt" count="3"/>
+      <line num="22" type="stmt" count="3"/>
+      <line num="23" type="stmt" count="3"/>
+      <line num="36" type="method" name="translate" visibility="public" complexity="9" crap="9" count="6"/>
+      <line num="39" type="stmt" count="6"/>
+      <line num="40" type="stmt" count="1"/>
+      <line num="44" type="stmt" count="6"/>
+      <line num="45" type="stmt" count="1"/>
+      <line num="49" type="stmt" count="6"/>
+      <line num="50" type="stmt" count="1"/>
+      <line num="54" type="stmt" count="6"/>
+      <line num="55" type="stmt" count="2"/>
+      <line num="58" type="stmt" count="6"/>
+      <line num="61" type="stmt" count="6"/>
+      <line num="62" type="stmt" count="3"/>
+      <line num="65" type="stmt" count="4"/>
+      <line num="73" type="method" name="getDefaultTranslationLocale" visibility="public" complexity="1" crap="1" count="8"/>
+      <line num="75" type="stmt" count="8"/>
+      <line num="84" type="method" name="clearTranslations" visibility="public" complexity="3" crap="3" count="2"/>
+      <line num="87" type="stmt" count="2"/>
+      <line num="88" type="stmt" count="1"/>
+      <line num="89" type="stmt" count="1"/>
+      <line num="90" type="stmt" count="1"/>
+      <line num="93" type="stmt" count="1"/>
+      <line num="95" type="stmt" count="1"/>
+      <line num="96" type="stmt" count="1"/>
+      <line num="99" type="stmt" count="1"/>
+      <line num="101" type="stmt" count="1"/>
+      <line num="102" type="stmt" count="1"/>
+      <line num="111" type="method" name="hasTranslation" visibility="public" complexity="2" crap="2" count="1"/>
+      <line num="113" type="stmt" count="1"/>
+      <line num="114" type="stmt" count="1"/>
+      <line num="117" type="stmt" count="1"/>
+      <metrics loc="120" ncloc="82" classes="1" methods="5" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="30" elements="35" coveredelements="35"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/JsonTranslatable/JsonTranslatableSchema.php">
+      <class name="Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema" namespace="global">
+        <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+      </class>
+      <line num="15" type="method" name="columns" visibility="public" complexity="1" crap="1" count="36"/>
+      <line num="20" type="stmt" count="36"/>
+      <line num="23" type="stmt" count="36"/>
+      <metrics loc="26" ncloc="17" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/Translatable.php">
+      <metrics loc="119" ncloc="36" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/TranslatableServiceProvider.php">
+      <class name="Javaabu\Translatable\TranslatableServiceProvider" namespace="global">
+        <metrics complexity="3" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="7" coveredelements="7"/>
+      </class>
+      <line num="12" type="method" name="boot" visibility="public" complexity="2" crap="2" count="37"/>
+      <line num="15" type="stmt" count="37"/>
+      <line num="16" type="stmt" count="37"/>
+      <line num="17" type="stmt" count="37"/>
+      <line num="18" type="stmt" count="37"/>
+      <line num="25" type="method" name="register" visibility="public" complexity="1" crap="1" count="37"/>
+      <line num="28" type="stmt" count="37"/>
+      <metrics loc="31" ncloc="23" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="7" coveredelements="7"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/V1/Abstract/IsTranslatable.php">
+      <class name="Javaabu\Translatable\Old\Abstract\IsTranslatable" namespace="global">
+        <metrics complexity="11" methods="12" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="0" elements="30" coveredelements="0"/>
+      </class>
+      <line num="12" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="14" type="stmt" count="0"/>
+      <line num="22" type="method" name="shouldFallbackForTranslations" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="24" type="stmt" count="0"/>
+      <line num="30" type="method" name="setShouldFallbackForTranslations" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="32" type="stmt" count="0"/>
+      <line num="33" type="stmt" count="0"/>
+      <line num="41" type="method" name="getFieldsIgnoredForTranslation" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="43" type="stmt" count="0"/>
+      <line num="52" type="method" name="isDefaultTranslationLocale" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="54" type="stmt" count="0"/>
+      <line num="62" type="method" name="getDefaultTranslationLocale" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="64" type="stmt" count="0"/>
+      <line num="72" type="method" name="getAllowedTranslationLocales" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="74" type="stmt" count="0"/>
+      <line num="83" type="method" name="isAllowedTranslationLocale" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="85" type="stmt" count="0"/>
+      <line num="93" type="method" name="getNonTranslatablePivots" visibility="public" complexity="0" crap="0" count="0"/>
+      <line num="95" type="method" name="getNonTranslatables" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="96" type="stmt" count="0"/>
+      <line num="98" type="stmt" count="0"/>
+      <line num="100" type="stmt" count="0"/>
+      <line num="108" type="method" name="getAllNonTranslatables" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="110" type="stmt" count="0"/>
+      <line num="111" type="stmt" count="0"/>
+      <line num="112" type="stmt" count="0"/>
+      <line num="113" type="stmt" count="0"/>
+      <line num="122" type="method" name="isNonTranslatablePivot" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="124" type="stmt" count="0"/>
+      <metrics loc="127" ncloc="73" classes="1" methods="12" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="0" elements="30" coveredelements="0"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/V1/Enums/LanguagesOld.php">
+      <class name="Javaabu\Translatable\Old\Enums\LanguagesOld" namespace="global">
+        <metrics complexity="23" methods="13" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="0" elements="47" coveredelements="0"/>
+      </class>
+      <line num="13" type="method" name="getDefaultAppLocale" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="15" type="stmt" count="0"/>
+      <line num="21" type="method" name="initLabels" visibility="protected" complexity="1" crap="2" count="0"/>
+      <line num="23" type="stmt" count="0"/>
+      <line num="24" type="stmt" count="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <line num="26" type="stmt" count="0"/>
+      <line num="29" type="method" name="getFlag" visibility="protected" complexity="1" crap="2" count="0"/>
+      <line num="31" type="stmt" count="0"/>
+      <line num="34" type="method" name="flagUrl" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="36" type="stmt" count="0"/>
+      <line num="39" type="method" name="getLocaleFlag" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="41" type="stmt" count="0"/>
+      <line num="42" type="stmt" count="0"/>
+      <line num="45" type="stmt" count="0"/>
+      <line num="47" type="stmt" count="0"/>
+      <line num="50" type="method" name="getOppositeLocaleFlag" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="52" type="stmt" count="0"/>
+      <line num="55" type="method" name="getDefaultTranslationLocale" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="57" type="stmt" count="0"/>
+      <line num="60" type="method" name="isRtl" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="62" type="stmt" count="0"/>
+      <line num="65" type="method" name="getDirection" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="67" type="stmt" count="0"/>
+      <line num="68" type="stmt" count="0"/>
+      <line num="71" type="stmt" count="0"/>
+      <line num="74" type="method" name="getOppositeLocale" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="76" type="stmt" count="0"/>
+      <line num="77" type="stmt" count="0"/>
+      <line num="80" type="stmt" count="0"/>
+      <line num="83" type="method" name="translateCurrentRoute" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="85" type="stmt" count="0"/>
+      <line num="87" type="stmt" count="0"/>
+      <line num="89" type="stmt" count="0"/>
+      <line num="91" type="stmt" count="0"/>
+      <line num="93" type="stmt" count="0"/>
+      <line num="96" type="method" name="getLocalizedUrl" visibility="public" complexity="5" crap="30" count="0"/>
+      <line num="98" type="stmt" count="0"/>
+      <line num="99" type="stmt" count="0"/>
+      <line num="102" type="stmt" count="0"/>
+      <line num="104" type="stmt" count="0"/>
+      <line num="105" type="stmt" count="0"/>
+      <line num="106" type="stmt" count="0"/>
+      <line num="107" type="stmt" count="0"/>
+      <line num="110" type="stmt" count="0"/>
+      <line num="118" type="method" name="getSessionLocale" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="120" type="stmt" count="0"/>
+      <metrics loc="123" ncloc="115" classes="1" methods="13" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="34" coveredstatements="0" elements="47" coveredelements="0"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/V1/JsonTranslatable/IsJsonTranslatable.php">
+      <class name="Javaabu\Translatable\Old\JsonTranslatable\IsJsonTranslatable" namespace="global">
+        <metrics complexity="28" methods="9" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="0" elements="53" coveredelements="0"/>
+      </class>
+      <line num="11" type="method" name="getNonTranslatablePivots" visibility="public" complexity="0" crap="0" count="0"/>
+      <line num="13" type="method" name="getNonTranslatables" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="15" type="stmt" count="0"/>
+      <line num="17" type="stmt" count="0"/>
+      <line num="19" type="stmt" count="0"/>
+      <line num="22" type="method" name="translate" visibility="public" complexity="11" crap="132" count="0"/>
+      <line num="24" type="stmt" count="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <line num="29" type="stmt" count="0"/>
+      <line num="32" type="stmt" count="0"/>
+      <line num="34" type="stmt" count="0"/>
+      <line num="37" type="stmt" count="0"/>
+      <line num="39" type="stmt" count="0"/>
+      <line num="40" type="stmt" count="0"/>
+      <line num="44" type="stmt" count="0"/>
+      <line num="45" type="stmt" count="0"/>
+      <line num="49" type="stmt" count="0"/>
+      <line num="52" type="method" name="isPrimaryLocale" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="54" type="stmt" count="0"/>
+      <line num="57" type="method" name="isTranslatable" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="59" type="stmt" count="0"/>
+      <line num="62" type="method" name="clearTranslations" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="64" type="stmt" count="0"/>
+      <line num="67" type="method" name="hasTranslation" visibility="public" complexity="4" crap="20" count="0"/>
+      <line num="69" type="stmt" count="0"/>
+      <line num="70" type="stmt" count="0"/>
+      <line num="74" type="stmt" count="0"/>
+      <line num="75" type="stmt" count="0"/>
+      <line num="79" type="stmt" count="0"/>
+      <line num="80" type="stmt" count="0"/>
+      <line num="84" type="stmt" count="0"/>
+      <line num="85" type="stmt" count="0"/>
+      <line num="89" type="method" name="getFieldAndLocale" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="91" type="stmt" count="0"/>
+      <line num="93" type="stmt" count="0"/>
+      <line num="94" type="stmt" count="0"/>
+      <line num="97" type="stmt" count="0"/>
+      <line num="98" type="stmt" count="0"/>
+      <line num="108" type="method" name="getAttribute" visibility="public" complexity="6" crap="42" count="0"/>
+      <line num="111" type="stmt" count="0"/>
+      <line num="112" type="stmt" count="0"/>
+      <line num="113" type="stmt" count="0"/>
+      <line num="114" type="stmt" count="0"/>
+      <line num="119" type="stmt" count="0"/>
+      <line num="120" type="stmt" count="0"/>
+      <line num="124" type="stmt" count="0"/>
+      <line num="126" type="stmt" count="0"/>
+      <line num="127" type="stmt" count="0"/>
+      <line num="131" type="stmt" count="0"/>
+      <line num="132" type="stmt" count="0"/>
+      <line num="135" type="stmt" count="0"/>
+      <metrics loc="138" ncloc="120" classes="1" methods="9" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="0" elements="53" coveredelements="0"/>
+    </file>
+    <file name="/home/runner/work/translatable/translatable/src/V1/JsonTranslatable/IsJsonTranslatableOld.php">
+      <class name="Javaabu\Translatable\Old\JsonTranslatable\IsJsonTranslatableOld" namespace="global">
+        <metrics complexity="89" methods="33" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="150" coveredstatements="0" elements="183" coveredelements="0"/>
+      </class>
+      <line num="25" type="method" name="bootIsJsonTranslatableOld" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="27" type="stmt" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <line num="29" type="stmt" count="0"/>
+      <line num="31" type="stmt" count="0"/>
+      <line num="39" type="method" name="shouldFallbackForTranslations" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="41" type="stmt" count="0"/>
+      <line num="49" type="method" name="showTranslationFallbacks" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="51" type="stmt" count="0"/>
+      <line num="59" type="method" name="dontShowTranslationFallbacks" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="61" type="stmt" count="0"/>
+      <line num="73" type="method" name="scopeTranslationsSearch" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="75" type="stmt" count="0"/>
+      <line num="76" type="stmt" count="0"/>
+      <line num="80" type="stmt" count="0"/>
+      <line num="81" type="stmt" count="0"/>
+      <line num="82" type="stmt" count="0"/>
+      <line num="83" type="stmt" count="0"/>
+      <line num="85" type="stmt" count="0"/>
+      <line num="95" type="method" name="scopeOfLocale" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="97" type="stmt" count="0"/>
+      <line num="98" type="stmt" count="0"/>
+      <line num="101" type="stmt" count="0"/>
+      <line num="102" type="stmt" count="0"/>
+      <line num="105" type="method" name="scopeNotHiddenOfLocale" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="107" type="stmt" count="0"/>
+      <line num="108" type="stmt" count="0"/>
+      <line num="111" type="stmt" count="0"/>
+      <line num="112" type="stmt" count="0"/>
+      <line num="113" type="stmt" count="0"/>
+      <line num="114" type="stmt" count="0"/>
+      <line num="115" type="stmt" count="0"/>
+      <line num="127" type="method" name="translate" visibility="public" complexity="8" crap="72" count="0"/>
+      <line num="129" type="stmt" count="0"/>
+      <line num="130" type="stmt" count="0"/>
+      <line num="133" type="stmt" count="0"/>
+      <line num="135" type="stmt" count="0"/>
+      <line num="138" type="stmt" count="0"/>
+      <line num="140" type="stmt" count="0"/>
+      <line num="141" type="stmt" count="0"/>
+      <line num="145" type="stmt" count="0"/>
+      <line num="146" type="stmt" count="0"/>
+      <line num="150" type="stmt" count="0"/>
+      <line num="160" type="method" name="translateField" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="162" type="stmt" count="0"/>
+      <line num="180" type="method" name="getNonTranslatables" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="182" type="stmt" count="0"/>
+      <line num="184" type="stmt" count="0"/>
+      <line num="186" type="stmt" count="0"/>
+      <line num="195" type="method" name="isTranslatable" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="197" type="stmt" count="0"/>
+      <line num="208" type="method" name="setTranslation" visibility="public" complexity="6" crap="42" count="0"/>
+      <line num="210" type="stmt" count="0"/>
+      <line num="211" type="stmt" count="0"/>
+      <line num="214" type="stmt" count="0"/>
+      <line num="215" type="stmt" count="0"/>
+      <line num="218" type="stmt" count="0"/>
+      <line num="220" type="stmt" count="0"/>
+      <line num="223" type="stmt" count="0"/>
+      <line num="226" type="stmt" count="0"/>
+      <line num="227" type="stmt" count="0"/>
+      <line num="238" type="method" name="isPrimaryLocale" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="240" type="stmt" count="0"/>
+      <line num="241" type="stmt" count="0"/>
+      <line num="244" type="stmt" count="0"/>
+      <line num="254" type="method" name="setTranslationAttributeValue" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="256" type="stmt" count="0"/>
+      <line num="258" type="stmt" count="0"/>
+      <line num="260" type="stmt" count="0"/>
+      <line num="267" type="method" name="clearTranslations" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="269" type="stmt" count="0"/>
+      <line num="278" type="method" name="hasTranslations" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="280" type="stmt" count="0"/>
+      <line num="284" type="stmt" count="0"/>
+      <line num="285" type="stmt" count="0"/>
+      <line num="288" type="stmt" count="0"/>
+      <line num="298" type="method" name="fillTranslations" visibility="public" complexity="6" crap="42" count="0"/>
+      <line num="300" type="stmt" count="0"/>
+      <line num="301" type="stmt" count="0"/>
+      <line num="304" type="stmt" count="0"/>
+      <line num="306" type="stmt" count="0"/>
+      <line num="307" type="stmt" count="0"/>
+      <line num="310" type="stmt" count="0"/>
+      <line num="312" type="stmt" count="0"/>
+      <line num="313" type="stmt" count="0"/>
+      <line num="318" type="stmt" count="0"/>
+      <line num="361" type="method" name="attributesToArray" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="363" type="stmt" count="0"/>
+      <line num="365" type="stmt" count="0"/>
+      <line num="374" type="method" name="addTranslatableAttributesToArray" visibility="protected" complexity="3" crap="12" count="0"/>
+      <line num="376" type="stmt" count="0"/>
+      <line num="377" type="stmt" count="0"/>
+      <line num="378" type="stmt" count="0"/>
+      <line num="381" type="stmt" count="0"/>
+      <line num="384" type="stmt" count="0"/>
+      <line num="394" type="method" name="getAttribute" visibility="public" complexity="6" crap="42" count="0"/>
+      <line num="397" type="stmt" count="0"/>
+      <line num="398" type="stmt" count="0"/>
+      <line num="399" type="stmt" count="0"/>
+      <line num="400" type="stmt" count="0"/>
+      <line num="405" type="stmt" count="0"/>
+      <line num="406" type="stmt" count="0"/>
+      <line num="410" type="stmt" count="0"/>
+      <line num="412" type="stmt" count="0"/>
+      <line num="413" type="stmt" count="0"/>
+      <line num="417" type="stmt" count="0"/>
+      <line num="418" type="stmt" count="0"/>
+      <line num="421" type="stmt" count="0"/>
+      <line num="431" type="method" name="mutateAttributeForArray" visibility="protected" complexity="3" crap="12" count="0"/>
+      <line num="434" type="stmt" count="0"/>
+      <line num="436" type="stmt" count="0"/>
+      <line num="437" type="stmt" count="0"/>
+      <line num="440" type="stmt" count="0"/>
+      <line num="450" type="method" name="setAttribute" visibility="public" complexity="5" crap="30" count="0"/>
+      <line num="456" type="stmt" count="0"/>
+      <line num="457" type="stmt" count="0"/>
+      <line num="461" type="stmt" count="0"/>
+      <line num="462" type="stmt" count="0"/>
+      <line num="463" type="stmt" count="0"/>
+      <line num="467" type="stmt" count="0"/>
+      <line num="469" type="stmt" count="0"/>
+      <line num="470" type="stmt" count="0"/>
+      <line num="471" type="stmt" count="0"/>
+      <line num="475" type="stmt" count="0"/>
+      <line num="484" type="method" name="mutateTranslationAttributeValue" visibility="public" complexity="7" crap="56" count="0"/>
+      <line num="486" type="stmt" count="0"/>
+      <line num="487" type="stmt" count="0"/>
+      <line num="490" type="stmt" count="0"/>
+      <line num="491" type="stmt" count="0"/>
+      <line num="492" type="stmt" count="0"/>
+      <line num="495" type="stmt" count="0"/>
+      <line num="497" type="stmt" count="0"/>
+      <line num="498" type="stmt" count="0"/>
+      <line num="500" type="stmt" count="0"/>
+      <line num="503" type="stmt" count="0"/>
+      <line num="504" type="stmt" count="0"/>
+      <line num="514" type="method" name="getCurrentLangAttribute" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="516" type="stmt" count="0"/>
+      <line num="518" type="stmt" count="0"/>
+      <line num="519" type="stmt" count="0"/>
+      <line num="522" type="stmt" count="0"/>
+      <line num="530" type="method" name="getTranslation" visibility="public" complexity="4" crap="20" count="0"/>
+      <line num="532" type="stmt" count="0"/>
+      <line num="533" type="stmt" count="0"/>
+      <line num="536" type="stmt" count="0"/>
+      <line num="537" type="stmt" count="0"/>
+      <line num="541" type="method" name="isTranslationHidden" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="543" type="stmt" count="0"/>
+      <line num="552" type="method" name="getFieldAndLocale" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="554" type="stmt" count="0"/>
+      <line num="556" type="stmt" count="0"/>
+      <line num="557" type="stmt" count="0"/>
+      <line num="560" type="stmt" count="0"/>
+      <line num="562" type="stmt" count="0"/>
+      <line num="571" type="method" name="localeExists" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="573" type="stmt" count="0"/>
+      <line num="581" type="method" name="getFillableTranslatables" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="583" type="stmt" count="0"/>
+      <line num="584" type="stmt" count="0"/>
+      <line num="586" type="stmt" count="0"/>
+      <line num="587" type="stmt" count="0"/>
+      <line num="589" type="stmt" count="0"/>
+      <line num="591" type="stmt" count="0"/>
+      <line num="592" type="stmt" count="0"/>
+      <line num="593" type="stmt" count="0"/>
+      <line num="597" type="stmt" count="0"/>
+      <line num="606" type="method" name="fillableTranslatablesFromArray" visibility="protected" complexity="1" crap="2" count="0"/>
+      <line num="608" type="stmt" count="0"/>
+      <line num="620" type="method" name="fill" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="622" type="stmt" count="0"/>
+      <line num="624" type="stmt" count="0"/>
+      <line num="625" type="stmt" count="0"/>
+      <line num="628" type="stmt" count="0"/>
+      <line num="637" type="method" name="addTranslationAppends" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="639" type="stmt" count="0"/>
+      <line num="641" type="stmt" count="0"/>
+      <line num="642" type="stmt" count="0"/>
+      <line num="644" type="stmt" count="0"/>
+      <line num="645" type="stmt" count="0"/>
+      <line num="646" type="stmt" count="0"/>
+      <line num="650" type="stmt" count="0"/>
+      <line num="653" type="method" name="getIsTranslationAttribute" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="655" type="stmt" count="0"/>
+      <metrics loc="658" ncloc="401" classes="1" methods="33" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="150" coveredstatements="0" elements="183" coveredelements="0"/>
+    </file>
+    <metrics files="11" loc="1629" ncloc="1086" classes="10" methods="93" coveredmethods="20" conditionals="0" coveredconditionals="0" statements="365" coveredstatements="103" elements="458" coveredelements="123"/>
+  </project>
+</coverage>
