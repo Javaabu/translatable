@@ -106,9 +106,25 @@ class IsJsonTranslatableTest extends TestCase
 
         $this->assertEquals('Mee dhivehi title eh', $article->translate('title', 'dv'));
         $this->assertEquals('Mee dhivehi liyumeh', $article->translate('body', 'dv'));
+        $this->assertNull($article->translate('slug', 'dv', false));
+
+        $tmp = app()->getLocale();
+        app()->setLocale('en');
+        $this->assertEquals('This is an English title', $article->translate('title'));
+        $this->assertEquals('This is an English body', $article->translate('body'));
+        $this->assertEquals('this-is-an-english-slug', $article->translate('slug'));
+
+        app()->setLocale('dv');
+        $this->assertEquals('Mee dhivehi title eh', $article->translate('title'));
+        $this->assertEquals('Mee dhivehi liyumeh', $article->translate('body'));
+        $this->assertNull($article->translate('slug', fallback: false));
+        app()->setLocale($tmp);
 
         $this->assertEquals('Kore wa taitorudesu', $article->translate('title', 'jp'));
         $this->assertEquals('Kore wa kijidesu', $article->translate('body', 'jp'));
+        $this->assertNull($article->translate('slug', 'jp', false));
+
+        $this->assertNull($article->translate('slug', 'fr', false));
     }
 
     /** @test */
@@ -226,6 +242,9 @@ class IsJsonTranslatableTest extends TestCase
             ]
         ]);
 
+        // check if it can clear language that doesn't exist
+        $article->clearTranslations('fr');
+
         $article->clearTranslations('dv');
 
         // Ensure that dv is gone while jp is still there
@@ -277,6 +296,10 @@ class IsJsonTranslatableTest extends TestCase
 
         $this->assertFalse($article->hasTranslation('fr'));
         $this->assertTrue($article->hasTranslation('dv'));
+        $tmp = app()->getLocale();
+        app()->setLocale('dv');
+        $this->assertTrue($article->hasTranslation());
+        app()->setLocale($tmp);
     }
 
     /** @test */

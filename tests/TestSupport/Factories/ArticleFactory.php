@@ -14,10 +14,10 @@ class ArticleFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->title(),
-            'slug' => fake()->slug(),
-            'body' => fake()->paragraph(5),
-            'lang' => fake()->locale(),
+            'title' => $this->faker->title(),
+            'slug' => $this->faker->slug(),
+            'body' => $this->faker->paragraph(5),
+            'lang' => $this->faker->locale(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
