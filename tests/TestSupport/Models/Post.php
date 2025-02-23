@@ -12,9 +12,9 @@ use Javaabu\Translatable\Translatable;
 
 class Post extends Model implements Translatable
 {
+    use IsDbTranslatable;
     use HasFactory;
     use SoftDeletes;
-    use IsDbTranslatable;
 
     protected static function newFactory(): PostFactory
     {
