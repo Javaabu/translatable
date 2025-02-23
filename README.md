@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/javaabu/translatable.svg?style=flat-square)](https://packagist.org/packages/javaabu/translatable)
 [![Test Status](../../actions/workflows/run-tests.yml/badge.svg)](../../actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/javaabu/translatable.svg?style=flat-square)](https://packagist.org/packages/javaabu/translatable)
-
+![Code Coverage](./.github/coverage.svg)
 
 
 ## Introduction
