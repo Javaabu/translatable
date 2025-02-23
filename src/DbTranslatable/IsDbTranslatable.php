@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\DbTranslatable;
 
 use Javaabu\Translatable\Abstract\IsTranslatable;
+use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 
 trait IsDbTranslatable
 {
@@ -125,8 +126,15 @@ trait IsDbTranslatable
         }
     }
 
+    /**
+     * @throws LanguageNotAllowedException
+     */
     public function addTranslation(string $locale, array $fields = []): static
     {
+        if (! $this->isAllowedTranslationLocale($locale)) {
+            throw LanguageNotAllowedException::create($locale);
+        }
+
         $parent_id = $this->isDefaultTranslation() ? $this->id : $this->translatable_parent_id;
 
         $newTranslation = new self();

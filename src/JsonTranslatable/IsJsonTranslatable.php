@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\JsonTranslatable;
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Abstract\IsTranslatable;
+use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 
 trait IsJsonTranslatable
 {
@@ -123,9 +124,14 @@ trait IsJsonTranslatable
      * @param string $locale
      * @param array $fields
      * @return $this
+     * @throws LanguageNotAllowedException
      */
     public function addTranslation(string $locale, array $fields = []): static
     {
+        if (! $this->isAllowedTranslationLocale($locale)) {
+            throw LanguageNotAllowedException::create($locale);
+        }
+
         /** @var array $translations */
         $translations = $this->translations ?? [];
         $translations[$locale] = array_merge(array_key_exists($locale, $translations) ? $translations[$locale] : [], $fields, ['lang' => $locale]);

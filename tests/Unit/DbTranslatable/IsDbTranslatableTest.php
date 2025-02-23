@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\Tests\Unit\DbTranslatable;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Post;
 
@@ -482,5 +483,20 @@ class IsDbTranslatableTest extends TestCase
         $translation->save();
 
         $this->assertEquals('Mee dhivehi title eh', $post->title_dv);
+    }
+
+    /** @test */
+    public function it_cannot_add_translation_locales_that_are_not_allowed()
+    {
+        $this->expectException(LanguageNotAllowedException::class);
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $this->assertThrows($post->addTranslation('zh-CN', [
+            'title' => '这是一个中文标题',
+            'slug' => '这是一只中国蛞蝓',
+            'body' => '这是一个中国人的身体',
+        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
     }
 }

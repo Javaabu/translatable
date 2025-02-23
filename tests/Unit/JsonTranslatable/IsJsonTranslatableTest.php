@@ -3,9 +3,9 @@
 namespace Javaabu\Translatable\Tests\Unit\JsonTranslatable;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
-use function PHPUnit\Framework\assertEquals;
 
 class IsJsonTranslatableTest extends TestCase
 {
@@ -370,6 +370,21 @@ class IsJsonTranslatableTest extends TestCase
 
         $translation->save();
 
-        assertEquals('Mee dhivehi title eh', $article->title_dv);
+        $this->assertEquals('Mee dhivehi title eh', $article->title_dv);
+    }
+
+    /** @test */
+    public function it_cannot_add_translation_locales_that_are_not_allowed()
+    {
+        $this->expectException(LanguageNotAllowedException::class);
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $this->assertThrows($article->addTranslation('zh-CN', [
+            'title' => '这是一个中文标题',
+            'slug' => '这是一只中国蛞蝓',
+            'body' => '这是一个中国人的身体',
+        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
     }
 }
