@@ -116,4 +116,24 @@ trait IsJsonTranslatable
 
         return isset($this->translations[$locale]);
     }
+
+    /**
+     * Add a new locale to this object
+     *
+     * @param string $locale
+     * @param array $fields
+     * @return $this
+     */
+    public function addTranslation(string $locale, array $fields = []): static
+    {
+        /** @var array $translations */
+        $translations = $this->translations ?? [];
+        $translations[$locale] = array_merge(array_key_exists($locale, $translations) ? $translations[$locale] : [], $fields, ['lang' => $locale]);
+        $this->translations = $translations;
+
+        // TODO: should it save automatically?
+        $this->save();
+
+        return $this;
+    }
 }

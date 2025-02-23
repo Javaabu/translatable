@@ -465,4 +465,22 @@ class IsDbTranslatableTest extends TestCase
         $this->assertFalse($post->isDefaultTranslationLocale('fr'));
         $this->assertTrue($post->isDefaultTranslationLocale('en'));
     }
+
+    /** @test */
+    public function it_can_add_new_translation_locales()
+    {
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $translation = $post->addTranslation('dv', [
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
+        ]);
+
+        $translation->save();
+
+        $this->assertEquals('Mee dhivehi title eh', $post->title_dv);
+    }
 }

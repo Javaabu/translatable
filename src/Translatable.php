@@ -115,4 +115,13 @@ interface Translatable
      * @return boolean
      */
     public function isAllowedTranslationLocale(string $locale): bool;
+
+    /**
+     * Add a new locale to this object
+     *
+     * @param string $locale
+     * @param array $fields
+     * @return $this
+     */
+    public function addTranslation(string $locale, array $fields = []): static;
 }

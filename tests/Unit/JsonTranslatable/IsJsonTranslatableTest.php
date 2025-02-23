@@ -5,6 +5,7 @@ namespace Javaabu\Translatable\Tests\Unit\JsonTranslatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
+use function PHPUnit\Framework\assertEquals;
 
 class IsJsonTranslatableTest extends TestCase
 {
@@ -352,5 +353,23 @@ class IsJsonTranslatableTest extends TestCase
 
         $this->assertFalse($article->isDefaultTranslationLocale('fr'));
         $this->assertTrue($article->isDefaultTranslationLocale('en'));
+    }
+
+    /** @test */
+    public function it_can_add_new_translation_locales()
+    {
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $translation = $article->addTranslation('dv', [
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
+        ]);
+
+        $translation->save();
+
+        assertEquals('Mee dhivehi title eh', $article->title_dv);
     }
 }

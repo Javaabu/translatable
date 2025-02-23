@@ -124,4 +124,28 @@ trait IsDbTranslatable
             return $translation->exists();
         }
     }
+
+    public function addTranslation(string $locale, array $fields = []): static
+    {
+        $parent_id = $this->isDefaultTranslation() ? $this->id : $this->translatable_parent_id;
+
+        $newTranslation = new self();
+
+        foreach ($this->getAllNonTranslatables() as $nonTranslatable) {
+            if ($nonTranslatable == "id") continue;
+            $newTranslation->setAttribute($nonTranslatable, $this->getAttributeValue($nonTranslatable));
+        }
+
+        foreach ($fields as $field => $value) {
+            $newTranslation->setAttribute($field, $value);
+        }
+
+        $newTranslation->setAttribute('translatable_parent_id', $parent_id);
+        $newTranslation->setAttribute('lang', $locale);
+
+        // TODO: should it save automatically?
+        $newTranslation->save();
+
+        return $newTranslation;
+    }
 }
