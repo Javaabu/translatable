@@ -135,9 +135,25 @@ class IsDbTranslatableTest extends TestCase
 
         $this->assertEquals('Mee dhivehi title eh', $post->translate('title', 'dv'));
         $this->assertEquals('Mee dhivehi liyumeh', $post->translate('body', 'dv'));
+        $this->assertNull($post->translate('slug', 'dv', false));
+
+        $tmp = app()->getLocale();
+        app()->setLocale('en');
+        $this->assertEquals('This is an English title', $post->translate('title'));
+        $this->assertEquals('This is an English body', $post->translate('body'));
+        $this->assertEquals('this-is-an-english-slug', $post->translate('slug'));
+
+        app()->setLocale('dv');
+        $this->assertEquals('Mee dhivehi title eh', $post->translate('title'));
+        $this->assertEquals('Mee dhivehi liyumeh', $post->translate('body'));
+        $this->assertNull($post->translate('slug', fallback: false));
+        app()->setLocale($tmp);
 
         $this->assertEquals('Kore wa taitorudesu', $post->translate('title', 'jp'));
         $this->assertEquals('Kore wa kijidesu', $post->translate('body', 'jp'));
+        $this->assertNull($post->translate('slug', 'jp', false));
+
+        $this->assertNull($post->translate('slug', 'fr', false));
     }
 
     /** @test */
@@ -214,6 +230,33 @@ class IsDbTranslatableTest extends TestCase
     }
 
     /** @test */
+    public function it_can_translate_fields_via_compoships()
+    {
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+        $post_dv = Post::factory()->withAuthor()->create([
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
+        ]);
+        $post_jp = Post::factory()->withAuthor()->create([
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
+        ]);
+
+        $tmp = app()->getLocale();
+        app()->setLocale('dv');
+        [$title, $body] = $post->getAttribute(['title', 'body']);
+        $this->assertEquals('Mee dhivehi title eh', $title);
+        $this->assertEquals('Mee dhivehi liyumeh', $body);
+        app()->setLocale($tmp);
+    }
+
+    /** @test */
     public function it_can_check_if_given_field_is_translatable()
     {
         $post = Post::factory()->withAuthor()->create();
@@ -283,7 +326,9 @@ class IsDbTranslatableTest extends TestCase
     /** @test */
     public function it_can_check_if_any_translation_for_a_specific_locale()
     {
-        $post = Post::factory()->withAuthor()->create();
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en'
+        ]);
         $post_dv = Post::factory()->withAuthor()->create([
             'lang' => 'dv',
             'title' => 'Mee dhivehi title eh',
@@ -299,6 +344,11 @@ class IsDbTranslatableTest extends TestCase
 
         $this->assertFalse($post->hasTranslation('fr'));
         $this->assertTrue($post->hasTranslation('dv'));
+        $this->assertTrue($post->hasTranslation('en'));
+        $tmp = app()->getLocale();
+        app()->setLocale('dv');
+        $this->assertTrue($post->hasTranslation());
+        app()->setLocale($tmp);
     }
 
     /** @test */

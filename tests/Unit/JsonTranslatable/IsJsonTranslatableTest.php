@@ -83,6 +83,35 @@ class IsJsonTranslatableTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_default_translation_locale()
+    {
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $this->assertFalse($article->isDefaultTranslationLocale('fr'));
+        $this->assertTrue($article->isDefaultTranslationLocale('en'));
+    }
+
+    /** @test */
+    public function it_can_get_allowed_translation_locales()
+    {
+        $article = Article::factory()->withAuthor()->create();
+
+        $this->assertEquals(['en', 'dv', 'jp'], $article->getAllowedTranslationLocales());
+    }
+
+    /** @test */
+    public function it_can_check_if_given_locale_is_allowed()
+    {
+        $article = Article::factory()->withAuthor()->create();
+
+        $this->assertTrue($article->isAllowedTranslationLocale('en'));
+        $this->assertTrue($article->isAllowedTranslationLocale('dv'));
+        $this->assertFalse($article->isAllowedTranslationLocale('fr'));
+    }
+
+    /** @test */
     public function it_can_translate_field_via_translate_function()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -323,34 +352,5 @@ class IsJsonTranslatableTest extends TestCase
 
         $this->assertFalse($article->isDefaultTranslationLocale('fr'));
         $this->assertTrue($article->isDefaultTranslationLocale('en'));
-    }
-
-    /** @test */
-    public function it_can_get_the_default_translation_locale()
-    {
-        $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en',
-        ]);
-
-        $this->assertFalse($article->isDefaultTranslationLocale('fr'));
-        $this->assertTrue($article->isDefaultTranslationLocale('en'));
-    }
-
-    /** @test */
-    public function it_can_get_allowed_translation_locales()
-    {
-        $article = Article::factory()->withAuthor()->create();
-
-        $this->assertEquals(['en', 'dv', 'jp'], $article->getAllowedTranslationLocales());
-    }
-
-    /** @test */
-    public function it_can_check_if_given_locale_is_allowed()
-    {
-        $article = Article::factory()->withAuthor()->create();
-
-        $this->assertTrue($article->isAllowedTranslationLocale('en'));
-        $this->assertTrue($article->isAllowedTranslationLocale('dv'));
-        $this->assertFalse($article->isAllowedTranslationLocale('fr'));
     }
 }

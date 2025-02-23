@@ -18,17 +18,19 @@ trait IsDbTranslatable
         )));
     }
 
-    public function translations() {
+    public function translations()
+    {
         return $this->hasMany($this, 'translatable_parent_id');
     }
 
-    public function defaultTranslation() {
+    public function defaultTranslation()
+    {
         return $this->belongsTo($this, 'translatable_parent_id');
     }
 
     public function isDefaultTranslation(): bool
     {
-        return $this->getAttributeValue('translatable_parent_id') !== null;
+        return $this->getAttributeValue('translatable_parent_id') != null;
     }
 
     public function translate(string $field, ?string $locale = null, bool $fallback = true): mixed
@@ -44,31 +46,33 @@ trait IsDbTranslatable
         }
 
         // If the locale is not allowed then return null
-        if (! $this->isAllowedTranslationLocale($locale)) {
+        if (!$this->isAllowedTranslationLocale($locale))  {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
         // If the field is not in the translatable fields list then return null
-        if (! $this->isTranslatable($field)) {
+        if (!$this->isTranslatable($field)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
         if ($this->isDefaultTranslation()) {
             // if there's no parent, this is the main one. get translations using the defined relation
             $translation = $this->translations()->where('lang', $locale)->first();
+            dd($translation);
         } else {
             // otherwise it's already a translation, get all translations including the parent
             $translation = self::query()->where([
+                'lang' => $locale,
                 'id' => $this->translatable_parent_id,
-                'lang' => $locale,
             ])->orWhere([
-                'parent_id' => $this->translatable_parent_id,
                 'lang' => $locale,
+                'parent_id' => $this->translatable_parent_id,
             ])->first();
         }
 
+
         // fallback if the translation doesn't exist
-        if (! $translation) {
+        if (!$translation) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
@@ -88,15 +92,18 @@ trait IsDbTranslatable
         if (is_null($locale)) {
             // nuke all except the main one
             $parent_id = $this->isDefaultTranslation() ? $this->id : $this->translatable_parent_id;
-            self::query()->where('translatable_parent_id', $parent_id)->forceDelete();
+            self::query()->where('translatable_parent_id', $parent_id)->withTrashed()->forceDelete();
         } else {
             // check the current one lang, if it's correct delete it
             if ($this->lang == $locale) {
-                $this->forceDelete();
+                if (!$this->isDefaultTranslation()) {
+                    $this->forceDelete();
+                }
             } else {
                 if ($this->isDefaultTranslation()) {
                     $translation = $this->translations()->where('lang', $locale);
-                    $translation->forceDelete();
+                    // deleting the default translation will soft lock
+                    $translation->delete();
                 } else {
                     $translation = self::query()->where([
                         'translatable_parent_id' => $this->translatable_parent_id,
