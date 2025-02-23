@@ -43,6 +43,7 @@ If you discover any security related issues, please email [info@javaabu.com](mai
 - [Javaabu Pvt. Ltd.](https://github.com/javaabu)
 - [Arushad Ahmed (@dash8x)](http://arushad.com)
 - [Xylam (@Xylam)](https://github.com/Xylam)
+- [FlameXode (@WovenCoast)](https://github.com/WovenCoast)
 - [All Contributors](../../contributors)
 
 ## License
