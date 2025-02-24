@@ -103,10 +103,18 @@ trait IsTranslatable
      * @param string $locale
      * @param array $fields
      * @return $this
+     * @throws LanguageNotAllowedException
      */
     public function addTranslations(string $locale, array $fields): static
     {
-        array_map([$this, 'addTranslation'], $fields);
+        if (! $this->isAllowedTranslationLocale($locale)) {
+            throw LanguageNotAllowedException::create($locale);
+        }
+
+        foreach ($fields as $field => $value) {
+            $this->addTranslation($locale, $field, $value);
+        }
+
         return $this;
     }
 

@@ -505,6 +505,42 @@ class IsDbTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
+    /** @test
+     * @throws LanguageNotAllowedException
+     */
+    public function it_can_add_translations_in_bulk()
+    {
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $post->addTranslations('dv', [
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
+        ]);
+
+        $this->assertEquals('Mee dhivehi title eh', $post->title_dv);
+        $this->assertEquals('Mee dhivehi liyumeh', $post->body_dv);
+    }
+
+    /** @test
+     * @throws LanguageNotAllowedException
+     */
+    public function it_cannot_add_translations_in_bulk_for_locales_that_are_not_allowed()
+    {
+        $this->expectException(LanguageNotAllowedException::class);
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $this->assertThrows($post->addTranslations('zh-CN', [
+            'title' => '这是一个中文标题',
+            'slug' => '这是一只中国蛞蝓',
+            'body' => '这是一个中国人的身体',
+        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
+    }
+
     /** @test */
     public function it_can_add_new_translation_to_default_translation()
     {
