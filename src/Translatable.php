@@ -6,6 +6,8 @@
 
 namespace Javaabu\Translatable;
 
+use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+
 interface Translatable
 {
     /**
@@ -117,11 +119,22 @@ interface Translatable
     public function isAllowedTranslationLocale(string $locale): bool;
 
     /**
+     * Add an attribute with a new locale to this object
+     *
+     * @param string $locale
+     * @param string $field
+     * @param string $value
+     * @return $this
+     * @throws LanguageNotAllowedException
+     */
+    public function addTranslation(string $locale, string $field, string $value): static;
+
+    /**
      * Add a new locale to this object
      *
      * @param string $locale
      * @param array $fields
      * @return $this
      */
-    public function addTranslation(string $locale, array $fields = []): static;
+    public function addTranslations(string $locale, array $fields): static;
 }

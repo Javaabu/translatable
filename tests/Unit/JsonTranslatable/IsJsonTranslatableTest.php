@@ -355,22 +355,42 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertTrue($article->isDefaultTranslationLocale('en'));
     }
 
-    /** @test */
+    /** @test
+     * @throws LanguageNotAllowedException
+     */
     public function it_can_add_new_translation_locales()
     {
         $article = Article::factory()->withAuthor()->create([
             'lang' => 'en',
         ]);
 
-        $translation = $article->addTranslation('dv', [
-            'title' => 'Mee dhivehi title eh',
-            'slug' => 'mee-dhivehi-slug-eh',
-            'body' => 'Mee dhivehi liyumeh',
-        ]);
+//        $translation = $article->addTranslation('dv', [
+//            'title' => 'Mee dhivehi title eh',
+//            'slug' => 'mee-dhivehi-slug-eh',
+//            'body' => 'Mee dhivehi liyumeh',
+//        ]);
+//
+//        $translation->save();
 
-        $translation->save();
+        $article->addTranslation('dv', 'title', 'Mee dhivehi title eh');
 
         $this->assertEquals('Mee dhivehi title eh', $article->title_dv);
+    }
+
+    /** @test */
+    public function it_can_add_new_translation_locales_via_setter()
+    {
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $article->title_dv = 'Mee dhivehi title eh';
+
+        // get via locale because assertEquals complains that it'll always be true with title_dv since I just set it
+        $tmp = app()->getLocale();
+        app()->setLocale('dv');
+        $this->assertEquals('Mee dhivehi title eh', $article->title);
+        app()->setLocale($tmp);
     }
 
     /** @test */
@@ -381,10 +401,12 @@ class IsJsonTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
 
-        $this->assertThrows($article->addTranslation('zh-CN', [
-            'title' => '这是一个中文标题',
-            'slug' => '这是一只中国蛞蝓',
-            'body' => '这是一个中国人的身体',
-        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
+//        $this->assertThrows($article->addTranslation('zh-CN', [
+//            'title' => '这是一个中文标题',
+//            'slug' => '这是一只中国蛞蝓',
+//            'body' => '这是一个中国人的身体',
+//        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
+
+        $this->assertThrows($article->addTranslation('zh-CN', 'title', '这是一个中文标题'), LanguageNotAllowedException::class);
     }
 }

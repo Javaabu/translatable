@@ -129,29 +129,40 @@ trait IsDbTranslatable
     /**
      * @throws LanguageNotAllowedException
      */
-    public function addTranslation(string $locale, array $fields = []): static
+    public function addTranslation(string $locale, string $field, string $value): static
     {
         if (! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
-        $parent_id = $this->isDefaultTranslation() ? $this->id : $this->translatable_parent_id;
+        $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
 
-        $newTranslation = new self();
-
-        foreach ($this->getAllNonTranslatables() as $nonTranslatable) {
-            if ($nonTranslatable == "id") continue;
-            $newTranslation->setAttribute($nonTranslatable, $this->getAttributeValue($nonTranslatable));
+        // check if the default translation is already the correct locale
+        if ($defaultTranslation->lang == $locale) {
+            $defaultTranslation->setAttribute($field, $value);
+            $defaultTranslation->save();
+            return $defaultTranslation;
         }
 
-        foreach ($fields as $field => $value) {
-            $newTranslation->setAttribute($field, $value);
+        // check if a translated object exists for this locale
+        $newTranslation = $defaultTranslation->translations()->where('lang', $locale)->first();
+
+        // if there is none, make a new blank translation of this object
+        if (! $newTranslation) {
+            $newTranslation = new self();
+
+            // copy all the attributes of the current object to the new translation
+            // this ensures no columns are left null
+            foreach ($this->getAllAttributes() as $attribute) {
+                // TODO: make this primary key rely on some sort of config available per model
+                if ($attribute == "id") continue;
+                $newTranslation->setAttribute($attribute, $defaultTranslation->getAttributeValue($attribute));
+            }
+            $newTranslation->setAttribute('translatable_parent_id', $defaultTranslation->id);
         }
 
-        $newTranslation->setAttribute('translatable_parent_id', $parent_id);
+        $newTranslation->setAttribute($field, $value);
         $newTranslation->setAttribute('lang', $locale);
-
-        // TODO: should it save automatically?
         $newTranslation->save();
 
         return $newTranslation;

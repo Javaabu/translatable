@@ -467,22 +467,55 @@ class IsDbTranslatableTest extends TestCase
         $this->assertTrue($post->isDefaultTranslationLocale('en'));
     }
 
-    /** @test */
+    /** @test
+     * @throws LanguageNotAllowedException
+     */
     public function it_can_add_new_translation_locales()
     {
         $post = Post::factory()->withAuthor()->create([
             'lang' => 'en',
         ]);
 
-        $translation = $post->addTranslation('dv', [
-            'title' => 'Mee dhivehi title eh',
-            'slug' => 'mee-dhivehi-slug-eh',
-            'body' => 'Mee dhivehi liyumeh',
-        ]);
+//        $translation = $article->addTranslation('dv', [
+//            'title' => 'Mee dhivehi title eh',
+//            'slug' => 'mee-dhivehi-slug-eh',
+//            'body' => 'Mee dhivehi liyumeh',
+//        ]);
+//
+//        $translation->save();
 
-        $translation->save();
+        $post->addTranslation('dv', 'title', 'Mee dhivehi title eh');
 
         $this->assertEquals('Mee dhivehi title eh', $post->title_dv);
+    }
+
+    /** @test */
+    public function it_can_add_new_translation_locales_via_setter()
+    {
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $post->title_dv = 'Mee dhivehi title eh';
+
+        // get via locale because assertEquals complains that it'll always be true with title_dv since I just set it
+        $tmp = app()->getLocale();
+        app()->setLocale('dv');
+        $this->assertEquals('Mee dhivehi title eh', $post->title);
+        app()->setLocale($tmp);
+    }
+
+    /** @test */
+    public function it_can_add_new_translation_to_default_translation()
+    {
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $post->title_en = 'This is an English title';
+
+        app()->setLocale('en');
+        $this->assertEquals('This is an English title', $post->title);
     }
 
     /** @test */
@@ -493,10 +526,12 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
 
-        $this->assertThrows($post->addTranslation('zh-CN', [
-            'title' => '这是一个中文标题',
-            'slug' => '这是一只中国蛞蝓',
-            'body' => '这是一个中国人的身体',
-        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
+//        $this->assertThrows($post->addTranslation('zh-CN', [
+//            'title' => '这是一个中文标题',
+//            'slug' => '这是一只中国蛞蝓',
+//            'body' => '这是一个中国人的身体',
+//        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
+
+        $this->assertThrows($post->addTranslation('zh-CN', 'title', '这是一个中文标题'), LanguageNotAllowedException::class);
     }
 }

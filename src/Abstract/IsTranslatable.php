@@ -3,9 +3,20 @@
 namespace Javaabu\Translatable\Abstract;
 
 use Illuminate\Support\Str;
+use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 
 trait IsTranslatable
 {
+    /**
+     * Get all fields including pivots and fields ignored for translation
+     *
+     * @return array
+     */
+    public function getAllAttributes(): array
+    {
+        return \Schema::getColumnListing($this->getTable());
+    }
+
     /**
      * Get non translatable fields without pivots and fields ignored for translation
      *
@@ -15,7 +26,7 @@ trait IsTranslatable
      */
     public function getNonTranslatables(): array
     {
-        $all_fields = \Schema::getColumnListing($this->getTable());
+        $all_fields = $this->getAllAttributes();
 
         $hide = array_merge($this->getTranslatables(), $this->getFieldsIgnoredForTranslation(), $this->getNonTranslatablePivots());
 
@@ -87,6 +98,19 @@ trait IsTranslatable
     }
 
     /**
+     * Bulk add translatable fields
+     *
+     * @param string $locale
+     * @param array $fields
+     * @return $this
+     */
+    public function addTranslations(string $locale, array $fields): static
+    {
+        array_map([$this, 'addTranslation'], $fields);
+        return $this;
+    }
+
+    /**
      * Get the field and locale for a given attribute if possible
      *
      * <code>'title_en'</code> would return <code>['title', 'en']</code>
@@ -129,5 +153,21 @@ trait IsTranslatable
 
         // fallback to parent
         return parent::getAttribute($key);
+    }
+
+    /**
+     * @throws LanguageNotAllowedException
+     */
+    public function setAttribute($key, $value): mixed
+    {
+        [$field, $locale] = $this->getFieldAndLocale($key);
+
+        if (! $locale) return parent::setAttribute($key, $value);
+
+        if ($this->isTranslatable($field)) {
+            $this->addTranslation($locale, $field, $value);
+        }
+
+        return parent::setAttribute($key, $value);
     }
 }

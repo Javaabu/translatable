@@ -118,15 +118,16 @@ trait IsJsonTranslatable
         return isset($this->translations[$locale]);
     }
 
+
     /**
      * Add a new locale to this object
      *
      * @param string $locale
-     * @param array $fields
+     * @param string $field
+     * @param string $value
      * @return $this
-     * @throws LanguageNotAllowedException
      */
-    public function addTranslation(string $locale, array $fields = []): static
+    public function addTranslation(string $locale, string $field, string $value): static
     {
         if (! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
@@ -134,10 +135,12 @@ trait IsJsonTranslatable
 
         /** @var array $translations */
         $translations = $this->translations ?? [];
-        $translations[$locale] = array_merge(array_key_exists($locale, $translations) ? $translations[$locale] : [], $fields, ['lang' => $locale]);
+        $translations[$locale] = array_merge(
+            array_key_exists($locale, $translations) ? $translations[$locale] : [],
+            [$field => $value],
+            ['lang' => $locale]
+        );
         $this->translations = $translations;
-
-        // TODO: should it save automatically?
         $this->save();
 
         return $this;
