@@ -7,7 +7,54 @@
 
 
 ## Introduction
+
 Adds multi-lingual to Laravel models
+
+To get started with this package, you can simply add `DbTranslatableSchema::columns($table);` or `JsonTranslatableSchema::columns($table);` to your migration `up` function.
+
+```php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+
+            ...
+
+            DbTranslatableSchema::columns($table);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('posts');
+    }
+};
+```
+
+And then all you need to do is add the `Translatable` implementation using the `IsDbTranslatable` or `IsJsonTranslatable` trait.
+
+```php
+...
+
+class Post extends Model implements Translatable
+{
+    use IsDbTranslatable;
+
+...
+```
+
+Now, your models will automatically be translated according to the current `app()->getLocale()`. To add different translations, all you need to do is
+
+```php
+// to add title for dv language
+$post->title_dv = "Mee Dhivehi title eh";
+```
 
 ## Documentation
 
