@@ -150,13 +150,13 @@ trait IsTranslatable
 
         // translate using current app locale if possible
         if ($this->isTranslatable($key)) {
-            return $this->translate($key, app()->currentLocale(), false);
+            return $this->translate($key, app()->currentLocale());
         }
 
         // check if is a suffixed attribute
         [$field, $locale] = $this->getFieldAndLocale($key);
         if ($locale && $this->isTranslatable($field)) {
-            return $this->translate($field, $locale, false);
+            return $this->translate($field, $locale, config('translatable.lang_suffix_should_fallback', false));
         }
 
         // fallback to parent
@@ -170,10 +170,8 @@ trait IsTranslatable
     {
         [$field, $locale] = $this->getFieldAndLocale($key);
 
-        if (! $locale) return parent::setAttribute($key, $value);
-
-        if ($this->isTranslatable($field)) {
-            $this->addTranslation($locale, $field, $value);
+        if ($locale && $this->isTranslatable($field)) {
+            return $this->addTranslation($locale, $field, $value);
         }
 
         return parent::setAttribute($key, $value);

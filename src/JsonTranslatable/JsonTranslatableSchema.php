@@ -22,4 +22,10 @@ class JsonTranslatableSchema
 
         $table->string('lang')->index();
     }
+
+    public static function revert(Blueprint $table): void
+    {
+        $table->dropIndex('lang');
+        $table->dropColumn(['translations', 'lang']);
+    }
 }

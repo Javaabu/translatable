@@ -21,5 +21,6 @@ return [
         'en' => 'English',
         'dv' => 'Dhivehi',
         'jp' => 'Japanese',
-    ]
+    ],
+    'lang_suffix_should_fallback' => false,
 ];
