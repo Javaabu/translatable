@@ -418,25 +418,29 @@ class IsJsonTranslatableTest extends TestCase
     public function it_cannot_add_translations_in_bulk_for_locales_that_are_not_allowed()
     {
         $this->expectException(LanguageNotAllowedException::class);
+        $this->expectExceptionMessage('zh-CN language not allowed');
+
         $article = Article::factory()->withAuthor()->create([
             'lang' => 'en',
         ]);
 
-        $this->assertThrows($article->addTranslations('zh-CN', [
+        $article->addTranslations('zh-CN', [
             'title' => '这是一个中文标题',
             'slug' => '这是一只中国蛞蝓',
             'body' => '这是一个中国人的身体',
-        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
+        ]);
     }
 
     /** @test */
     public function it_cannot_add_translation_locales_that_are_not_allowed()
     {
         $this->expectException(LanguageNotAllowedException::class);
+        $this->expectExceptionMessage('zh-CN language not allowed');
+
         $article = Article::factory()->withAuthor()->create([
             'lang' => 'en',
         ]);
 
-        $this->assertThrows($article->addTranslation('zh-CN', 'title', '这是一个中文标题'), LanguageNotAllowedException::class);
+        $article->addTranslation('zh-CN', 'title', '这是一个中文标题');
     }
 }

@@ -530,15 +530,17 @@ class IsDbTranslatableTest extends TestCase
     public function it_cannot_add_translations_in_bulk_for_locales_that_are_not_allowed()
     {
         $this->expectException(LanguageNotAllowedException::class);
+        $this->expectExceptionMessage('zh-CN language not allowed');
+
         $post = Post::factory()->withAuthor()->create([
             'lang' => 'en',
         ]);
 
-        $this->assertThrows($post->addTranslations('zh-CN', [
+        $post->addTranslations('zh-CN', [
             'title' => '这是一个中文标题',
             'slug' => '这是一只中国蛞蝓',
             'body' => '这是一个中国人的身体',
-        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
+        ]);
     }
 
     /** @test */
@@ -558,16 +560,12 @@ class IsDbTranslatableTest extends TestCase
     public function it_cannot_add_translation_locales_that_are_not_allowed()
     {
         $this->expectException(LanguageNotAllowedException::class);
+        $this->expectExceptionMessage('zh-CN language not allowed');
+
         $post = Post::factory()->withAuthor()->create([
             'lang' => 'en',
         ]);
 
-//        $this->assertThrows($post->addTranslation('zh-CN', [
-//            'title' => '这是一个中文标题',
-//            'slug' => '这是一只中国蛞蝓',
-//            'body' => '这是一个中国人的身体',
-//        ]), LanguageNotAllowedException::class, 'zh-CN language not allowed');
-
-        $this->assertThrows($post->addTranslation('zh-CN', 'title', '这是一个中文标题'), LanguageNotAllowedException::class);
+        $post->addTranslation('zh-CN', 'title', '这是一个中文标题');
     }
 }
