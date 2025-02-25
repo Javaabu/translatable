@@ -34,8 +34,4 @@ $post->title // Mee dhivehi title eh
 $post->body // Mee dhivehi liyumeh
 ```
 
-:::danger
-
-If adding translations give an error, make sure the locale is allowed in `allowed_translation_locales` in `config/translatable.php`. Check out [Installation and Setup > Publishing the config file](../installation-and-setup.md#publishing-the-config-file) for information on how to setup your config file.
-
-:::
+> If adding translations give an error, make sure the locale is allowed in `allowed_translation_locales` in `config/translatable.php`. Check out [Installation and Setup > Publishing the config file](../installation-and-setup.md#publishing-the-config-file) for information on how to setup your config file.
