@@ -32,9 +32,11 @@ return new class extends Migration {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
 
-            ...
+            // ...
 
-            DbTranslatableSchema::columns($table);
+            $table->dbTranslatable();
+            // OR
+            $table->jsonTranslatable();
         });
     }
 
@@ -53,6 +55,8 @@ And then all you need to do is add the `Translatable` implementation using the `
 class Post extends Model implements Translatable
 {
     use IsDbTranslatable;
+    // OR
+    use IsJsonTranslatable;
 
 ...
 ```
