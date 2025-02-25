@@ -2,7 +2,7 @@
 
 namespace Javaabu\Translatable\DbTranslatable;
 
-use Javaabu\Translatable\Abstract\IsTranslatable;
+use Javaabu\Translatable\Traits\IsTranslatable;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 
 trait IsDbTranslatable

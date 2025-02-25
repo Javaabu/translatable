@@ -2,7 +2,7 @@
 
 namespace Javaabu\Translatable\JsonTranslatable;
 use Illuminate\Support\Str;
-use Javaabu\Translatable\Abstract\IsTranslatable;
+use Javaabu\Translatable\Traits\IsTranslatable;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 
 trait IsJsonTranslatable

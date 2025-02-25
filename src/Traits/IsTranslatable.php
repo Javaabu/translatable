@@ -1,12 +1,17 @@
 <?php
 
-namespace Javaabu\Translatable\Abstract;
+namespace Javaabu\Translatable\Traits;
 
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 
 trait IsTranslatable
 {
+    public function getNonTranslatablePivots(): array
+    {
+        return [];
+    }
+
     /**
      * Get all fields including pivots and fields ignored for translation
      *

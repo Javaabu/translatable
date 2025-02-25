@@ -17,10 +17,12 @@ return [
         'updated_at',
         'deleted_at',
     ],
+
     'allowed_translation_locales' => [
         'en' => 'English',
         'dv' => 'Dhivehi',
         'jp' => 'Japanese',
     ],
+
     'lang_suffix_should_fallback' => false,
 ];
