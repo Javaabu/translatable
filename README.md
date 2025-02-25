@@ -18,7 +18,7 @@ composer require javaabu/translatable
 
 ## Usage
 
-To get started with this package, you can simply add `DbTranslatableSchema::columns($table);` or `JsonTranslatableSchema::columns($table);` to your migration `up` function.
+To get started with this package, you can simply add `$table->dbTranslatable();` or `$table->jsonTranslatable();` to your migration `up` function.
 
 ```php
 use Illuminate\Database\Migrations\Migration;
