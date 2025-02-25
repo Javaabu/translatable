@@ -115,12 +115,6 @@ return new class extends Migration {
 };
 ```
 
-:::danger
-
-The revert function is **unstable** as the testing suite for this has not been written yet. Use it with caution.
-
-:::
-
 ## Setting up your models
 
 
