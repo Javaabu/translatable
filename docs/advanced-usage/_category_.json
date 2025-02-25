@@ -1,0 +1,11 @@
+{
+    "position": 1.4,
+    "label": "Advanced Usage",
+    "collapsible": true,
+    "collapsed": false,
+    "link": {
+        "type": "generated-index",
+        "slug": "/translatable/_categories/advanced-usage",
+        "description": "Additional features available in this package."
+    }
+}

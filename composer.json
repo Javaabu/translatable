@@ -13,6 +13,11 @@
             "name": "Xylam",
             "email": "jailam@javaabu.com",
             "role": "Developer"
+        },
+        {
+            "name": "FlameXode",
+            "email": "hi@flamexo.de",
+            "role": "Developer"
         }
     ],
     "require": {
