@@ -1,5 +1,6 @@
 ---
 title: Difference between DB and JSON translatable
+description: The "But why..." of DB and JSON translatables
 sidebar_position: 70
 ---
 

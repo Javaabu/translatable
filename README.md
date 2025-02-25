@@ -6,13 +6,17 @@
 ![Code Coverage](./.github/coverage.svg)
 
 
-## Introduction
-
 Adds multi-lingual to Laravel models
+
+## Installation
+
+You can install the package via composer:
 
 ```bash
 composer require javaabu/translatable
 ```
+
+## Usage
 
 To get started with this package, you can simply add `DbTranslatableSchema::columns($table);` or `JsonTranslatableSchema::columns($table);` to your migration `up` function.
 
@@ -53,7 +57,20 @@ class Post extends Model implements Translatable
 ...
 ```
 
-Now, your models will automatically be translated according to the current `app()->getLocale()`. To add different translations, all you need to do is
+Now, your models will automatically be translated according to the current `app()->getLocale()`.
+
+```php
+app()->setLocale('en');
+$post->title // This is an English title
+
+app()->setLocale('dv');
+$post->title // Mee dhivehi title eh
+
+$post->title_en // This is an English title
+$post->title_dv // Mee dhivehi title eh
+```
+
+To add different translations, all you need to do is
 
 ```php
 // to add title for dv language

@@ -1,13 +1,10 @@
 ---
 title: Set up your Migration and Model
+description: Configuring your models and migrations to use Translatables
 sidebar_position: 10
 ---
 
-:::info
-
-Translatables currently provides **two** different types of translatables, `Db` and `Json`. Check out [Advanced Usage > Difference between DB and JSON translatable](./70-difference-isdbtranslatable-isjsontranslatable) to learn the differences and design considerations for both
-
-:::
+Translatables currently provides **two** different types of translatables, `Db` and `Json`. Check out [Difference between DB and JSON translatable](./difference-isdbtranslatable-isjsontranslatable) to learn the differences and design considerations for both
 
 ## Setting up your migrations
 

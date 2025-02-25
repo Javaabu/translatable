@@ -1,5 +1,6 @@
 ---
 title: Fetching Translations
+description: Ways to retrieve translations from Translatables
 sidebar_position: 20
 ---
 

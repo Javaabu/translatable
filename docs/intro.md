@@ -40,13 +40,13 @@ return new class extends Migration {
 };
 ```
 
-:::danger
+:::info
 
-This function is not currently implemented but is in the plans at this moment.
-
-> We also provide a `DBTranslatableSchema::revert($table)` function to put in the `down` function, this isn't necessary but it's good to have.
+We also provide a `DBTranslatableSchema::revert($table)` function to put in the `down` function, this isn't necessary but it's good to have.
 
 :::
+
+---
 
 And then all you need to do is add the `Translatable` implementation using the `IsDbTranslatable` or `IsJsonTranslatable` trait.
 
@@ -60,7 +60,9 @@ class Post extends Model implements Translatable
 ...
 ```
 
-> Differences between `IsDbTranslatable` and `IsJsonTranslatable` are listed in []
+> Check out [Difference between DB and JSON translatable](./difference-isdbtranslatable-isjsontranslatable) to learn the differences and design considerations for both.
+
+---
 
 Now, your models will automatically be translated according to the current `app()->getLocale()`. To add different translations, all you need to do is 
 
