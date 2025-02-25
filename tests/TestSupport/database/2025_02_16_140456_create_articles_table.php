@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema;
 
 class CreateArticlesTable extends Migration {
     public function up()
@@ -15,7 +14,7 @@ class CreateArticlesTable extends Migration {
             $table->string('slug');
             $table->text('body');
 
-            JsonTranslatableSchema::columns($table);
+            $table->jsonTranslatable();
 
             $table->timestamps();
             $table->softDeletes();

@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
 use Javaabu\Translatable\Tests\TestSupport\Models\Author;
 
 return new class extends Migration {
@@ -17,7 +16,7 @@ return new class extends Migration {
             $table->text('body');
             $table->foreignIdFor(Author::class);
 
-            DbTranslatableSchema::columns($table);
+            $table->dbTranslatable();
 
             $table->timestamps();
             $table->softDeletes();
