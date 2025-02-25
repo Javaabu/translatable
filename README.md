@@ -10,6 +10,10 @@
 
 Adds multi-lingual to Laravel models
 
+```bash
+composer require javaabu/translatable
+```
+
 To get started with this package, you can simply add `DbTranslatableSchema::columns($table);` or `JsonTranslatableSchema::columns($table);` to your migration `up` function.
 
 ```php
