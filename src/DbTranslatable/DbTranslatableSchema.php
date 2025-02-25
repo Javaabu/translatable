@@ -10,15 +10,15 @@ class DbTranslatableSchema
     {
         $table->foreignId('translatable_parent_id')->nullable();
 
-        $table->string('lang')->index();
+        $table->string('lang')->index($table->getTable() . '_lang_index');
     }
 
     public static function revert(Blueprint $table): void
     {
-        $table->dropForeign('translatable_parent_id');
+//        $table->dropForeign('translatable_parent_id');
         $table->dropColumn('translatable_parent_id');
 
-        $table->dropIndex('lang');
+        $table->dropIndex($table->getTable() . '_lang_index');
         $table->dropColumn('lang');
     }
 }

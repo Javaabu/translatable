@@ -25,9 +25,11 @@ return new class extends Migration {
 
     public function down(): void
     {
+        // This is how I get code coverage
         Schema::table('posts', function(Blueprint $table) {
             $table->dropDbTranslatable();
         });
+
         Schema::dropIfExists('posts');
     }
 };

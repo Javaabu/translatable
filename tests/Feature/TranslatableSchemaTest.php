@@ -28,6 +28,7 @@ class TranslatableSchemaTest extends TestCase
         $articles = \Schema::getColumnListing('articles');
         $this->assertEquals([
             'id',
+            'author_id',
             'title',
             'slug',
             'body',
@@ -36,7 +37,6 @@ class TranslatableSchemaTest extends TestCase
             'created_at',
             'updated_at',
             'deleted_at',
-            'author_id',
         ], $articles);
 
         $authors = \Schema::getColumnListing('authors');
@@ -51,8 +51,6 @@ class TranslatableSchemaTest extends TestCase
     /** @test */
     public function it_can_down_migrations()
     {
-        $this->markTestIncomplete('Test currently fails because of SQLite.');
-
         $this->artisan('migrate:fresh');
         $this->artisan('migrate:rollback');
 
