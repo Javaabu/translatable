@@ -25,6 +25,9 @@ return new class extends Migration {
 
     public function down(): void
     {
+        Schema::table('posts', function(Blueprint $table) {
+            $table->dropDbTranslatable();
+        });
         Schema::dropIfExists('posts');
     }
 };
