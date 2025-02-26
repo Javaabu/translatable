@@ -356,7 +356,8 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertTrue($article->isDefaultTranslationLocale('en'));
     }
 
-    /** @test
+    #[Test]
+    /**
      * @throws LanguageNotAllowedException
      */
     public function it_can_add_new_translation_locales()
@@ -394,7 +395,8 @@ class IsJsonTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
-    /** @test
+    #[Test]
+    /**
      * @throws LanguageNotAllowedException
      */
     public function it_can_add_translations_in_bulk()
@@ -413,7 +415,8 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEquals('Mee dhivehi liyumeh', $article->body_dv);
     }
 
-    /** @test
+    #[Test]
+    /**
      * @throws LanguageNotAllowedException
      */
     public function it_cannot_add_translations_in_bulk_for_locales_that_are_not_allowed()

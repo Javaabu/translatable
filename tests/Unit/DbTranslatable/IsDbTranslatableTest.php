@@ -468,7 +468,8 @@ class IsDbTranslatableTest extends TestCase
         $this->assertTrue($post->isDefaultTranslationLocale('en'));
     }
 
-    /** @test
+    #[Test]
+    /**
      * @throws LanguageNotAllowedException
      */
     public function it_can_add_new_translation_locales()
@@ -506,7 +507,8 @@ class IsDbTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
-    /** @test
+    #[Test]
+    /**
      * @throws LanguageNotAllowedException
      */
     public function it_can_add_translations_in_bulk()
@@ -525,7 +527,8 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEquals('Mee dhivehi liyumeh', $post->body_dv);
     }
 
-    /** @test
+    #[Test]
+    /**
      * @throws LanguageNotAllowedException
      */
     public function it_cannot_add_translations_in_bulk_for_locales_that_are_not_allowed()
