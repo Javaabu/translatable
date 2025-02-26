@@ -6,12 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
+use PHPUnit\Framework\Attributes\Test;
 
 class IsJsonTranslatableTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_get_fields_ignored_for_translation()
     {
         $article = new Article();
@@ -26,7 +27,7 @@ class IsJsonTranslatableTest extends TestCase
         ], $article->getFieldsIgnoredForTranslation());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_translatable_fields()
     {
         $article = new Article();
@@ -37,7 +38,7 @@ class IsJsonTranslatableTest extends TestCase
         ], $article->getTranslatables());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_non_translatable_fields()
     {
         $article = new Article();
@@ -47,7 +48,7 @@ class IsJsonTranslatableTest extends TestCase
         ], $article->getNonTranslatables());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_non_translatable_pivots()
     {
         $article = new Article();
@@ -57,7 +58,7 @@ class IsJsonTranslatableTest extends TestCase
         ], $article->getNonTranslatablePivots());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_all_non_translatable_fields()
     {
         $article = new Article();
@@ -74,7 +75,7 @@ class IsJsonTranslatableTest extends TestCase
         ], $article->getAllNonTranslatables());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_is_a_non_translatable_pivot()
     {
         $article = new Article();
@@ -83,7 +84,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertTrue($article->isNonTranslatablePivot('author_id'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_the_default_translation_locale()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -94,7 +95,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertTrue($article->isDefaultTranslationLocale('en'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_allowed_translation_locales()
     {
         $article = Article::factory()->withAuthor()->create();
@@ -102,7 +103,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEquals(['en', 'dv', 'jp'], $article->getAllowedTranslationLocales());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_given_locale_is_allowed()
     {
         $article = Article::factory()->withAuthor()->create();
@@ -112,7 +113,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertFalse($article->isAllowedTranslationLocale('fr'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_translate_function()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -157,7 +158,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertNull($article->translate('slug', 'fr', false));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_translate_function_without_fallback()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -183,7 +184,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertNull($article->translate('body', 'jp', false));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_magic_method()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -208,7 +209,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertNull($article->slug_dv);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_locale_change()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -233,7 +234,7 @@ class IsJsonTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_given_field_is_translatable()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -254,7 +255,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertTrue($article->isTranslatable('title'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_clear_translations_for_one_locale()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -282,7 +283,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEquals('Kore wa taitorudesu', $article->title_jp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_clear_translations_for_all_locales()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -306,7 +307,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEmpty($article->title_jp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_any_translation_for_a_specific_locale()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -332,7 +333,7 @@ class IsJsonTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_is_default_translation_locale()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -377,7 +378,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEquals('Mee dhivehi title eh', $article->title_dv);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_add_new_translation_locales_via_setter()
     {
         $article = Article::factory()->withAuthor()->create([
@@ -431,7 +432,7 @@ class IsJsonTranslatableTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_add_translation_locales_that_are_not_allowed()
     {
         $this->expectException(LanguageNotAllowedException::class);

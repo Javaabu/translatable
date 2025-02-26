@@ -6,12 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Post;
+use PHPUnit\Framework\Attributes\Test;
 
 class IsDbTranslatableTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_can_get_fields_ignored_for_translation()
     {
         $post = new Post();
@@ -26,7 +27,7 @@ class IsDbTranslatableTest extends TestCase
         ], $post->getFieldsIgnoredForTranslation());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_translatable_fields()
     {
         $post = new Post();
@@ -37,7 +38,7 @@ class IsDbTranslatableTest extends TestCase
         ], $post->getTranslatables());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_non_translatable_fields()
     {
         $post = new Post();
@@ -47,7 +48,7 @@ class IsDbTranslatableTest extends TestCase
         ], $post->getNonTranslatables());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_non_translatable_pivots()
     {
         $post = new Post();
@@ -57,7 +58,7 @@ class IsDbTranslatableTest extends TestCase
         ], $post->getNonTranslatablePivots());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_all_non_translatable_fields()
     {
         $post = new Post();
@@ -74,7 +75,7 @@ class IsDbTranslatableTest extends TestCase
         ], $post->getAllNonTranslatables());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_is_a_non_translatable_pivot()
     {
         $post = new Post();
@@ -83,7 +84,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertTrue($post->isNonTranslatablePivot('author_id'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_the_default_translation_locale()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -94,7 +95,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertTrue($post->isDefaultTranslationLocale('en'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_allowed_translation_locales()
     {
         $post = Post::factory()->withAuthor()->create();
@@ -102,7 +103,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEquals(['en', 'dv', 'jp'], $post->getAllowedTranslationLocales());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_given_locale_is_allowed()
     {
         $post = Post::factory()->withAuthor()->create();
@@ -112,7 +113,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertFalse($post->isAllowedTranslationLocale('fr'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_translate_function()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -168,7 +169,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertNull($post->translate('slug', 'fr', false));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_translate_function_without_fallback()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -194,7 +195,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertNull($post->translate('body', 'jp', false));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_magic_method()
     {
         $post = Post::factory()->withAuthor()->create();
@@ -220,7 +221,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertNull($post->slug_dv);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_field_via_locale_change()
     {
         $post = Post::factory()->withAuthor()->create();
@@ -246,7 +247,7 @@ class IsDbTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_translate_fields_via_compoships()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -275,7 +276,7 @@ class IsDbTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_given_field_is_translatable()
     {
         $post = Post::factory()->withAuthor()->create();
@@ -297,7 +298,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertTrue($post->isTranslatable('title'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_clear_translations_for_one_locale()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -325,7 +326,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEquals('Kore wa taitorudesu', $post->title_jp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_clear_translations_for_default_locale()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -356,7 +357,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEmpty($post?->title_jp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_clear_translations_for_locale_via_translatable_parent()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -387,7 +388,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEmpty($post?->title_jp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_clear_translations_for_all_locales()
     {
         $post = Post::factory()->withAuthor()->create();
@@ -412,7 +413,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEmpty($post->title_jp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_any_translation_for_a_specific_locale()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -442,7 +443,7 @@ class IsDbTranslatableTest extends TestCase
         app()->setLocale($tmp);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_if_is_default_translation_locale()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -489,7 +490,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEquals('Mee dhivehi title eh', $post->title_dv);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_add_new_translation_locales_via_setter()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -543,7 +544,7 @@ class IsDbTranslatableTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_add_new_translation_to_default_translation()
     {
         $post = Post::factory()->withAuthor()->create([
@@ -556,7 +557,7 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEquals('This is an English title', $post->title);
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_add_translation_locales_that_are_not_allowed()
     {
         $this->expectException(LanguageNotAllowedException::class);

@@ -3,10 +3,11 @@
 namespace Feature;
 
 use Javaabu\Translatable\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TranslatableSchemaTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_up_migrations()
     {
         $this->artisan('migrate:fresh');
@@ -48,7 +49,7 @@ class TranslatableSchemaTest extends TestCase
         ], $authors);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_down_migrations()
     {
         $this->artisan('migrate:fresh');
