@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\Tests\Unit\DbTranslatable;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Post;
@@ -519,7 +520,6 @@ class IsDbTranslatableTest extends TestCase
 
         $post->addTranslations('dv', [
             'title' => 'Mee dhivehi title eh',
-            'slug' => 'mee-dhivehi-slug-eh',
             'body' => 'Mee dhivehi liyumeh',
         ]);
 
@@ -571,5 +571,18 @@ class IsDbTranslatableTest extends TestCase
         ]);
 
         $post->addTranslation('zh-CN', 'title', '这是一个中文标题');
+    }
+
+    #[Test]
+    public function it_cannot_add_translation_fields_that_are_not_allowed()
+    {
+        $this->expectException(FieldNotAllowedException::class);
+        $this->expectExceptionMessage('slug field not allowed for locale dv');
+
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $post->addTranslation('dv', 'slug', 'mee-dhivehi-slug-eh');
     }
 }
