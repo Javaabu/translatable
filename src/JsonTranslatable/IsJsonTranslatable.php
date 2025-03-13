@@ -74,7 +74,7 @@ trait IsJsonTranslatable
      */
     public function getDefaultTranslationLocale(): string
     {
-        return $this->getAttributeValue('lang');
+        return $this->getAttributeValue('lang') ?? app()->getLocale();
     }
 
     /**
@@ -142,6 +142,14 @@ trait IsJsonTranslatable
 
         /** @var array $translations */
         $translations = $this->translations ?? [];
+
+        if ($this->isDefaultTranslationLocale($locale)) {
+            $this->setAttribute($field, $value);
+            $this->setAttribute('lang', $locale);
+            $this->save();
+            return $this;
+        }
+
         $translations[$locale] = array_merge(
             array_key_exists($locale, $translations) ? $translations[$locale] : [],
             [$field => $value],
