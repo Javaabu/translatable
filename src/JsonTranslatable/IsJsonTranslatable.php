@@ -5,10 +5,18 @@ use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Traits\IsTranslatable;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Translatable;
 
 trait IsJsonTranslatable
 {
     use IsTranslatable;
+
+    public static function bootIsJsonTranslatable(): void
+    {
+        static::creating(function (Translatable $model) {
+            if (! $model->lang) $model->lang = app()->getLocale();
+        });
+    }
 
     public array $fields_ignored_for_translation = ['id', 'translations', 'lang'];
 

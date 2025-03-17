@@ -5,10 +5,18 @@ namespace Javaabu\Translatable\DbTranslatable;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Traits\IsTranslatable;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Translatable;
 
 trait IsDbTranslatable
 {
     use IsTranslatable;
+
+    public static function bootIsDbTranslatable(): void
+    {
+        static::creating(function (Translatable $model) {
+            if (! $model->lang) $model->lang = app()->getLocale();
+        });
+    }
 
     public array $fields_ignored_for_translation = ['id', 'translatable_parent_id', 'lang'];
 

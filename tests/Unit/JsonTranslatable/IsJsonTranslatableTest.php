@@ -460,4 +460,21 @@ class IsJsonTranslatableTest extends TestCase
 
         $article->addTranslation('dv', 'slug', 'mee-dhivehi-slug-eh');
     }
+
+    #[Test]
+    public function it_can_implicitly_set_default_locale()
+    {
+        app()->setLocale('dv');
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => null,
+        ]);
+
+        $article->slug = "mee-dhivehi-slug-eh";
+        $article->addTranslations('dv', [
+            'title' => 'Mee dhivehi title eh',
+        ]);
+
+        $this->assertEquals('dv', $article->lang);
+        $this->assertEquals('Mee dhivehi title eh', $article->title);
+    }
 }
