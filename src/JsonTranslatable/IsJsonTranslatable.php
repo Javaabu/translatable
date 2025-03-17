@@ -116,6 +116,10 @@ trait IsJsonTranslatable
             $locale = app()->getLocale();
         }
 
+        if ($this->lang === $locale) {
+            return true;
+        }
+
         return isset($this->translations[$locale]);
     }
 
