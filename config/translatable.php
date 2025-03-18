@@ -10,6 +10,8 @@ return [
     |
     */
 
+    'language_model' => \Javaabu\Translatable\Models\Language::class,
+
     'fields_ignored_for_translation' => [
         'id',
         'lang',

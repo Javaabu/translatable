@@ -2,11 +2,13 @@
 
 namespace Javaabu\Translatable;
 
-use App\Support\Translations\Languages;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
 use Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema;
+use Javaabu\Translatable\Models\Language;
 
 class TranslatableServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,23 @@ class TranslatableServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/translatable.php' => config_path('translatable.php'),
             ], 'translatable-config');
         }
+
+        $this->app->singleton(LanguageRegistrar::class, function ($app) {
+            $config = $this->app['config']['translatable'];
+
+            $language_class = $config['language_model'] ?? Language::class;
+            $cache_manager = $this->app->make(CacheManager::class);
+
+            $cache_expiration_time = Arr::get($config, 'cache.expiration_time');
+            $cache_key = Arr::get($config, 'cache.key');
+
+            return new LanguageRegistrar(
+                $language_class,
+                $cache_manager,
+                $cache_expiration_time,
+                $cache_key
+            );
+        });
     }
 
     public function registerSingletons(): void
@@ -33,6 +52,14 @@ class TranslatableServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Translatable::class, 'translatable');
+
+
+        $this->app->singleton(Languages::class, function () {
+            return new Languages();
+        });
+
+        $this->app->alias(Languages::class, 'languages');
+
     }
 
     /**

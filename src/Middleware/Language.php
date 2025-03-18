@@ -4,7 +4,7 @@ namespace Javaabu\Translatable\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Javaabu\Translatable\Contracts\Translatable;
+use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Facades\Translatable as TranslatableFacade;
 
 class Language
@@ -12,8 +12,8 @@ class Language
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param Closure $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next): mixed
@@ -24,6 +24,7 @@ class Language
             $locale = $this->getDefaultLocale();
         }
 
+
         $this->setUserLocale($locale, $request);
 
         return $next($request);
@@ -32,10 +33,10 @@ class Language
     /**
      * Get the user locale
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return string|null
      */
-    protected function getUserLocale(Request $request): ?string
+    protected function getUserLocale(Request $request)
     {
         // first try the request
         $locale = $this->getLocaleFromRequest($request);
@@ -44,7 +45,7 @@ class Language
             return $locale;
         }
 
-        if (! is_api_request($request)) {
+        if (!is_api_request($request)) {
             // then try the session
             $locale = $this->getLocaleFromSession($request);
             if ($locale) {
@@ -52,35 +53,46 @@ class Language
             }
         }
 
+
         return null;
     }
 
     /**
      * Get the locale from the route
      *
-     * @param Request $request
-     * @return string|null
+     * @param  Request  $request
+     * @return \Javaabu\Translatable\Models\Language|null
      */
-    protected function getLocaleFromRequest(Request $request): ?string
+    protected function getLocaleFromRequest(Request $request): ?\Javaabu\Translatable\Models\Language
     {
-        if ($language = $request->route('language')) {
+        $language = null;
+
+        if ($route_language = $request->route('language')) {
             // Check language from route
-            return $language;
-        } elseif ($language = $request->input('language')) {
+            $language = $route_language;
+        } elseif ($input_language = $request->input('language')) {
             // Check language from input
-            return $language;
+            $language = $input_language;
         } elseif ($code = $request->query('lang')) {
             // Check language from query param
-            return TranslatableFacade::isAllowedTranslationLocale($code) ? $code : null;
+            $language = TranslatableFacade::isAllowedTranslationLocale($code) ? $code : null;
         }
 
-        return null;
+        if (! $language) {
+            return null;
+        }
+
+        if (!($language instanceof \Javaabu\Translatable\Models\Language)) {
+            return Languages::get($language);
+        }
+
+        return $language;
     }
 
     /**
      * Get the locale from the session
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return string|null
      */
     protected function getLocaleFromSession(Request $request): ?string
@@ -102,11 +114,16 @@ class Language
      * Set the user locale
      *
      * @param           $locale
-     * @param Request $request
+     * @param  Request  $request
      */
     protected function setUserLocale($locale, Request $request): void
     {
-        if (! is_api_request($request)) {
+        // Convert to language code if it is an object
+        if ($locale instanceof \Javaabu\Translatable\Models\Language) {
+            $locale = $locale->code;
+        }
+
+        if (!is_api_request($request)) {
             $request->session()->put('language', $locale);
         }
 
