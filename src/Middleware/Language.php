@@ -94,7 +94,7 @@ class Language
      */
     protected function getDefaultLocale(): string
     {
-        return Translatable::class->getDefaultTranslationLocale();
+        return config('translatable.default_locale');
     }
 
     /**

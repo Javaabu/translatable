@@ -25,4 +25,6 @@ return [
     ],
 
     'lang_suffix_should_fallback' => false,
+
+    'default_locale' => 'en',
 ];
