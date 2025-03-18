@@ -5,6 +5,7 @@ namespace Javaabu\Translatable\Traits;
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Translatable;
+use Javaabu\Translatable\Models\Language;
 
 trait IsTranslatable
 {
@@ -142,6 +143,46 @@ trait IsTranslatable
 
         $field = Str::beforeLast($key, '_');
         return [$field, $locale];
+    }
+
+    /**
+     * Get admin localized url
+     *
+     * @param  Language|string  $locale
+     * @param  string|null      $route_name
+     * @return string
+     */
+    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->lower();
+        }
+
+        return translate_route("admin.{$route_name}.show", $this, locale: $locale);
+    }
+
+    /**
+     * Get admin localized edit url
+     *
+     * @param  Language|string  $locale
+     * @param  string|null      $route_name
+     * @return string
+     */
+    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->lower();
+        }
+
+        return translate_route("admin.{$route_name}.edit", $this, locale: $locale);
     }
 
     public function getAttribute($key): mixed
