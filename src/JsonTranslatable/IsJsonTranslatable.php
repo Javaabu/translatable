@@ -1,6 +1,7 @@
 <?php
 
 namespace Javaabu\Translatable\JsonTranslatable;
+use Illuminate\Support\Arr;
 use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
@@ -71,7 +72,7 @@ trait IsJsonTranslatable
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
-        return $translations[$locale][$field];
+        return Arr::get($translations[$locale], $field);
     }
 
     /**
