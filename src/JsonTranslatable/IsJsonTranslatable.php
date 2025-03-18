@@ -1,11 +1,10 @@
 <?php
 
 namespace Javaabu\Translatable\JsonTranslatable;
-use Illuminate\Support\Str;
+use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
-use Javaabu\Translatable\Traits\IsTranslatable;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
-use Javaabu\Translatable\Translatable;
+use Javaabu\Translatable\Traits\IsTranslatable;
 
 trait IsJsonTranslatable
 {

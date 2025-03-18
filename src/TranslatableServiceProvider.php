@@ -2,6 +2,7 @@
 
 namespace Javaabu\Translatable;
 
+use App\Support\Translations\Languages;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
 use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
@@ -25,6 +26,15 @@ class TranslatableServiceProvider extends ServiceProvider
         }
     }
 
+    public function registerSingletons(): void
+    {
+        $this->app->singleton(Translatable::class, function () {
+            return new Translatable();
+        });
+
+        $this->app->alias(Translatable::class, 'translatable');
+    }
+
     /**
      * Register the application services.
      */
@@ -32,6 +42,8 @@ class TranslatableServiceProvider extends ServiceProvider
     {
         // merge package config with user defined config
         $this->mergeConfigFrom(__DIR__ . '/../config/translatable.php', 'translatable');
+
+        $this->registerSingletons();
 
         // add macros for easier database initialization
         Blueprint::macro('dbTranslatable', function () {

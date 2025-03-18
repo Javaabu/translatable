@@ -4,7 +4,8 @@ namespace Javaabu\Translatable\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Javaabu\Translatable\Translatable;
+use Javaabu\Translatable\Contracts\Translatable;
+use Javaabu\Translatable\Facades\Translatable as TranslatableFacade;
 
 class Language
 {
@@ -70,7 +71,7 @@ class Language
             return $language;
         } elseif ($code = $request->query('lang')) {
             // Check language from query param
-            return Translatable::class->isAllowedTranslationLocale($code) ? $code : null;
+            return TranslatableFacade::isAllowedTranslationLocale($code) ? $code : null;
         }
 
         return null;

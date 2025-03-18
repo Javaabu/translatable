@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\DbTranslatable\IsDbTranslatable;
 use Javaabu\Translatable\Tests\TestSupport\Factories\PostFactory;
-use Javaabu\Translatable\Translatable;
 
 class Post extends Model implements Translatable
 {

@@ -4,6 +4,7 @@ namespace Javaabu\Translatable\Traits;
 
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Facades\Translatable;
 
 trait IsTranslatable
 {
@@ -78,7 +79,7 @@ trait IsTranslatable
      */
     public function isAllowedTranslationLocale(string $locale): bool
     {
-        return in_array($locale, $this->getAllowedTranslationLocales());
+        return Translatable::isAllowedTranslationLocale($locale);
     }
 
     /**
@@ -88,7 +89,7 @@ trait IsTranslatable
      */
     public function getAllowedTranslationLocales(): array
     {
-        return array_keys(config('translatable.allowed_translation_locales'));
+        return Translatable::getAllowedTranslationLocales();
     }
 
     /**

@@ -122,8 +122,7 @@ All you need to do is add the `Translatable` implementation using the `IsDbTrans
 
 ```php
 ...
-use Javaabu\Translatable\DbTranslatable\IsDbTranslatable;
-use Javaabu\Translatable\Translatable;
+use Javaabu\Translatable\Contracts\Translatable;use Javaabu\Translatable\DbTranslatable\IsDbTranslatable;
 
 class Post extends Model implements Translatable
 {
