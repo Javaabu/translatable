@@ -18,6 +18,11 @@
             "name": "FlameXode",
             "email": "hi@flamexo.de",
             "role": "Developer"
+        },
+        {
+            "name": "Athphane",
+            "email": "athphane@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
@@ -33,7 +38,10 @@
     "autoload": {
         "psr-4": {
             "Javaabu\\Translatable\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
