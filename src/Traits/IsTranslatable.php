@@ -36,7 +36,11 @@ trait IsTranslatable
     {
         $all_fields = $this->getAllAttributes();
 
-        $hide = array_merge($this->getTranslatables(), $this->getFieldsIgnoredForTranslation(), $this->getNonTranslatablePivots());
+        $hide = array_merge(
+            $this->getTranslatables(),
+            $this->getFieldsIgnoredForTranslation(),
+            $this->getNonTranslatablePivots()
+        );
 
         return array_values(array_diff($all_fields, $hide));
     }
@@ -48,7 +52,11 @@ trait IsTranslatable
      */
     public function getAllNonTranslatables(): array
     {
-        return array_merge($this->getNonTranslatables(), $this->getFieldsIgnoredForTranslation(), $this->getNonTranslatablePivots());
+        return array_merge(
+            $this->getNonTranslatables(),
+            $this->getFieldsIgnoredForTranslation(),
+            $this->getNonTranslatablePivots()
+        );
     }
 
     /**

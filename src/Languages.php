@@ -32,6 +32,11 @@ class Languages
         return app(LanguageRegistrar::class)->getLanguages(['code' => $code])->first();
     }
 
+    public function default(): Language
+    {
+        return $this->get($this->defaultLanguageCode());
+    }
+
     /**
      * Get current language code
      *
