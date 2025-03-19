@@ -27,6 +27,8 @@ class TranslatableServiceProvider extends ServiceProvider
             ], 'translatable-config');
         }
 
+        $this->loadMigrationsFrom([__DIR__ . '/migrations']);
+
         $this->app->singleton(LanguageRegistrar::class, function ($app) {
             $config = $this->app['config']['translatable'];
 
