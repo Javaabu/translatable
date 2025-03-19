@@ -2,6 +2,8 @@
 
 namespace Javaabu\Translatable;
 
+use \Javaabu\Translatable\Facades\Languages as LanguagesFacade;
+
 class Translatable
 {
     /**
@@ -11,7 +13,10 @@ class Translatable
      */
     public function getAllowedTranslationLocales(): array
     {
-        return array_keys(config('translatable.allowed_translation_locales'));
+//        return array_keys(config('translatable.allowed_translation_locales'));
+        return LanguagesFacade::all()->map(function ($lang) {
+            return $lang->code;
+        })->toArray();
     }
 
     /**
