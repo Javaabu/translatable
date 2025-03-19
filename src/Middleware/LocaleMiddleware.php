@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Facades\Translatable as TranslatableFacade;
 
-class Language
+class LocaleMiddleware
 {
     /**
      * Handle an incoming request.

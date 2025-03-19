@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\Traits;
 
 use Illuminate\Support\Str;
+use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Translatable;
 use Javaabu\Translatable\Models\Language;
@@ -69,7 +70,7 @@ trait IsTranslatable
      */
     public function isDefaultTranslationLocale(string $locale): bool
     {
-        return $this->getDefaultTranslationLocale() == $locale;
+        return $this->getDefaultTranslationLocale() === $locale;
     }
 
     /**
@@ -110,7 +111,7 @@ trait IsTranslatable
      * @param string $locale
      * @param array $fields
      * @return $this
-     * @throws LanguageNotAllowedException
+     * @throws LanguageNotAllowedException|FieldNotAllowedException
      */
     public function addTranslations(string $locale, array $fields): static
     {
@@ -152,7 +153,7 @@ trait IsTranslatable
      * @param  string|null      $route_name
      * @return string
      */
-    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null): string
+    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null, $portal = "admin"): string
     {
         if ($locale instanceof Language) {
             $locale = $locale->code;
@@ -162,7 +163,7 @@ trait IsTranslatable
             $route_name = str($this->getMorphClass())->plural()->lower();
         }
 
-        return translate_route("admin.{$route_name}.show", $this, locale: $locale);
+        return translate_route("{$portal}.{$route_name}.show", $this, locale: $locale);
     }
 
     /**
@@ -172,7 +173,7 @@ trait IsTranslatable
      * @param  string|null      $route_name
      * @return string
      */
-    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null): string
+    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, $portal = "admin"): string
     {
         if ($locale instanceof Language) {
             $locale = $locale->code;
@@ -182,7 +183,7 @@ trait IsTranslatable
             $route_name = str($this->getMorphClass())->plural()->lower();
         }
 
-        return translate_route("admin.{$route_name}.edit", $this, locale: $locale);
+        return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
     }
 
     public function getAttribute($key): mixed
@@ -212,6 +213,7 @@ trait IsTranslatable
 
     /**
      * @throws LanguageNotAllowedException
+     * @throws FieldNotAllowedException
      */
     public function setAttribute($key, $value): mixed
     {
