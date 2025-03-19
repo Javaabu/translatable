@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
 use Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema;
+use Javaabu\Translatable\Middleware\LocaleMiddleware;
 use Javaabu\Translatable\Models\Language;
 
 class TranslatableServiceProvider extends ServiceProvider
@@ -90,5 +91,7 @@ class TranslatableServiceProvider extends ServiceProvider
         Blueprint::macro('dropJsonTranslatable', function () {
             JsonTranslatableSchema::revert($this);
         });
+
+        app('router')->aliasMiddleware('language', LocaleMiddleware::class);
     }
 }
