@@ -98,4 +98,24 @@ class Languages
 
         return $code === $current;
     }
+
+
+    /**
+     * Check if the language is the default
+     *
+     * @param  string|Language  $code
+     * @return bool
+     */
+    public function isDefault(string|Language $code): bool
+    {
+        if ($code instanceof Language) {
+            $code = $code->code;
+        }
+
+        if (! $code) {
+            $code = $this->currentLanguageCode();
+        }
+
+        return $code === $this->defaultLanguageCode();
+    }
 }
