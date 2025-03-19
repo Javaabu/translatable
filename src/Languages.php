@@ -103,10 +103,10 @@ class Languages
     /**
      * Check if the language is the default
      *
-     * @param  string|Language  $code
+     * @param  string|Language|null  $code
      * @return bool
      */
-    public function isDefault(string|Language $code): bool
+    public function isDefault(string|Language $code = null): bool
     {
         if ($code instanceof Language) {
             $code = $code->code;
