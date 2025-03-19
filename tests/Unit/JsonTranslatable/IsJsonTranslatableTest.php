@@ -5,6 +5,7 @@ namespace Javaabu\Translatable\Tests\Unit\JsonTranslatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,6 +13,35 @@ use PHPUnit\Framework\Attributes\Test;
 class IsJsonTranslatableTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        Language::create([
+            'name' => 'English',
+            'code' => 'en',
+            'locale' => 'en',
+            'flag' => '🇬🇧',
+            'is_rtl' => false,
+            'active' => true,
+        ]);
+        Language::create([
+            'name' => 'Dhivehi',
+            'code' => 'dv',
+            'locale' => 'dv',
+            'flag' => '🇲🇻',
+            'is_rtl' => true,
+            'active' => true,
+        ]);
+        Language::create([
+            'name' => 'Japanese',
+            'code' => 'jp',
+            'locale' => 'jp',
+            'flag' => '🇯🇵',
+            'is_rtl' => false,
+            'active' => true,
+        ]);
+    }
 
     #[Test]
     public function it_can_get_fields_ignored_for_translation()
@@ -312,6 +342,7 @@ class IsJsonTranslatableTest extends TestCase
     public function it_can_check_if_any_translation_for_a_specific_locale()
     {
         $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
@@ -329,7 +360,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertFalse($article->hasTranslation('fr'));
         $this->assertTrue($article->hasTranslation('dv'));
         $tmp = app()->getLocale();
-        app()->setLocale('dv');
+        app()->setLocale('en');
         $this->assertTrue($article->hasTranslation());
         app()->setLocale($tmp);
     }
