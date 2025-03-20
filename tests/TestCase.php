@@ -6,6 +6,7 @@ use Javaabu\Helpers\HelpersServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Javaabu\Translatable\TranslatableServiceProvider;
 use Javaabu\Translatable\Tests\TestSupport\Providers\TestServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -17,10 +18,17 @@ abstract class TestCase extends BaseTestCase
         $this->app['config']->set('app.key', 'base64:yWa/ByhLC/GUvfToOuaPD7zDwB64qkc/QkaQOrT5IpE=');
 
         $this->app['config']->set('session.serialization', 'php');
-
     }
 
-    protected function getPackageProviders($app)
+    protected function getEnvironmentSetUp($app): void
+    {
+        Schema::dropAllTables();
+
+        $migration = include __DIR__.'/../database/migrations/create_languages_table.php.stub';
+        $migration->up();
+    }
+
+    protected function getPackageProviders($app): array
     {
         return [
             TranslatableServiceProvider::class,
