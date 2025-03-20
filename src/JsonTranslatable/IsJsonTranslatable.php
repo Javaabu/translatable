@@ -14,7 +14,7 @@ trait IsJsonTranslatable
     public static function bootIsJsonTranslatable(): void
     {
         static::creating(function (Translatable $model) {
-            if (! $model->lang) $model->lang = app()->getLocale();
+            $model->lang = $model->lang ?: app()->getLocale();
         });
     }
 
