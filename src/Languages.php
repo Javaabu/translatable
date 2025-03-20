@@ -21,15 +21,15 @@ class Languages
      * Get a single language
      *
      * @param  string|null  $code
-     * @return Language
+     * @return Language|null
      */
-    public function get(string $code = null): Language
+    public function get(string $code = null): Language|null
     {
         if (! $code) {
             $code = $this->currentLanguageCode();
         }
 
-        return app(LanguageRegistrar::class)->getLanguages(['code' => $code])->first();
+        return app(LanguageRegistrar::class)->getLanguages(['code' => $code])->first() ?? null;
     }
 
     public function default(): Language

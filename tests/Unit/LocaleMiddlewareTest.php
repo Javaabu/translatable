@@ -6,7 +6,9 @@ use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Middleware\LocaleMiddleware;
+use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -15,51 +17,120 @@ class LocaleMiddlewareTest extends TestCase
     use RefreshDatabase;
     use MakesHttpRequests;
 
-    private function runMiddlewareOn($req)
+    public function setUp(): void
     {
-        $middleware = new LocaleMiddleware;
-        return $middleware->handle($req, function () {});
+        parent::setUp();
+
+
+        Language::create([
+            'name' => 'English',
+            'code' => 'en',
+            'locale' => 'en',
+            'flag' => '🇬🇧',
+            'is_rtl' => false,
+            'active' => true,
+        ]);
+        Language::create([
+            'name' => 'Dhivehi',
+            'code' => 'dv',
+            'locale' => 'dv',
+            'flag' => '🇲🇻',
+            'is_rtl' => true,
+            'active' => true,
+        ]);
+        Language::create([
+            'name' => 'Japanese',
+            'code' => 'jp',
+            'locale' => 'jp',
+            'flag' => '🇯🇵',
+            'is_rtl' => false,
+            'active' => true,
+        ]);
     }
 
     #[Test]
-    public function it_can_redirect_to_default_language(): void
+    public function it_can_get_lang_from_query_string(): void
     {
-        self::markTestIncomplete();
         Route::group(['middleware' => ['web', 'language']], function () {
-          Route::get('/home', function () {
-              return 'home';
-          });
+            Route::get('/getlang', function () {
+                return app()->getLocale();
+            });
         });
 
-//        $req = $this->get('home');
-//        dd($req);
+        $req_en = $this->get('/getlang?lang=en');
+        $req_en->assertContent('en');
 
-//        $this->markTestIncomplete();
-        app()->setLocale('en');
-        $req = $this->get('/home');
-        $this->followRedirects($req);
+        $req_dv = $this->get('/getlang?lang=dv');
+        $req_dv->assertContent('dv');
 
-//        $req = Request::create('/', 'GET');
+        $req_fr = $this->get('/getlang?lang=fr');
+        // when language doesn't exist, it falls back to user session if available
+        $req_fr->assertContent('dv');
 
-//        dd($req->url());
+        $this->flushSession();
 
-        $req->assertRedirect('/en/home');
-//        $this->assertEquals('/en', $req->url());
-//        $this->assertEquals('en', app()->getLocale());
+        $req_fr = $this->get('/getlang?lang=fr');
+        // when language doesn't exist, it falls back to default language
+        $req_fr->assertContent('en');
     }
 
     #[Test]
-    public function it_can_get_user_locale()
+    public function it_can_get_lang_from_named_route()
     {
-        $this->markTestIncomplete();
-        app()->setLocale('dv');
-        session()->put('locale', 'en');
+        Route::group(['middleware' => ['web', 'language']], function () {
+            Route::get('/{language}/getlang', function () {
+                return app()->getLocale();
+            });
+        });
 
-//        $req = $this->get('/');
-        $req = Request::create('/', 'GET');
-//        $req->assertRedirect('/en');
-        $this->runMiddlewareOn($req);
+        $req_en = $this->get('/en/getlang');
+        $req_en->assertContent('en');
 
-        $this->assertEquals('en', app()->getLocale());
+        $req_dv = $this->get('/dv/getlang');
+        $req_dv->assertContent('dv');
+
+        $req_fr = $this->get('/fr/getlang');
+        // when language doesn't exist, it falls back to user session if available
+        $req_fr->assertContent('dv');
+
+        $this->flushSession();
+
+        $req_fr = $this->get('/fr/getlang');
+        // when language doesn't exist, it falls back to default language
+        $req_fr->assertContent('en');
+    }
+
+    #[Test]
+    public function it_can_get_lang_from_request_input(): void
+    {
+        Route::group(['middleware' => ['web', 'language']], function () {
+            Route::post('/getlang', function () {
+                return app()->getLocale();
+            });
+        });
+
+        $req_en = $this->post('/getlang', [
+            'language' => 'en',
+        ]);
+        $req_en->assertContent('en');
+
+        $req_dv = $this->post('/getlang', [
+            'language' => 'dv',
+        ]);
+        $req_dv->assertContent('dv');
+
+        $req_fr = $this->post('/getlang', [
+            'language' => 'fr',
+        ]);
+        // when language doesn't exist, it falls back to user session if available
+        $req_fr->assertContent('dv');
+
+        $this->flushSession();
+
+        $req_fr = $this->post('/getlang', [
+            'language' => 'fr',
+        ]);
+        // when language doesn't exist, it falls back to default language
+        $req_fr->assertContent('en');
     }
 }
