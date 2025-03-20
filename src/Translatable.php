@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable;
 
 use \Javaabu\Translatable\Facades\Languages as LanguagesFacade;
+use Javaabu\Translatable\Models\Language;
 
 class Translatable
 {
@@ -13,7 +14,6 @@ class Translatable
      */
     public function getAllowedTranslationLocales(): array
     {
-//        return array_keys(config('translatable.allowed_translation_locales'));
         return LanguagesFacade::all()->map(function ($lang) {
             return $lang->code;
         })->toArray();
@@ -22,11 +22,15 @@ class Translatable
     /**
      * Check if a given locale is allowed to translate to
      *
-     * @param  string  $locale
+     * @param  Language|string  $locale
      * @return bool
      */
-    public function isAllowedTranslationLocale(string $locale): bool
+    public function isAllowedTranslationLocale(Language|string $locale): bool
     {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
         return in_array($locale, $this->getAllowedTranslationLocales());
     }
 }

@@ -34,7 +34,7 @@ class LocaleMiddleware
     /**
      * Get the user locale
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Language|string|null
      */
     protected function getUserLocale(Request $request): Language|string|null
@@ -65,33 +65,15 @@ class LocaleMiddleware
      */
     protected function getLocaleFromRequest(Request $request): ?Language
     {
-        $language = null;
+        $locale = $request->route('language')
+            ?: $request->input('language')
+                ?: $request->query('lang');
 
-        if ($route_language = $request->route('language')) {
-            // Check language from route
-            $language = $route_language;
-        } elseif ($input_language = $request->input('language')) {
-            // Check language from input
-            $language = $input_language;
-        } elseif ($code = $request->query('lang')) {
-            // Check language from query param
-            $language = $code;
-        }
-
-
-        if ($language) {
-            $language = TranslatableFacade::isAllowedTranslationLocale($language) ? $language : null;
-        }
-
-        if (! $language) {
+        if (!$locale || !TranslatableFacade::isAllowedTranslationLocale($locale)) {
             return null;
         }
 
-        if (!($language instanceof Language)) {
-            $language = Languages::get($language) ?? null;
-        }
-
-        return $language;
+        return $locale instanceof Language ? $locale : Languages::get($locale);
     }
 
     /**
