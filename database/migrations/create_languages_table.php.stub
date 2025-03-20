@@ -9,12 +9,14 @@ return new class extends Migration {
     {
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
+
             $table->string('code');
             $table->string('locale');
             $table->string('name');
             $table->string('flag');
             $table->boolean('is_rtl');
             $table->boolean('active');
+
             $table->timestamps();
             $table->softDeletes();
         });
