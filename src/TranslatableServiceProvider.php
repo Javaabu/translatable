@@ -5,7 +5,6 @@ namespace Javaabu\Translatable;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
-use Illuminate\Support\ServiceProvider;
 use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
 use Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema;
 use Javaabu\Translatable\Middleware\LocaleMiddleware;
