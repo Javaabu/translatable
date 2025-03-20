@@ -5,31 +5,26 @@ namespace Javaabu\Translatable;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
-use Illuminate\Support\ServiceProvider;
 use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
 use Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema;
 use Javaabu\Translatable\Middleware\LocaleMiddleware;
 use Javaabu\Translatable\Models\Language;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class TranslatableServiceProvider extends ServiceProvider
+class TranslatableServiceProvider extends PackageServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     */
-    public function boot(): void
+    public function configurePackage(Package $package): void
     {
-        // declare publishes
-//        $this->commands([
-//            \Javaabu\Translatable\Commands\ImplementTranslatablesForModel::class,
-//        ]);
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../config/translatable.php' => config_path('translatable.php'),
-            ], 'translatable-config');
-        }
+        $package
+            ->name('translatable')
+            ->hasConfigFile()
+            // ->hasViews()
+            ->hasMigration('create_languages_table');
+    }
 
-        $this->loadMigrationsFrom([__DIR__ . '/migrations']);
-
+    public function packageBooted(): void
+    {
         $this->app->singleton(LanguageRegistrar::class, function ($app) {
             $config = $this->app['config']['translatable'];
 
@@ -48,33 +43,29 @@ class TranslatableServiceProvider extends ServiceProvider
         });
     }
 
+    public function packageRegistered(): void
+    {
+        $this->registerSingletons();
+        $this->registerDatabaseMacros();
+        $this->registerMiddlewareAliases();
+    }
+
     public function registerSingletons(): void
     {
         $this->app->singleton(Translatable::class, function () {
             return new Translatable();
         });
-
         $this->app->alias(Translatable::class, 'translatable');
 
 
         $this->app->singleton(Languages::class, function () {
             return new Languages();
         });
-
         $this->app->alias(Languages::class, 'languages');
-
     }
 
-    /**
-     * Register the application services.
-     */
-    public function register(): void
+    public function registerDatabaseMacros(): void
     {
-        // merge package config with user defined config
-        $this->mergeConfigFrom(__DIR__ . '/../config/translatable.php', 'translatable');
-
-        $this->registerSingletons();
-
         // add macros for easier database initialization
         Blueprint::macro('dbTranslatable', function () {
             DbTranslatableSchema::columns($this);
@@ -91,7 +82,10 @@ class TranslatableServiceProvider extends ServiceProvider
         Blueprint::macro('dropJsonTranslatable', function () {
             JsonTranslatableSchema::revert($this);
         });
+    }
 
+    public function registerMiddlewareAliases(): void
+    {
         app('router')->aliasMiddleware('language', LocaleMiddleware::class);
     }
 }
