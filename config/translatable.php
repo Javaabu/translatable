@@ -10,6 +10,8 @@ return [
     |
     */
 
+    'ignore_migrations' => false,
+
     'language_model' => \Javaabu\Translatable\Models\Language::class,
 
     'fields_ignored_for_translation' => [

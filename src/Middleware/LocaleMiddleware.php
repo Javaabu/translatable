@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Facades\Translatable as TranslatableFacade;
+use Javaabu\Translatable\Models\Language;
 
 class LocaleMiddleware
 {
@@ -33,10 +34,10 @@ class LocaleMiddleware
     /**
      * Get the user locale
      *
-     * @param  Request  $request
-     * @return string|null
+     * @param Request $request
+     * @return Language|string|null
      */
-    protected function getUserLocale(Request $request)
+    protected function getUserLocale(Request $request): Language|string|null
     {
         // first try the request
         $locale = $this->getLocaleFromRequest($request);
@@ -53,7 +54,6 @@ class LocaleMiddleware
             }
         }
 
-
         return null;
     }
 
@@ -61,9 +61,9 @@ class LocaleMiddleware
      * Get the locale from the route
      *
      * @param  Request  $request
-     * @return \Javaabu\Translatable\Models\Language|null
+     * @return Language|null
      */
-    protected function getLocaleFromRequest(Request $request): ?\Javaabu\Translatable\Models\Language
+    protected function getLocaleFromRequest(Request $request): ?Language
     {
         $language = null;
 
@@ -75,15 +75,20 @@ class LocaleMiddleware
             $language = $input_language;
         } elseif ($code = $request->query('lang')) {
             // Check language from query param
-            $language = TranslatableFacade::isAllowedTranslationLocale($code) ? $code : null;
+            $language = $code;
+        }
+
+
+        if ($language) {
+            $language = TranslatableFacade::isAllowedTranslationLocale($language) ? $language : null;
         }
 
         if (! $language) {
             return null;
         }
 
-        if (!($language instanceof \Javaabu\Translatable\Models\Language)) {
-            return Languages::get($language);
+        if (!($language instanceof Language)) {
+            $language = Languages::get($language) ?? null;
         }
 
         return $language;
@@ -119,7 +124,7 @@ class LocaleMiddleware
     protected function setUserLocale($locale, Request $request): void
     {
         // Convert to language code if it is an object
-        if ($locale instanceof \Javaabu\Translatable\Models\Language) {
+        if ($locale instanceof Language) {
             $locale = $locale->code;
         }
 

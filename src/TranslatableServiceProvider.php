@@ -5,6 +5,7 @@ namespace Javaabu\Translatable;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
+use Illuminate\Support\ServiceProvider;
 use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
 use Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema;
 use Javaabu\Translatable\Middleware\LocaleMiddleware;
@@ -66,6 +67,11 @@ class TranslatableServiceProvider extends PackageServiceProvider
 
     public function registerDatabaseMacros(): void
     {
+        // merge package config with user defined config
+        $this->mergeConfigFrom(__DIR__ . '/../config/translatable.php', 'translatable');
+
+        $this->registerSingletons();
+
         // add macros for easier database initialization
         Blueprint::macro('dbTranslatable', function () {
             DbTranslatableSchema::columns($this);
