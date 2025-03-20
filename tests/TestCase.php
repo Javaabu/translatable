@@ -20,13 +20,13 @@ abstract class TestCase extends BaseTestCase
         $this->app['config']->set('session.serialization', 'php');
     }
 
-    protected function getEnvironmentSetUp($app): void
-    {
-        Schema::dropAllTables();
-
-        $migration = include __DIR__.'/../database/migrations/create_languages_table.php.stub';
-        $migration->up();
-    }
+    // protected function getEnvironmentSetUp($app): void
+    // {
+    //     Schema::dropAllTables();
+    //
+    //     $migration = include __DIR__.'/../database/migrations/create_languages_table.php.stub';
+    //     $migration->up();
+    // }
 
     protected function getPackageProviders($app): array
     {
