@@ -3,10 +3,12 @@
 namespace Javaabu\Translatable\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Javaabu\Helpers\AdminModel\AdminModel;
 use Javaabu\Helpers\AdminModel\IsAdminModel;
+use Javaabu\Translatable\Enums\Flags;
 use Javaabu\Translatable\Facades\Languages;
 
 class Language extends Model implements AdminModel
@@ -74,6 +76,11 @@ class Language extends Model implements AdminModel
         ];
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'locale';
+    }
+
     /**
      * Get the admin url attribute
      */
@@ -110,5 +117,12 @@ class Language extends Model implements AdminModel
     public function isCurrent()
     {
         return Languages::isCurrent($this->code);
+    }
+
+    public function flagUrl(): Attribute
+    {
+        return Attribute::get(function () {
+            return Flags::getFlagUrl($this->flag);
+        });
     }
 }
