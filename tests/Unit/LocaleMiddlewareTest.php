@@ -4,10 +4,7 @@ namespace Javaabu\Translatable\Tests\Unit;
 
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Javaabu\Translatable\Facades\Languages;
-use Javaabu\Translatable\Middleware\LocaleMiddleware;
 use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -21,28 +18,27 @@ class LocaleMiddlewareTest extends TestCase
     {
         parent::setUp();
 
-
         Language::create([
-            'name' => 'English',
-            'code' => 'en',
+            'name'   => 'English',
+            'code'   => 'en',
             'locale' => 'en',
-            'flag' => '🇬🇧',
+            'flag'   => '🇬🇧',
             'is_rtl' => false,
             'active' => true,
         ]);
         Language::create([
-            'name' => 'Dhivehi',
-            'code' => 'dv',
+            'name'   => 'Dhivehi',
+            'code'   => 'dv',
             'locale' => 'dv',
-            'flag' => '🇲🇻',
+            'flag'   => '🇲🇻',
             'is_rtl' => true,
             'active' => true,
         ]);
         Language::create([
-            'name' => 'Japanese',
-            'code' => 'jp',
+            'name'   => 'Japanese',
+            'code'   => 'jp',
             'locale' => 'jp',
-            'flag' => '🇯🇵',
+            'flag'   => '🇯🇵',
             'is_rtl' => false,
             'active' => true,
         ]);
@@ -88,16 +84,19 @@ class LocaleMiddlewareTest extends TestCase
 
         $req_dv = $this->get('/dv/getlang');
         $req_dv->assertContent('dv');
+    }
 
-        $req_fr = $this->get('/fr/getlang');
-        // when language doesn't exist, it falls back to user session if available
-        $req_fr->assertContent('dv');
+    #[Test]
+    public function it_fails_to_get_lang_from_named_route_when_language_does_not_exist()
+    {
+        Route::group(['middleware' => ['web', 'language']], function () {
+            Route::get('/{language}/getlang', function () {
+                return app()->getLocale();
+            });
+        });
 
-        $this->flushSession();
-
-        $req_fr = $this->get('/fr/getlang');
-        // when language doesn't exist, it falls back to default language
-        $req_fr->assertContent('en');
+        $req_en = $this->get('/fr/getlang');
+        $req_en->assertStatus(404);
     }
 
     #[Test]
