@@ -18,4 +18,11 @@ return [
 
     // Default locale before translations are added
     'default_locale' => 'en',
+
+    // Cache configuration for the Language Registrar
+    'cache' => [
+        'expiration_time' => \DateInterval::createFromDateString('24 hours'),
+        'key' => 'translation.languages.cache',
+        'driver' => 'default',
+    ],
 ];

@@ -26,14 +26,14 @@ class LanguageRegistrar
      * @param  CacheManager           $cache_manager
      * @param  DateInterval|int|null  $cache_expiration_time
      * @param  string|null            $cache_key
-     * @param  string|null            $cache_store
+     * @param  string|null            $cache_driver
      */
     public function __construct(
         string           $language_class,
         CacheManager     $cache_manager,
         DateInterval|int $cache_expiration_time = null,
         string           $cache_key = null,
-        string           $cache_store = null
+        string           $cache_driver = null
     )
     {
         $this->language_class = $language_class;
@@ -41,7 +41,7 @@ class LanguageRegistrar
         static::$cache_expiration_time = $cache_expiration_time ?? \DateInterval::createFromDateString('24 hours');
         static::$cache_key = $cache_key ?? 'languages_cache';
 
-        static::$cache_driver = $cache_store ?? 'default';
+        static::$cache_driver = $cache_driver ?? 'default';
 
         $this->cache = $this->getCacheStoreFromConfig();
     }

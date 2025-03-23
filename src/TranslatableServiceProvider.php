@@ -39,12 +39,14 @@ class TranslatableServiceProvider extends ServiceProvider
 
             $cache_expiration_time = Arr::get($config, 'cache.expiration_time');
             $cache_key = Arr::get($config, 'cache.key');
+            $cache_driver = Arr::get($config, 'cache.driver');
 
             return new LanguageRegistrar(
                 $language_class,
                 $cache_manager,
                 $cache_expiration_time,
-                $cache_key
+                $cache_key,
+                $cache_driver
             );
         });
     }
