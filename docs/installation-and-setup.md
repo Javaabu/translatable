@@ -23,9 +23,6 @@ This is the default content of the config file:
 
 ```php
 return [
-    // Use this only if you have already migrated the database in accordance to your own language model
-    'ignore_migrations' => false,
-
     // Allows for custom models
     'language_model' => \Javaabu\Translatable\Models\Language::class,
 
