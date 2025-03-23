@@ -1,19 +1,13 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Some config option
-    |--------------------------------------------------------------------------
-    |
-    | Give a description of what each config option is like this
-    |
-    */
-
+    // Use this only if you have already migrated the database in accordance to your own language model
     'ignore_migrations' => false,
 
+    // Allows for custom models
     'language_model' => \Javaabu\Translatable\Models\Language::class,
 
+    // Standard fields to be ignored for translation on all models
     'fields_ignored_for_translation' => [
         'id',
         'lang',
@@ -22,13 +16,9 @@ return [
         'deleted_at',
     ],
 
-    'allowed_translation_locales' => [
-        'en' => 'English',
-        'dv' => 'Dhivehi',
-        'jp' => 'Japanese',
-    ],
-
+    // Whether attr_dv should fall back to app locale if translations do not exist
     'lang_suffix_should_fallback' => false,
 
+    // Default locale before translations are added
     'default_locale' => 'en',
 ];
