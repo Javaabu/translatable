@@ -3,6 +3,18 @@
 use Illuminate\Support\Arr;
 use Javaabu\Translatable\Models\Language;
 
+if (! function_exists('appGetLocale')) {
+    /**
+     * One function helper to get the current locale.
+     *
+     * @return string|array|null
+     */
+    function appGetLocale(): array|string|null
+    {
+        return app()->getLocale();
+    }
+}
+
 if (! function_exists('_d')) {
     /**
      * Translate the given message and use the default locale if locale not specified.
