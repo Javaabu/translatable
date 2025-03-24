@@ -225,9 +225,25 @@ trait IsTranslatable
      */
     public function setAttribute($key, $value): mixed
     {
+        if ($key === 'lang') {
+            return parent::setAttribute("lang", $value);
+        }
+
+        // set to translation via lang suffix, attr_en
         [$field, $locale] = $this->getFieldAndLocale($key);
 
         if ($locale && $this->isTranslatable($field)) {
+            return $this->addTranslation($locale, $field, $value);
+        }
+
+        // set to translation via app locale
+        $lang = $this->getAttribute('lang');
+        $locale = app()->getLocale();
+        if (empty($lang)) {
+            parent::setAttribute("lang", $locale);
+            $lang = $locale;
+        }
+        if ($locale !== $lang && $this->isTranslatable($field)) {
             return $this->addTranslation($locale, $field, $value);
         }
 
