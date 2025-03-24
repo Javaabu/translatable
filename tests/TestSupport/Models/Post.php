@@ -16,6 +16,14 @@ class Post extends Model implements Translatable
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        'title',
+        'slug',
+        'body',
+        'author_id',
+        'lang'
+    ];
+
     protected static function newFactory(): PostFactory
     {
         return new PostFactory();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature;
+namespace Javaabu\Translatable\Tests\Feature;
 
 use Javaabu\Translatable\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;

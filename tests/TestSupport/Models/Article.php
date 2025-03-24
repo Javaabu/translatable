@@ -16,7 +16,12 @@ class Article extends Model implements Translatable
     use IsJsonTranslatable;
 
     protected $fillable = [
+        'title',
+        'slug',
+        'body',
+        'author_id',
         'translations',
+        'lang'
     ];
 
     protected $casts = [
