@@ -505,6 +505,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     /**
      * @throws LanguageNotAllowedException
+     * @throws FieldNotAllowedException
      */
     public function it_can_add_new_translation_locales()
     {
@@ -544,6 +545,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     /**
      * @throws LanguageNotAllowedException
+     * @throws FieldNotAllowedException
      */
     public function it_can_add_translations_in_bulk()
     {

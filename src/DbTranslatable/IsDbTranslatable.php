@@ -14,7 +14,9 @@ trait IsDbTranslatable
     public static function bootIsDbTranslatable(): void
     {
         static::creating(function (Translatable $model) {
-            $model->lang = $model->lang ?: app()->getLocale();
+            if (empty($model->lang)) {
+                $model->lang = app()->getLocale();
+            }
         });
     }
 
@@ -153,7 +155,7 @@ trait IsDbTranslatable
 
         // check if the default translation is already the correct locale
         if ($defaultTranslation->lang == $locale) {
-            $defaultTranslation->setAttribute($field, $value);
+            $defaultTranslation->setAttribute($field, $value, true);
             $defaultTranslation->save();
             return $defaultTranslation;
         }
@@ -164,19 +166,19 @@ trait IsDbTranslatable
         // if there is none, make a new blank translation of this object
         if (! $newTranslation) {
             $newTranslation = new self();
+            $newTranslation->setAttribute('lang', $locale, true);
 
             // copy all the attributes of the current object to the new translation
             // this ensures no columns are left null
             foreach ($this->getAllAttributes() as $attribute) {
                 // TODO: make this primary key rely on some sort of config available per model
                 if ($attribute == "id") continue;
-                $newTranslation->setAttribute($attribute, $defaultTranslation->getAttributeValue($attribute));
+                $newTranslation->setAttribute($attribute, $defaultTranslation->getAttributeValue($attribute), true);
             }
-            $newTranslation->setAttribute('translatable_parent_id', $defaultTranslation->id);
+            $newTranslation->setAttribute('translatable_parent_id', $defaultTranslation->id, true);
         }
 
-        $newTranslation->setAttribute($field, $value);
-        $newTranslation->setAttribute('lang', $locale);
+        $newTranslation->setAttribute($field, $value, true);
         $newTranslation->save();
 
         return $newTranslation;

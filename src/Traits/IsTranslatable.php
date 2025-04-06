@@ -223,8 +223,10 @@ trait IsTranslatable
      * @throws LanguageNotAllowedException
      * @throws FieldNotAllowedException
      */
-    public function setAttribute($key, $value): mixed
+    public function setAttribute($key, $value, $internal = false): mixed
     {
+        if ($internal) return parent::setAttribute($key, $value);
+
         if ($key === 'lang') {
             return parent::setAttribute("lang", $value);
         }
