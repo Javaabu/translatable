@@ -34,21 +34,6 @@ trait IsJsonTranslatable
     }
 
     /**
-     * Helper to check if a form field should be disabled or not
-     *
-     * @param  string  $field
-     * @return bool
-     */
-    public function isFormFieldDisabled(string $field): bool
-    {
-        if ($this->lang === app()->getLocale()) {
-            return false;
-        }
-
-        return ! in_array($field, $this->getTranslatables());
-    }
-
-    /**
      * Translate a given field to the given locale
      *
      * If fallback is true, fallback to default locale if given locale is unavailable

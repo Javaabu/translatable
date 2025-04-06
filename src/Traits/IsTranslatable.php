@@ -207,6 +207,21 @@ trait IsTranslatable
     }
 
     /**
+     * Helper to check if a form field should be disabled or not
+     *
+     * @param  string  $field
+     * @return bool
+     */
+    public function isFormFieldDisabled(string $field): bool
+    {
+        if ($this->lang === app()->getLocale()) {
+            return false;
+        }
+
+        return ! in_array($field, $this->getTranslatables());
+    }
+
+    /**
      * Set translation attribute value
      *
      * @param  string           $attribute
