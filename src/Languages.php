@@ -32,6 +32,17 @@ class Languages
         return app(LanguageRegistrar::class)->getLanguages(['code' => $code])->first() ?? null;
     }
 
+    /**
+     * Check if a given language is a valid language
+     *
+     * @param string|null $code
+     * @return bool
+     */
+    public function has(string $code = null): bool
+    {
+        return $this->get($code) !== null;
+    }
+
     public function default(): Language
     {
         return $this->get($this->defaultLanguageCode());
