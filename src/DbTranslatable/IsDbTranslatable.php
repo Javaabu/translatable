@@ -166,8 +166,6 @@ trait IsDbTranslatable
         // if there is none, make a new blank translation of this object
         if (! $newTranslation) {
             $newTranslation = new self();
-            $newTranslation->setAttribute('lang', $locale, true);
-
             // copy all the attributes of the current object to the new translation
             // this ensures no columns are left null
             foreach ($this->getAllAttributes() as $attribute) {
@@ -176,6 +174,7 @@ trait IsDbTranslatable
                 $newTranslation->setAttribute($attribute, $defaultTranslation->getAttributeValue($attribute), true);
             }
             $newTranslation->setAttribute('translatable_parent_id', $defaultTranslation->id, true);
+            $newTranslation->setAttribute('lang', $locale, true);
         }
 
         $newTranslation->setAttribute($field, $value, true);

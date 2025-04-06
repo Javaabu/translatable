@@ -113,14 +113,14 @@ trait IsTranslatable
      */
     public function isTranslatable(string $field): bool
     {
-        $languageCodes = Languages::all()->pluck('code')->all();
-
-        foreach ($languageCodes as $code) {
-            if (str_ends_with($field, "_$code")) {
-                $field = substr($field, 0, -strlen("_$code"));
-                break;
-            }
-        }
+//        $languageCodes = Languages::all()->pluck('code')->all();
+//
+//        foreach ($languageCodes as $code) {
+//            if (str_ends_with($field, "_$code")) {
+//                $field = substr($field, 0, -strlen("_$code"));
+//                break;
+//            }
+//        }
 
         return in_array($field, $this->getTranslatables());
     }
@@ -140,7 +140,6 @@ trait IsTranslatable
         }
 
         foreach ($fields as $field => $value) {
-            dump($field, $value);
             $this->addTranslation($locale, $field, $value);
         }
 
@@ -247,7 +246,7 @@ trait IsTranslatable
 
         // check if is a suffixed attribute
         [$field, $locale] = $this->getFieldAndLocale($key);
-        if ($locale && $this->isTranslatable($field)) {
+        if ($locale && Languages::has($locale) && $this->isTranslatable($field)) {
             return $this->translate($field, $locale, config('translatable.lang_suffix_should_fallback', false));
         }
 
