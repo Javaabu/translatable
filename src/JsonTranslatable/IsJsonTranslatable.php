@@ -146,6 +146,31 @@ trait IsJsonTranslatable
         return isset($this->translations[$locale]);
     }
 
+    public function mutateTranslationAttributeValue($field, $value)
+    {
+        if ($this->isJsonCastable($field) && $value) {
+            $value = $this->castAttributeAsJson($field, $value);
+        }
+
+        if (! $this->isTranslatable($field)) {
+            $this->attributes[$field] = $value;
+            return;
+        }
+
+        $locale = app()->getLocale();
+
+        if ($this->isDefaultTranslationLocale($locale)) {
+            $this->attributes[$field] = $value;
+        } else {
+            $this->setTranslationAttributeValue($field, $locale, $value);
+
+            // if it's a new model and the default value is not set, set the default
+            if ((! $this->exists) && (! parent::getAttribute($value))) {
+                $this->attributes[$field] = $value;
+            }
+        }
+    }
+
 
     /**
      * Add a new locale to this object
@@ -157,7 +182,7 @@ trait IsJsonTranslatable
      * @throws LanguageNotAllowedException
      * @throws FieldNotAllowedException
      */
-    public function addTranslation(string $locale, string $field, string $value): static
+    public function addTranslation(string $locale, string $field, $value): static
     {
         if (! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
@@ -183,6 +208,16 @@ trait IsJsonTranslatable
             ['lang' => $locale]
         );
         $this->translations = $translations;
+
+        if (! $this->isDefaultTranslationLocale($locale)) {
+            $this->setTranslationAttributeValue($field, $locale, $value);
+
+            // if it's a new model and the default value is not set, set the default
+            if ((! $this->exists) && (! parent::getAttribute($field))) {
+                parent::setAttribute($field, $value);
+            }
+        }
+
         $this->save();
 
         return $this;

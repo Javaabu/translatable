@@ -2,10 +2,13 @@
 
 namespace Javaabu\Translatable\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Facades\Translatable;
+use Javaabu\Translatable\LanguageRegistrar;
 use Javaabu\Translatable\Models\Language;
 
 trait IsTranslatable
@@ -110,6 +113,15 @@ trait IsTranslatable
      */
     public function isTranslatable(string $field): bool
     {
+        $languageCodes = Languages::all()->pluck('code')->all();
+
+        foreach ($languageCodes as $code) {
+            if (str_ends_with($field, "_$code")) {
+                $field = substr($field, 0, -strlen("_$code"));
+                break;
+            }
+        }
+
         return in_array($field, $this->getTranslatables());
     }
 
@@ -128,6 +140,7 @@ trait IsTranslatable
         }
 
         foreach ($fields as $field => $value) {
+            dump($field, $value);
             $this->addTranslation($locale, $field, $value);
         }
 
@@ -194,6 +207,29 @@ trait IsTranslatable
         return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
     }
 
+    /**
+     * Set translation attribute value
+     *
+     * @param  string           $attribute
+     * @param  Language|string  $locale
+     * @param                   $translation
+     */
+    public function setTranslationAttributeValue(string $attribute, Language|string $locale,  $translation): void
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        $translations = Arr::wrap($this->translations);
+
+        $locale_translations = $translations[$locale] ?? [];
+        $locale_translations[$attribute] = $translation;
+
+        $translations[$locale] = $locale_translations;
+
+        $this->translations = $translations;
+    }
+
     public function getAttribute($key): mixed
     {
         // Add support for compoships
@@ -229,6 +265,10 @@ trait IsTranslatable
 
         if ($key === 'lang') {
             return parent::setAttribute("lang", $value);
+        }
+
+        if ($this->hasSetMutator($key)) {
+            return $this->setMutatedAttributeValue($key, $value);
         }
 
         // set to translation via lang suffix, attr_en
