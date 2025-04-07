@@ -305,4 +305,13 @@ trait IsTranslatable
 
         return parent::setAttribute($key, $value);
     }
+
+    /**
+     * @throws LanguageNotAllowedException
+     * @throws FieldNotAllowedException
+     */
+    protected function setAttributeInternal($key, $value) {
+        $this->_skipTranslation = true;
+        return $this->setAttribute($key, $value, true);
+    }
 }

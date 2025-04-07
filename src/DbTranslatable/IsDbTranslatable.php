@@ -155,7 +155,7 @@ trait IsDbTranslatable
 
         // check if the default translation is already the correct locale
         if ($defaultTranslation->lang == $locale) {
-            $defaultTranslation->setAttribute($field, $value, true);
+            $defaultTranslation->setAttributeInternal($field, $value);
             $defaultTranslation->save();
             return $defaultTranslation;
         }
@@ -171,13 +171,13 @@ trait IsDbTranslatable
             foreach ($this->getAllAttributes() as $attribute) {
                 // TODO: make this primary key rely on some sort of config available per model
                 if ($attribute == "id") continue;
-                $newTranslation->setAttribute($attribute, $defaultTranslation->getAttributeValue($attribute), true);
+                $newTranslation->setAttributeInternal($attribute, $defaultTranslation->getAttributeValue($attribute));
             }
-            $newTranslation->setAttribute('translatable_parent_id', $defaultTranslation->id, true);
-            $newTranslation->setAttribute('lang', $locale, true);
+            $newTranslation->setAttributeInternal('translatable_parent_id', $defaultTranslation->id);
+            $newTranslation->setAttributeInternal('lang', $locale);
         }
 
-        $newTranslation->setAttribute($field, $value, true);
+        $newTranslation->setAttributeInternal($field, $value);
         $newTranslation->save();
 
         return $newTranslation;

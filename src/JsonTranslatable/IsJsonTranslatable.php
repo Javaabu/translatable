@@ -181,8 +181,8 @@ trait IsJsonTranslatable
         $translations = $this->translations ?? [];
 
         if ($this->isDefaultTranslationLocale($locale)) {
-            $this->setAttribute($field, $value);
-            $this->setAttribute('lang', $locale);
+            $this->setAttributeInternal($field, $value);
+            $this->setAttributeInternal('lang', $locale);
             $this->save();
             return $this;
         }
@@ -199,7 +199,7 @@ trait IsJsonTranslatable
 
             // if it's a new model and the default value is not set, set the default
             if ((! $this->exists) && (! parent::getAttribute($field))) {
-                parent::setAttribute($field, $value);
+                parent::setAttributeInternal($field, $value);
             }
         }
 
