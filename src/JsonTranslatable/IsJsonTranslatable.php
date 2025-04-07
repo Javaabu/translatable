@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\JsonTranslatable;
 use Illuminate\Support\Arr;
 use Javaabu\Translatable\Contracts\Translatable;
+use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Traits\IsTranslatable;
@@ -131,32 +132,6 @@ trait IsJsonTranslatable
         return isset($this->translations[$locale]);
     }
 
-    public function mutateTranslationAttributeValue($field, $value)
-    {
-        if ($this->isJsonCastable($field) && $value) {
-            $value = $this->castAttributeAsJson($field, $value);
-        }
-
-        if (! $this->isTranslatable($field)) {
-            $this->attributes[$field] = $value;
-            return;
-        }
-
-        $locale = app()->getLocale();
-
-        if ($this->isDefaultTranslationLocale($locale)) {
-            $this->attributes[$field] = $value;
-        } else {
-            $this->setTranslationAttributeValue($field, $locale, $value);
-
-            // if it's a new model and the default value is not set, set the default
-            if ((! $this->exists) && (! parent::getAttribute($value))) {
-                $this->attributes[$field] = $value;
-            }
-        }
-    }
-
-
     /**
      * Add a new locale to this object
      *
@@ -206,5 +181,36 @@ trait IsJsonTranslatable
         $this->save();
 
         return $this;
+    }
+
+    /**
+     * @throws CannotDeletePrimaryTranslationException
+     */
+    public function deleteTranslation(string $locale): void
+    {
+        if ($locale === $this->getAttributeValue('lang')) {
+            throw CannotDeletePrimaryTranslationException::create($locale);
+        }
+
+        if (! array_key_exists($locale, $this->translations)) {
+            return;
+        }
+
+        $this->skipTranslation = true;
+
+        $translations = $this->translations ?? [];
+        if (! $this->isDefaultTranslationLocale($locale)) {
+            unset($translations[$locale]);
+        } else {
+            throw CannotDeletePrimaryTranslationException::create($locale);
+        }
+        $this->translations = $translations;
+
+        $this->skipTranslation = false;
+    }
+
+    public function deleteTranslations(): void
+    {
+        $this->translations = [];
     }
 }

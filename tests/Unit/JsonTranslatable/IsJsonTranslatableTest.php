@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\Tests\Unit\JsonTranslatable;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Models\Language;
@@ -390,7 +391,7 @@ class IsJsonTranslatableTest extends TestCase
 
     #[Test]
     /**
-     * @throws LanguageNotAllowedException
+     * @throws LanguageNotAllowedException|FieldNotAllowedException
      */
     public function it_can_add_new_translation_locales()
     {
@@ -446,7 +447,7 @@ class IsJsonTranslatableTest extends TestCase
 
     #[Test]
     /**
-     * @throws LanguageNotAllowedException
+     * @throws LanguageNotAllowedException|FieldNotAllowedException
      */
     public function it_can_add_translations_in_bulk()
     {
@@ -524,5 +525,57 @@ class IsJsonTranslatableTest extends TestCase
 
         $this->assertEquals('dv', $article->lang);
         $this->assertEquals('Mee dhivehi title eh', $article->title);
+    }
+
+    #[Test]
+    public function it_can_delete_translations_of_specific_locale()
+    {
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $article->addTranslations('dv', [
+            'title' => 'Mee dhivehi title eh',
+        ]);
+
+        $this->assertEquals('Mee dhivehi title eh', $article->title_dv);
+
+        $article->deleteTranslation('dv');
+
+        $this->assertEquals(null, $article->title_dv);
+    }
+    #[Test]
+    public function it_can_delete_all_translations()
+    {
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+        ]);
+
+        $article->addTranslations('dv', [
+            'title' => 'Mee dhivehi title eh',
+        ]);
+
+        $this->assertEquals('Mee dhivehi title eh', $article->title_dv);
+
+        $article->deleteTranslations();
+
+        $this->assertEquals(null, $article->title_dv);
+    }
+    #[Test]
+    public function it_cannot_delete_primary_translation()
+    {
+        $this->expectException(CannotDeletePrimaryTranslationException::class);
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+            'title' => 'This is an English title'
+        ]);
+
+        $article->addTranslations('dv', [
+            'title' => 'Mee dhivehi title eh',
+        ]);
+
+        $this->assertEquals('This is an English title', $article->title_en);
+
+        $article->deleteTranslation('en');
     }
 }

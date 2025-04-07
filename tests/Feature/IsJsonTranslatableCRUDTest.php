@@ -1,7 +1,8 @@
 <?php
 
-namespace Javabu\Translatable\Tests\Feature;
+namespace Javaabu\Translatable\Tests\Feature;
 
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Support\Facades\Route;
 use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
@@ -43,9 +44,7 @@ class IsJsonTranslatableCRUDTest extends TestCase {
 
         Route::group(['middleware' => ['web', 'language']], function () {
             Route::get('/{language}/articles', function () {
-                $articles = Article::all();
-
-                return $articles;
+                return Article::all();
             });
 
             Route::post('/{language}/articles', function () {
@@ -55,56 +54,96 @@ class IsJsonTranslatableCRUDTest extends TestCase {
                     'slug' => 'required',
                     'author_id' => 'required|exists:authors,id',
                 ]);
-                $article = Article::create($validated);
-                return $article;
+                return Article::create($validated);
             });
 
-            Route::patch('/{language}/articles/{article}', function (Article $article) {
-                dump(app()->getLocale());
+            Route::patch('/{language}/articles/{id}', function (Language $language, $articleId) {
+                $article = Article::find($articleId);
                 $validated = request()->validate([
                     'title' => '',
                     'body' => '',
                     'slug' => '',
                     'author_id' => 'exists:authors,id',
                 ]);
-                $article->update($validated);
+                return $article->update($validated);
             });
         });
     }
 
     #[Test]
-    public function it_can_create_a_translation_for_articles()
+    public function it_can_add_a_translation()
     {
-        self::markTestIncomplete();
         $author = Author::factory()->create();
         $article = Article::factory()->make();
 
-        $this->post('/en/articles', [
+        $response = $this->post('/en/articles', [
             'title' => $article->title,
             'body' => $article->body,
             'slug' => $article->slug,
             'author_id' => $author->id,
         ]);
+        $article->id = $response->json('id');
 
         $this->assertDatabaseHas('articles', [
             'title' => $article->title,
             'body' => $article->body,
         ]);
+
+        $this->patch('/dv/articles/' . $article->id, [
+            'title' => 'Mee dhivehi title eh',
+        ]);
+
+        $this->assertDatabaseHas('articles', [
+            'title' => $article->title,
+            'body' => $article->body,
+            'translations' => JSON::encode([
+                'dv' => [
+                    'title' => 'Mee dhivehi title eh',
+                    'lang' => 'dv'
+                ]
+            ])
+        ]);
+
+        // ensure slugs can't be added
+        $this->patch('/dv/articles/' . $article->id, [
+            'slug' => 'mee-dhivehi-slug-eh'
+        ]);
+
+        $this->assertDatabaseHas('articles', [
+            'title' => $article->title,
+            'body' => $article->body,
+            'translations' => JSON::encode([
+                'dv' => [
+                    'title' => 'Mee dhivehi title eh',
+                    'lang' => 'dv'
+                ]
+            ])
+        ]);
+    }
+
+    #[Test]
+    public function it_can_edit_a_translation()
+    {
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en'
+        ]);
+        $article->title_dv = "Mee dhivehi title eh";
+        $article->save();
 
         $res = $this->patch('/dv/articles/' . $article->id, [
-            'title' => 'ޓެސްޓެއް',
+            'title' => 'Mee ehen dhivehi title eh'
         ]);
 
-        dump($res->getContent());
-
+        app()->setLocale('en');
         $this->assertDatabaseHas('articles', [
             'title' => $article->title,
             'body' => $article->body,
-            'translations' => [
+            'translations' => JSON::encode([
                 'dv' => [
-                    'title' => 'ޓެސްޓެއް'
+                    'title' => 'Mee ehen dhivehi title eh',
+                    'lang' => 'dv'
                 ]
-            ]
+            ])
         ]);
     }
 }

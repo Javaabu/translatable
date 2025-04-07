@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\DbTranslatable;
 
 use Javaabu\Translatable\Contracts\Translatable;
+use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Traits\IsTranslatable;
@@ -181,5 +182,25 @@ trait IsDbTranslatable
         $newTranslation->save();
 
         return $newTranslation;
+    }
+
+    /**
+     * @throws CannotDeletePrimaryTranslationException
+     */
+    public function deleteTranslation(string $locale): void
+    {
+        $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
+        $translation = $defaultTranslation->translations()->where('lang', $locale)->first();
+        if (empty($translation->translatable_parent_id)) {
+            throw CannotDeletePrimaryTranslationException::create($locale);
+        } else {
+            $translation->delete();
+        }
+    }
+
+    public function deleteTranslations(): void
+    {
+        if (empty($this->translatable_parent_id)) $this->translations()->delete();
+        else $this->defaultTranslation->translations()->delete();
     }
 }

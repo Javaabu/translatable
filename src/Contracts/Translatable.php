@@ -137,4 +137,19 @@ interface Translatable
      * @return $this
      */
     public function addTranslations(string $locale, array $fields): static;
+
+    /**
+     * Deletes translations for all available locales
+     *
+     * @return void
+     */
+    public function deleteTranslations(): void;
+
+    /**
+     * Deletes translations for a given locale
+     *
+     * @param string $locale
+     * @return void
+     */
+    public function deleteTranslation(string $locale): void;
 }
