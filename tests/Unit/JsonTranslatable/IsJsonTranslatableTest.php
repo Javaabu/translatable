@@ -426,6 +426,23 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEquals('Mee dhivehi title eh', $article->title);
         app()->setLocale($tmp);
     }
+    #[Test]
+    public function it_can_add_new_translation_locales_via_app_locale()
+    {
+        $article = Article::factory()->withAuthor()->create([
+            'lang' => 'en',
+            'title' => 'This is an English title',
+        ]);
+
+        app()->setLocale('dv');
+        $article->title = 'Mee dhivehi title eh';
+        app()->setLocale('en');
+
+        app()->setLocale('dv');
+        $this->assertEquals('Mee dhivehi title eh', $article->title);
+        app()->setLocale('en');
+        $this->assertEquals('This is an English title', $article->title);
+    }
 
     #[Test]
     /**

@@ -543,6 +543,23 @@ class IsDbTranslatableTest extends TestCase
     }
 
     #[Test]
+    public function it_can_add_new_translation_locales_via_app_locale()
+    {
+        $post = Post::factory()->withAuthor()->create([
+            'lang' => 'en',
+            'title' => 'This is an English title'
+        ]);
+
+        app()->setLocale('dv');
+        $post->title = 'Mee dhivehi title eh';
+
+        app()->setLocale('dv');
+        $this->assertEquals('Mee dhivehi title eh', $post->title);
+        app()->setLocale('en');
+        $this->assertEquals('This is an English title', $post->title);
+    }
+
+    #[Test]
     /**
      * @throws LanguageNotAllowedException
      * @throws FieldNotAllowedException
