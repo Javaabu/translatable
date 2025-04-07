@@ -282,10 +282,6 @@ trait IsTranslatable
             return parent::setAttribute($key, $value);
         }
 
-        if ($this->hasSetMutator($key)) {
-            return $this->setMutatedAttributeValue($key, $value);
-        }
-
         // set to translation via lang suffix, attr_en
         [$field, $locale] = $this->getFieldAndLocale($key);
 
