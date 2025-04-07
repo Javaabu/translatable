@@ -13,6 +13,8 @@ use Javaabu\Translatable\Models\Language;
 
 trait IsTranslatable
 {
+    private bool $_skipTranslation = false;
+
     public function getNonTranslatablePivots(): array
     {
         return [];
@@ -273,12 +275,11 @@ trait IsTranslatable
      * @throws LanguageNotAllowedException
      * @throws FieldNotAllowedException
      */
-    public function setAttribute($key, $value, $internal = false): mixed
+    public function setAttribute($key, $value): mixed
     {
-        if ($internal) return parent::setAttribute($key, $value);
-
-        if ($key === 'lang') {
-            return parent::setAttribute("lang", $value);
+        // logic for setAttributeInternal
+        if ($key === '_skipTranslation' || $this->_skipTranslation) {
+            return parent::setAttribute($key, $value);
         }
 
         if ($this->hasSetMutator($key)) {
@@ -312,6 +313,8 @@ trait IsTranslatable
      */
     protected function setAttributeInternal($key, $value) {
         $this->_skipTranslation = true;
-        return $this->setAttribute($key, $value, true);
+        $result = $this->setAttribute($key, $value);
+        $this->_skipTranslation = false;
+        return $result;
     }
 }
