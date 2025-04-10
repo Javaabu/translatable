@@ -115,4 +115,16 @@ class LanguageFacadeTest extends TestCase {
         $is_not_default = Languages::isDefault();
         $this->assertFalse($is_not_default);
     }
+
+    #[Test]
+    public function it_can_get_direction_for_languages()
+    {
+        $this->assertEquals('rtl', Languages::getDirection('dv'));
+        $this->assertEquals('ltr', Languages::getDirection('en'));
+
+        app()->setLocale('dv');
+        $this->assertEquals('rtl', Languages::getDirection());
+        app()->setLocale('en');
+        $this->assertEquals('ltr', Languages::getDirection());
+    }
 }
