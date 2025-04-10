@@ -33,6 +33,17 @@ class Languages
     }
 
     /**
+     * Get direction for a language
+     *
+     * @param string|null $code
+     * @return string
+     */
+    public function getDirection(string $code = null): string
+    {
+        return $this->get($code)->is_rtl ? 'rtl' : 'ltr';
+    }
+
+    /**
      * Check if a given language is a valid language
      *
      * @param string|null $code
