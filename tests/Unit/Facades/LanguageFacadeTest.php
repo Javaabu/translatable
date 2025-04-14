@@ -128,4 +128,16 @@ class LanguageFacadeTest extends TestCase
         app()->setLocale('en');
         $this->assertEquals('ltr', Languages::getDirection());
     }
+
+    #[Test]
+    public function is_can_check_if_a_locale_is_rtl()
+    {
+        $this->withoutExceptionHandling();
+
+        app()->setLocale('dv');
+        $this->assertTrue(Languages::isRtl());
+
+        app()->setLocale('en');
+        $this->assertFalse(Languages::isRtl());
+    }
 }

@@ -19,7 +19,6 @@ class IsDbTranslatableTest extends TestCase
     {
         parent::setUp();
 
-
         Language::create([
             'name'   => 'English',
             'code'   => 'en',

@@ -43,6 +43,11 @@ class Languages
         return $this->get($code)->is_rtl ? 'rtl' : 'ltr';
     }
 
+    public function isRtl(string $code = null): bool
+    {
+        return $this->getDirection($code) === 'rtl';
+    }
+
     /**
      * Check if a given language is a valid language
      *
