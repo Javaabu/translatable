@@ -19,26 +19,26 @@ class IsJsonTranslatableTest extends TestCase
     {
         parent::setUp();
         Language::create([
-            'name' => 'English',
-            'code' => 'en',
+            'name'   => 'English',
+            'code'   => 'en',
             'locale' => 'en',
-            'flag' => '🇬🇧',
+            'flag'   => '🇬🇧',
             'is_rtl' => false,
             'active' => true,
         ]);
         Language::create([
-            'name' => 'Dhivehi',
-            'code' => 'dv',
+            'name'   => 'Dhivehi',
+            'code'   => 'dv',
             'locale' => 'dv',
-            'flag' => '🇲🇻',
+            'flag'   => '🇲🇻',
             'is_rtl' => true,
             'active' => true,
         ]);
         Language::create([
-            'name' => 'Japanese',
-            'code' => 'jp',
+            'name'   => 'Japanese',
+            'code'   => 'jp',
             'locale' => 'jp',
-            'flag' => '🇯🇵',
+            'flag'   => '🇯🇵',
             'is_rtl' => false,
             'active' => true,
         ]);
@@ -149,20 +149,20 @@ class IsJsonTranslatableTest extends TestCase
     public function it_can_translate_field_via_translate_function()
     {
         $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en',
-            'title' => 'This is an English title',
-            'slug' => 'this-is-an-english-slug',
-            'body' => 'This is an English body',
+            'lang'         => 'en',
+            'title'        => 'This is an English title',
+            'slug'         => 'this-is-an-english-slug',
+            'body'         => 'This is an English body',
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -194,15 +194,15 @@ class IsJsonTranslatableTest extends TestCase
     public function it_can_translate_field_via_translate_function_without_fallback()
     {
         $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en',
-            'title' => 'This is an English title',
-            'slug' => 'this-is-an-english-slug',
-            'body' => 'This is an English body',
+            'lang'         => 'en',
+            'title'        => 'This is an English title',
+            'slug'         => 'this-is-an-english-slug',
+            'body'         => 'This is an English body',
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
             ]
         ]);
@@ -223,13 +223,13 @@ class IsJsonTranslatableTest extends TestCase
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -248,13 +248,13 @@ class IsJsonTranslatableTest extends TestCase
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -273,13 +273,13 @@ class IsJsonTranslatableTest extends TestCase
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -294,13 +294,13 @@ class IsJsonTranslatableTest extends TestCase
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -322,13 +322,13 @@ class IsJsonTranslatableTest extends TestCase
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -343,17 +343,17 @@ class IsJsonTranslatableTest extends TestCase
     public function it_can_check_if_any_translation_for_a_specific_locale()
     {
         $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en',
+            'lang'         => 'en',
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -370,17 +370,17 @@ class IsJsonTranslatableTest extends TestCase
     public function it_can_check_if_is_default_translation_locale()
     {
         $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en',
+            'lang'         => 'en',
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug' => 'mee-dhivehi-slug-eh',
-                    'body' => 'Mee dhivehi liyumeh',
+                    'slug'  => 'mee-dhivehi-slug-eh',
+                    'body'  => 'Mee dhivehi liyumeh',
                 ],
                 'jp' => [
                     'title' => 'Kore wa taitorudesu',
-                    'slug' => 'kore-wa-namekujidesu',
-                    'body' => 'Kore wa kijidesu',
+                    'slug'  => 'kore-wa-namekujidesu',
+                    'body'  => 'Kore wa kijidesu',
                 ]
             ]
         ]);
@@ -427,11 +427,12 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEquals('Mee dhivehi title eh', $article->title);
         app()->setLocale($tmp);
     }
+
     #[Test]
     public function it_can_add_new_translation_locales_via_app_locale()
     {
         $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en',
+            'lang'  => 'en',
             'title' => 'This is an English title',
         ]);
 
@@ -457,7 +458,7 @@ class IsJsonTranslatableTest extends TestCase
 
         $article->addTranslations('dv', [
             'title' => 'Mee dhivehi title eh',
-            'body' => 'Mee dhivehi liyumeh',
+            'body'  => 'Mee dhivehi liyumeh',
         ]);
 
         $this->assertEquals('Mee dhivehi title eh', $article->title_dv);
@@ -479,8 +480,8 @@ class IsJsonTranslatableTest extends TestCase
 
         $article->addTranslations('zh-CN', [
             'title' => '这是一个中文标题',
-            'slug' => '这是一只中国蛞蝓',
-            'body' => '这是一个中国人的身体',
+            'slug'  => '这是一只中国蛞蝓',
+            'body'  => '这是一个中国人的身体',
         ]);
     }
 
@@ -544,6 +545,7 @@ class IsJsonTranslatableTest extends TestCase
 
         $this->assertEquals(null, $article->title_dv);
     }
+
     #[Test]
     public function it_can_delete_all_translations()
     {
@@ -561,12 +563,13 @@ class IsJsonTranslatableTest extends TestCase
 
         $this->assertEquals(null, $article->title_dv);
     }
+
     #[Test]
     public function it_cannot_delete_primary_translation()
     {
         $this->expectException(CannotDeletePrimaryTranslationException::class);
         $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en',
+            'lang'  => 'en',
             'title' => 'This is an English title'
         ]);
 

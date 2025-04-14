@@ -3,10 +3,9 @@
 namespace Javaabu\Translatable\Tests;
 
 use Javaabu\Helpers\HelpersServiceProvider;
-use Orchestra\Testbench\TestCase as BaseTestCase;
-use Javaabu\Translatable\TranslatableServiceProvider;
 use Javaabu\Translatable\Tests\TestSupport\Providers\TestServiceProvider;
-use Illuminate\Support\Facades\Schema;
+use Javaabu\Translatable\TranslatableServiceProvider;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {

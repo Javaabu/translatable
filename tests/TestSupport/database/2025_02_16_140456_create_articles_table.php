@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArticlesTable extends Migration {
+class CreateArticlesTable extends Migration
+{
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
@@ -24,7 +25,7 @@ class CreateArticlesTable extends Migration {
 
     public function down()
     {
-        Schema::table('articles', function(Blueprint $table) {
+        Schema::table('articles', function (Blueprint $table) {
             $table->dropJsonTranslatable();
         });
         Schema::dropIfExists('articles');

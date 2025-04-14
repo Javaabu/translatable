@@ -4,6 +4,7 @@ namespace Javaabu\Translatable\Tests\Feature;
 
 use Javaabu\Translatable\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Schema;
 
 class TranslatableSchemaTest extends TestCase
 {
@@ -12,7 +13,7 @@ class TranslatableSchemaTest extends TestCase
     {
         $this->artisan('migrate:fresh');
 
-        $posts = \Schema::getColumnListing('posts');
+        $posts = Schema::getColumnListing('posts');
         $this->assertEquals([
             'id',
             'title',
@@ -26,7 +27,7 @@ class TranslatableSchemaTest extends TestCase
             'deleted_at',
         ], $posts);
 
-        $articles = \Schema::getColumnListing('articles');
+        $articles = Schema::getColumnListing('articles');
         $this->assertEquals([
             'id',
             'author_id',
@@ -40,7 +41,7 @@ class TranslatableSchemaTest extends TestCase
             'deleted_at',
         ], $articles);
 
-        $authors = \Schema::getColumnListing('authors');
+        $authors = Schema::getColumnListing('authors');
         $this->assertEquals([
             'id',
             'name',
@@ -55,13 +56,13 @@ class TranslatableSchemaTest extends TestCase
         $this->artisan('migrate:fresh');
         $this->artisan('migrate:rollback');
 
-        $posts = \Schema::getColumnListing('posts');
+        $posts = Schema::getColumnListing('posts');
         $this->assertEmpty($posts);
 
-        $articles = \Schema::getColumnListing('articles');
+        $articles = Schema::getColumnListing('articles');
         $this->assertEmpty($articles);
 
-        $authors = \Schema::getColumnListing('authors');
+        $authors = Schema::getColumnListing('authors');
         $this->assertEmpty($authors);
     }
 }
