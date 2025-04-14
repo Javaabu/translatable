@@ -40,7 +40,7 @@ class Languages
      */
     public function getDirection(string $code = null): string
     {
-        return $this->get($code)->is_rtl ? 'rtl' : 'ltr';
+        return $this->get($code)?->is_rtl ? 'rtl' : 'ltr';
     }
 
     public function isRtl(string $code = null): bool
