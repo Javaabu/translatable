@@ -88,6 +88,11 @@ class LanguageRegistrar
      */
     public function getLanguages(array $params = []): Collection
     {
+        // If the languages are empty, forget the cache
+        if ($this->languages?->isEmpty()) {
+            $this->forgetCachedLanguages();
+        }
+
         // Load up languages from cache
         if ($this->languages === null) {
             $this->languages = $this->cache->remember(self::$cache_key, self::$cache_expiration_time, function () {
