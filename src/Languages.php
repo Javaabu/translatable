@@ -25,7 +25,7 @@ class Languages
      */
     public function get(string $code = null): Language|null
     {
-        if (! $code) {
+        if (!$code) {
             $code = $this->currentLanguageCode();
         }
 
@@ -35,7 +35,7 @@ class Languages
     /**
      * Get direction for a language
      *
-     * @param string|null $code
+     * @param  string|null  $code
      * @return string
      */
     public function getDirection(string $code = null): string
@@ -51,7 +51,7 @@ class Languages
     /**
      * Check if a given language is a valid language
      *
-     * @param string|null $code
+     * @param  string|null  $code
      * @return bool
      */
     public function has(string $code = null): bool
@@ -69,7 +69,7 @@ class Languages
      *
      * @return string
      */
-    public function currentLanguageCode() : string
+    public function currentLanguageCode(): string
     {
         return app()->getLocale();
     }
@@ -79,7 +79,7 @@ class Languages
      *
      * @return void
      */
-    public function setToTranslationLocale() : void
+    public function setToTranslationLocale(): void
     {
         app()->setLocale($this->defaultLanguageCode());
     }
@@ -89,7 +89,7 @@ class Languages
      *
      * @return string
      */
-    public function defaultLanguageCode() : string
+    public function defaultLanguageCode(): string
     {
         return Language::getDefaultTranslationLocale();
     }
@@ -99,7 +99,7 @@ class Languages
      *
      * @return void
      */
-    public function setToAppLocale() : void
+    public function setToAppLocale(): void
     {
         app()->setLocale($this->defaultAppLocale());
     }
@@ -109,7 +109,7 @@ class Languages
      *
      * @return string
      */
-    public function defaultAppLocale() : string
+    public function defaultAppLocale(): string
     {
         return Language::getDefaultAppLocale();
     }
@@ -144,7 +144,7 @@ class Languages
             $code = $code->code;
         }
 
-        if (! $code) {
+        if (!$code) {
             $code = $this->currentLanguageCode();
         }
 
