@@ -182,7 +182,7 @@ trait IsTranslatable
         }
 
         if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->lower();
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
         }
 
         return translate_route("{$portal}.{$route_name}.show", $this, locale: $locale);
@@ -202,7 +202,7 @@ trait IsTranslatable
         }
 
         if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->lower();
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
         }
 
         return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
