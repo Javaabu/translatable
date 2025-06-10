@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Javaabu\Translatable\Facades\Languages;
+use Javaabu\Translatable\ModelAttribute;
 use Javaabu\Translatable\Models\Language;
 
 if (!function_exists('appGetLocale')) {
@@ -74,5 +76,19 @@ if (!function_exists('locale_direction')) {
             : Languages::get($language ?? app()->getLocale());
 
         return $language && $language->is_rtl ? 'rtl' : 'ltr';
+    }
+}
+
+if (!function_exists('ma')) {
+    /**
+     * Get a model attribute instance
+     *
+     * @param  Model   $model
+     * @param  string  $attribute
+     * @return ModelAttribute
+     */
+    function ma(Model $model, string $attribute): ModelAttribute
+    {
+        return new ModelAttribute($model, $attribute);
     }
 }
