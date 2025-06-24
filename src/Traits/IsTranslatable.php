@@ -169,6 +169,32 @@ trait IsTranslatable
     }
 
     /**
+     * Suffix the translatable fields in the given array
+     * with the language codes
+     *
+     * @param array $attributes
+     * @return array
+     */
+    public function suffixTranslatables(array $attributes): array
+    {
+        $language_codes = Languages::all()->pluck('code')->all();
+
+        $suffixed_attributes = [];
+
+        foreach ($attributes as $attribute) {
+            $suffixed_attributes[] = $attribute;
+
+            if ($this->isTranslatable($attribute)) {
+                foreach ($language_codes as $code) {
+                    $suffixed_attributes[] = $attribute . '_' . $code;
+                }
+            }
+        }
+
+        return $suffixed_attributes;
+    }
+
+    /**
      * Get admin localized url
      *
      * @param  Language|string  $locale
