@@ -581,4 +581,32 @@ class IsJsonTranslatableTest extends TestCase
 
         $article->deleteTranslation('en');
     }
+
+    #[Test]
+    public function it_fills_only_translatable_attributes()
+    {
+        $article = new Article();
+        $attributes = [
+            'title' => 'Test Title',
+            'body' => 'Test Body',
+        ];
+        $article->fill($attributes);
+        $this->assertEquals('Test Title', $article->title);
+        $this->assertEquals('Test Body', $article->body);
+    }
+
+    #[Test]
+    public function it_fills_translatable_and_non_translatable_attributes()
+    {
+        $article = new Article();
+        $attributes = [
+            'title' => 'Test Title',
+            'body' => 'Test Body',
+            'slug' => 'test-title',
+        ];
+        $article->fill($attributes);
+        $this->assertEquals('Test Title', $article->title);
+        $this->assertEquals('Test Body', $article->body);
+        $this->assertEquals('test-title', $article->slug);
+    }
 }
