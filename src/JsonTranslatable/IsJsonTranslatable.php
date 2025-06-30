@@ -6,6 +6,7 @@ use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Traits\IsTranslatable;
 
 trait IsJsonTranslatable
@@ -212,5 +213,45 @@ trait IsJsonTranslatable
     public function deleteTranslations(): void
     {
         $this->translations = [];
+    }
+
+    public function getFillableTranslatables(): array
+    {
+        $translatables = $this->getTranslatables();
+        $fillables = $this->getFillable();
+
+        $translatable_fillables = array_intersect($translatables, $fillables);
+        $language_codes = Languages::all()->pluck('code')->all();
+
+        $suffixed_fillables = [];
+
+        foreach ($translatable_fillables as $fillable) {
+            foreach ($language_codes as $code) {
+                $suffixed_fillables[] = $fillable.'_'.$code;
+            }
+        }
+
+        return $suffixed_fillables;
+    }
+
+    protected function fillableTranslatablesFromArray(array $attributes): array
+    {
+        return array_intersect_key($attributes, array_flip($this->getFillableTranslatables()));
+    }
+
+    /**
+     * @return $this
+     * @throws FieldNotAllowedException
+     * @throws LanguageNotAllowedException
+     */
+    public function fill(array $attributes): static
+    {
+        $fillable_translatables = $this->fillableTranslatablesFromArray($attributes);
+
+        foreach ($fillable_translatables as $key => $value) {
+            $this->setAttribute($key, $value);
+        }
+
+        return parent::fill($attributes);
     }
 }
