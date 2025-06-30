@@ -203,4 +203,14 @@ trait IsDbTranslatable
         if (empty($this->translatable_parent_id)) $this->translations()->delete();
         else $this->defaultTranslation->translations()->delete();
     }
+
+    /**
+     * Check if the current translation is the root translation.
+     *
+     * @return bool
+     */
+    public function isRootTranslation(): bool
+    {
+        return empty($this->translatable_parent_id);
+    }
 }
