@@ -213,4 +213,9 @@ trait IsDbTranslatable
     {
         return empty($this->translatable_parent_id);
     }
+
+    public function canUpdateTranslatableParent(): bool
+    {
+        return (! $this->isRootTranslation()) || (! $this->hasTranslation());
+    }
 }
