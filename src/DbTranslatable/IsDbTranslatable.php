@@ -46,6 +46,23 @@ trait IsDbTranslatable
         return $this->getAttributeValue('translatable_parent_id') == null;
     }
 
+    public function getTranslation(?string $locale = null): ?static
+    {
+        if (is_null($locale)) {
+            $locale = app()->getLocale();
+        }
+
+        $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
+
+        // If the requested locale is the same as the default translation's lang, return the default translation
+        if ($defaultTranslation->lang == $locale) {
+            return $defaultTranslation;
+        }
+
+        // Attempt to fetch the first translation within translatable rows
+        return $defaultTranslation->translations()->where('lang', $locale)->first();
+    }
+
     public function translate(string $field, ?string $locale = null, bool $fallback = true): mixed
     {
         // Use current app locale whenever locale isn't provided
@@ -53,35 +70,23 @@ trait IsDbTranslatable
             $locale = app()->getLocale();
         }
 
-        // If default lang just return the field normally
-        if ($this->isDefaultTranslationLocale($locale)) {
-            return $this->getAttributeValue($field);
-        }
-
         // If the locale is not allowed then return null
-        if (!$this->isAllowedTranslationLocale($locale))  {
+        if (! $this->isAllowedTranslationLocale($locale)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
         // If the field is not in the translatable fields list then return null
-        if (!$this->isTranslatable($field)) {
+        if (! $this->isTranslatable($field)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
-        // get default translation to check its language first
-        $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
-        if ($defaultTranslation->lang == $locale) {
-            return $defaultTranslation->getAttributeValue($field);
-        }
-        // attempt to fetch the first translation within translatable rows
-        $translation = $defaultTranslation->translations()->where('lang', $locale)->first();
+        $translation = $this->getTranslation($locale);
 
-        // fallback if the translation doesn't exist in any of the translated rows
-        if (!$translation) {
-            return $fallback ? $this->getAttributeValue($field) : null;
+        if ($translation) {
+            return $translation->getAttributeValue($field);
         }
 
-        return $translation->getAttributeValue($field);
+        return $fallback ? $this->getAttributeValue($field) : null;
     }
 
     public function getDefaultTranslationLocale(): string
