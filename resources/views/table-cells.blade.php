@@ -1,14 +1,14 @@
 @foreach($languages as $language)
     <x-forms::table.cell>
-        <div class="actions show-always">
+        <div class="{{ config('translatable.styles.table-cell-wrapper') }}">
             @if($model->hasTranslation($language->code))
-                <a class="actions__item zmdi zmdi-edit"
+                <a class="actions__item {{ config('translatable.styles.icons.edit') }}"
                    href="{{ $model->getAdminLocalizedUrl($language->code) }}"
                    title="{{ _d('Edit Translation') }}">
                 </a>
             @else
-                <a class="actions__item zmdi zmdi-plus"
-                   href="{{ $model->getAdminLocalizedUrl($language->code) }}"
+                <a class="actions__item text-decoration-none {{ config('translatable.styles.icons.add') }}"
+                   href="{{ $model->getAdminLocalizedCreateUrl($language->code) }}"
                    title="{{ _d('Add Translation') }}">
                 </a>
             @endif
