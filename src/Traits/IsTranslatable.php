@@ -195,46 +195,6 @@ trait IsTranslatable
     }
 
     /**
-     * Get admin localized url
-     *
-     * @param  Language|string  $locale
-     * @param  string|null      $route_name
-     * @return string
-     */
-    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null, $portal = "admin"): string
-    {
-        if ($locale instanceof Language) {
-            $locale = $locale->code;
-        }
-
-        if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
-        }
-
-        return translate_route("{$portal}.{$route_name}.show", $this, locale: $locale);
-    }
-
-    /**
-     * Get admin localized edit url
-     *
-     * @param  Language|string  $locale
-     * @param  string|null      $route_name
-     * @return string
-     */
-    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, $portal = "admin"): string
-    {
-        if ($locale instanceof Language) {
-            $locale = $locale->code;
-        }
-
-        if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
-        }
-
-        return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
-    }
-
-    /**
      * Helper to check if a form field should be disabled or not
      *
      * @param  string  $field

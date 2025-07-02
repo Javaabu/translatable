@@ -7,6 +7,7 @@ use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Languages;
+use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Traits\IsTranslatable;
 
 trait IsJsonTranslatable
@@ -253,5 +254,53 @@ trait IsJsonTranslatable
         }
 
         return parent::fill($attributes);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+        }
+
+        return translate_route("{$portal}.{$route_name}.show", $this, locale: $locale);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+        }
+
+        return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdminLocalizedCreateUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+        }
+
+        return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
     }
 }

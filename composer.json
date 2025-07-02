@@ -30,6 +30,9 @@
         "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0",
         "javaabu/helpers": "^1.61"
     },
+    "suggest": {
+        "javaabu/forms": "For the little buttons and table cells that are provided."
+    },
     "require-dev": {
         "laravel/pint": "^1.14",
         "orchestra/testbench": "^7.0 || ^8.0 || ^9.0 || ^10.0",

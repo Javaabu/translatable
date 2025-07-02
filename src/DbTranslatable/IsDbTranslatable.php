@@ -6,6 +6,7 @@ use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Traits\IsTranslatable;
 
 trait IsDbTranslatable
@@ -222,5 +223,57 @@ trait IsDbTranslatable
     public function canUpdateTranslatableParent(): bool
     {
         return (! $this->isRootTranslation()) || (! $this->hasTranslation());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        $record = $this->getTranslation($locale);
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+        }
+
+        return translate_route("{$portal}.{$route_name}.show", $record, locale: $locale);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        $record = $this->getTranslation($locale);
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+        }
+
+        return translate_route("{$portal}.{$route_name}.edit", $record, locale: $locale);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdminLocalizedCreateUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        if (! $route_name) {
+            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+        }
+
+        return translate_route("{$portal}.{$route_name}.create", parameters: ['lang_parent' => $this->id], locale: $locale);
     }
 }

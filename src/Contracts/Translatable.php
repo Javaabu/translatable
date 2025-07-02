@@ -3,6 +3,7 @@
 namespace Javaabu\Translatable\Contracts;
 
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Models\Language;
 
 interface Translatable
 {
@@ -42,9 +43,9 @@ interface Translatable
     public function getAllNonTranslatables(): array;
 
     /**
-     * Check if is a non translatable pivot
+     * Check if is a non-translatable pivot
      *
-     * @param string $relation
+     * @param  string  $relation
      * @return boolean
      */
     public function isNonTranslatablePivot(string $relation): bool;
@@ -53,9 +54,9 @@ interface Translatable
      * Translate the given field to given locale.
      * Fall back to default if no translation
      *
-     * @param $field
-     * @param null $locale
-     * @param bool $fallback
+     * @param  string       $field
+     * @param  string|null  $locale
+     * @param  bool         $fallback
      * @return string
      */
     public function translate(string $field, ?string $locale = null, bool $fallback = true): mixed;
@@ -63,7 +64,7 @@ interface Translatable
     /**
      * Check whether the given field is translatable
      *
-     * @param string $field
+     * @param  string  $field
      * @return boolean
      */
     public function isTranslatable(string $field): bool;
@@ -71,7 +72,7 @@ interface Translatable
     /**
      * Clear the translations for the given locale or all
      *
-     * @param null $locale
+     * @param  string|null  $locale
      */
     public function clearTranslations(?string $locale = null): void;
 
@@ -79,7 +80,7 @@ interface Translatable
      * Check if has any translations or translations for a
      * specific locale
      *
-     * @param string $locale
+     * @param  string|null  $locale
      * @return bool
      */
     public function hasTranslation(?string $locale = null): bool;
@@ -87,7 +88,7 @@ interface Translatable
     /**
      * Check is default translation locale
      *
-     * @param string $locale
+     * @param  string  $locale
      * @return boolean
      */
     public function isDefaultTranslationLocale(string $locale): bool;
@@ -109,7 +110,7 @@ interface Translatable
     /**
      * Check if given locale is allowed
      *
-     * @param string $locale
+     * @param  string  $locale
      * @return boolean
      */
     public function isAllowedTranslationLocale(string $locale): bool;
@@ -117,9 +118,9 @@ interface Translatable
     /**
      * Add an attribute with a new locale to this object
      *
-     * @param string $locale
-     * @param string $field
-     * @param string $value
+     * @param  string  $locale
+     * @param  string  $field
+     * @param  string  $value
      * @return $this
      * @throws LanguageNotAllowedException
      */
@@ -128,8 +129,8 @@ interface Translatable
     /**
      * Add a new locale to this object
      *
-     * @param string $locale
-     * @param array $fields
+     * @param  string  $locale
+     * @param  array   $fields
      * @return $this
      */
     public function addTranslations(string $locale, array $fields): static;
@@ -144,8 +145,44 @@ interface Translatable
     /**
      * Deletes translations for a given locale
      *
-     * @param string $locale
+     * @param  string  $locale
      * @return void
      */
     public function deleteTranslation(string $locale): void;
+
+    /**
+     * Get the localized URL for the admin portal
+     *
+     * can be used for other portals as well by passing the portal name
+     *
+     * @param  Language|string  $locale
+     * @param  string|null      $route_name
+     * @param  string           $portal
+     * @return string
+     */
+    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string;
+
+    /**
+     * Get the localized edit URL for the admin portal
+     *
+     * can be used for other portals as well by passing the portal name
+     *
+     * @param  Language|string  $locale
+     * @param  string|null      $route_name
+     * @param  string           $portal
+     * @return string
+     */
+    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, string $portal = 'admin'): string;
+
+    /**
+     * Get the localized create URL for the admin portal
+     *
+     * can be used for other portals as well by passing the portal name
+     *
+     * @param  Language|string  $locale
+     * @param  string|null      $route_name
+     * @param  string           $portal
+     * @return string
+     */
+    public function getAdminLocalizedCreateUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string;
 }
