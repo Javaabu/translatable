@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Methods that all types of translatable models should have
- */
-
 namespace Javaabu\Translatable\Contracts;
 
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
