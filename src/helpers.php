@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Javaabu\Translatable\Contracts\DbTranslatable;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\ModelAttribute;
 use Javaabu\Translatable\Models\Language;
@@ -37,23 +37,23 @@ if (!function_exists('_d')) {
 }
 
 
-if (! function_exists('translate_url')) {
+if (!function_exists('translate_url')) {
     /**
      * Generate a translatable url for the application.
      *
      * @param  string|null  $path
-     * @param  array  $parameters
+     * @param  array        $parameters
      * @param  bool|null    $secure
-     * @param null          $locale
+     * @param  null         $locale
      * @return string
      */
     function translate_url(string $path = null, array $parameters = [], bool $secure = null, $locale = null): string
     {
-        if (! $locale) {
+        if (!$locale) {
             $locale = app()->getLocale();
         }
 
-        $path = $locale.'/'.ltrim($path, '/');
+        $path = $locale . '/' . ltrim($path, '/');
         return url($path, $parameters, $secure);
     }
 }
@@ -113,5 +113,20 @@ if (!function_exists('ma')) {
     function ma(Model $model, string $attribute): ModelAttribute
     {
         return new ModelAttribute($model, $attribute);
+    }
+}
+
+if (!function_exists('translate_old')) {
+    /**
+     * Retrieve an old input item or parent item value.
+     *
+     * @param  string|null          $key
+     * @param  DbTranslatable|null  $lang_parent
+     * @param  mixed|null           $default
+     * @return mixed
+     */
+    function translate_old(string $key = null, DbTranslatable $lang_parent = null, mixed $default = null): mixed
+    {
+        return $lang_parent ? ($lang_parent->{$key} ?: $default) : old($key, $default);
     }
 }

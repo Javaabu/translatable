@@ -41,6 +41,7 @@ trait IsTranslatable
     {
         $all_fields = $this->getAllAttributes();
 
+
         $hide = array_merge(
             $this->getTranslatables(),
             $this->getFieldsIgnoredForTranslation(),

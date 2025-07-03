@@ -34,6 +34,18 @@ trait IsDbTranslatable
 
     public function translations()
     {
+        if ($this->isRootTranslation()) {
+            return $this->childTranslations();
+        }
+
+        return static::query()->where(function ($query) {
+            return $query->where($this->getKeyName(), $this->translatable_parent_id)
+                ->orWhere('translatable_parent_id', $this->translatable_parent_id);
+        })->where($this->getKeyName(), '!=', $this->getKey());
+    }
+
+    public function childTranslations()
+    {
         return $this->hasMany(self::class, 'translatable_parent_id', 'id');
     }
 
@@ -95,7 +107,9 @@ trait IsDbTranslatable
         // yes this may not be the correct default translation locale
         // but we do this check to see if we need to fetch another row
         // from the database.
-        return $this->getAttributeValue('lang');
+        return $this->translatable_parent_id
+            ? $this->defaultTranslation->lang
+            : $this->getAttributeValue('lang');
     }
 
     public function clearTranslations(?string $locale = null): void
@@ -236,6 +250,12 @@ trait IsDbTranslatable
 
         $record = $this->getTranslation($locale);
 
+        // If a translation record is not found, stands to reason the user wants to have the link to create a new translation.
+        if (! $record) {
+            return $this->getAdminLocalizedCreateUrl($locale, $route_name, $portal);
+        }
+
+        // If route name is not given we will construct it from the base model name
         if (! $route_name) {
             $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
         }
@@ -245,6 +265,8 @@ trait IsDbTranslatable
 
     /**
      * @inheritDoc
+     *
+     * TODO: There is a possibility that the all the getAdminLocalized*Url methods can be merged into one method
      */
     public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
     {
@@ -253,6 +275,11 @@ trait IsDbTranslatable
         }
 
         $record = $this->getTranslation($locale);
+
+        // If a translation record is not found, stands to reason the user wants to have the link to create a new translation.
+        if (! $record) {
+            return $this->getAdminLocalizedCreateUrl($locale, $route_name, $portal);
+        }
 
         if (! $route_name) {
             $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
