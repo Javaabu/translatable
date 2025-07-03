@@ -16,6 +16,8 @@ trait IsDbTranslatable
     public static function bootIsDbTranslatable(): void
     {
         static::creating(function (Translatable $model) {
+            // If the model is being created and the developer has not set the `lang`
+            // attributes, we will set it to the current application locale.
             if (empty($model->lang)) {
                 $model->lang = app()->getLocale();
             }
@@ -26,10 +28,12 @@ trait IsDbTranslatable
 
     public function getFieldsIgnoredForTranslation(): array
     {
-        return array_values(array_unique(array_merge(
+        $values = array_values(array_unique(array_merge(
             $this->fields_ignored_for_translation,
             config('translatable.fields_ignored_for_translation')
         )));
+
+        return $values;
     }
 
     public function translations()
@@ -172,12 +176,16 @@ trait IsDbTranslatable
             throw FieldNotAllowedException::create($field, $locale);
         }
 
+        // Get the default translation (root/parent translation). If the current record is
+        // the default, we will use it, otherwise we will fetch the default translation
         $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
 
         // check if the default translation is already the correct locale
         if ($defaultTranslation->lang == $locale) {
             $defaultTranslation->setAttributeInternal($field, $value);
+
             $defaultTranslation->save();
+
             return $defaultTranslation;
         }
 
@@ -189,9 +197,13 @@ trait IsDbTranslatable
             $newTranslation = new self();
             // copy all the attributes of the current object to the new translation
             // this ensures no columns are left null
+
             foreach ($this->getAllAttributes() as $attribute) {
                 // TODO: make this primary key rely on some sort of config available per model
-                if ($attribute == "id") continue;
+                if ($attribute == "id") {
+                    continue;
+                }
+
                 $newTranslation->setAttributeInternal($attribute, $defaultTranslation->getAttributeValue($attribute));
             }
             $newTranslation->setAttributeInternal('translatable_parent_id', $defaultTranslation->id);

@@ -31,9 +31,9 @@ trait IsTranslatable
     }
 
     /**
-     * Get non translatable fields without pivots and fields ignored for translation
+     * Get non-translatable fields without pivots and fields ignored for translation
      *
-     * Use <code>getAllNonTranslatables</code> to get non translatables including pivots and fields ignored for translation
+     * Use `getAllNonTranslatables` to get non translatables including pivots and fields ignored for translation
      *
      * @return array
      */
@@ -52,7 +52,7 @@ trait IsTranslatable
     }
 
     /**
-     * Get all non translatable fields, including pivots and fields ignored for translation
+     * Get all non-translatable fields, including pivots and fields ignored for translation
      *
      * @return array
      */
