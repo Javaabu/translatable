@@ -176,7 +176,7 @@ trait IsJsonTranslatable
 
             // if it's a new model and the default value is not set, set the default
             if ((! $this->exists) && (! parent::getAttribute($field))) {
-                parent::setAttributeInternal($field, $value);
+                $this->setAttributeInternal($field, $value);
             }
         }
 
