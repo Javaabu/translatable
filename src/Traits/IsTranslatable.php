@@ -2,13 +2,13 @@
 
 namespace Javaabu\Translatable\Traits;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Facades\Translatable;
-use Javaabu\Translatable\LanguageRegistrar;
 use Javaabu\Translatable\Models\Language;
 
 trait IsTranslatable
@@ -68,7 +68,7 @@ trait IsTranslatable
     /**
      * Check if relation is a non translatable pivot
      *
-     * @param string $relation
+     * @param  string  $relation
      * @return bool
      */
     public function isNonTranslatablePivot(string $relation): bool
@@ -79,7 +79,7 @@ trait IsTranslatable
     /**
      * Check if a given locale is the current default locale
      *
-     * @param string $locale
+     * @param  string  $locale
      * @return bool
      */
     public function isDefaultTranslationLocale(string $locale): bool
@@ -90,7 +90,7 @@ trait IsTranslatable
     /**
      * Check if a given locale is allowed to translate to
      *
-     * @param string $locale
+     * @param  string  $locale
      * @return bool
      */
     public function isAllowedTranslationLocale(string $locale): bool
@@ -111,7 +111,7 @@ trait IsTranslatable
     /**
      * Check if a given field is translatable
      *
-     * @param string $field
+     * @param  string  $field
      * @return bool
      */
     public function isTranslatable(string $field): bool
@@ -131,14 +131,14 @@ trait IsTranslatable
     /**
      * Bulk add translatable fields
      *
-     * @param string $locale
-     * @param array $fields
+     * @param  string  $locale
+     * @param  array   $fields
      * @return $this
      * @throws LanguageNotAllowedException|FieldNotAllowedException
      */
     public function addTranslations(string $locale, array $fields): static
     {
-        if (! $this->isAllowedTranslationLocale($locale)) {
+        if (!$this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
@@ -154,14 +154,14 @@ trait IsTranslatable
      *
      * <code>'title_en'</code> would return <code>['title', 'en']</code>
      *
-     * @param string $key
+     * @param  string  $key
      * @return array
      */
     public function getFieldAndLocale(string $key): array
     {
         $locale = Str::afterLast($key, '_');
 
-        if (empty($locale) || (! $this->isAllowedTranslationLocale($locale))) {
+        if (empty($locale) || (!$this->isAllowedTranslationLocale($locale))) {
             return [$key, null];
         }
 
@@ -173,7 +173,7 @@ trait IsTranslatable
      * Suffix the translatable fields in the given array
      * with the language codes
      *
-     * @param array $attributes
+     * @param  array  $attributes
      * @return array
      */
     public function suffixTranslatables(array $attributes): array
@@ -207,7 +207,7 @@ trait IsTranslatable
             return false;
         }
 
-        return ! in_array($field, $this->getTranslatables());
+        return !in_array($field, $this->getTranslatables());
     }
 
     /**
@@ -217,7 +217,7 @@ trait IsTranslatable
      * @param  Language|string  $locale
      * @param                   $translation
      */
-    public function setTranslationAttributeValue(string $attribute, Language|string $locale,  $translation): void
+    public function setTranslationAttributeValue(string $attribute, Language|string $locale, $translation): void
     {
         if ($locale instanceof Language) {
             $locale = $locale->code;
@@ -294,10 +294,23 @@ trait IsTranslatable
      * @throws LanguageNotAllowedException
      * @throws FieldNotAllowedException
      */
-    protected function setAttributeInternal($key, $value) {
+    protected function setAttributeInternal($key, $value)
+    {
         $this->skipTranslation = true;
         $result = $this->setAttribute($key, $value);
         $this->skipTranslation = false;
         return $result;
+    }
+
+    /**
+     * Get the locale direction (ltr or rtl)
+     *
+     * @return Attribute
+     */
+    public function localeDirection(): Attribute
+    {
+        return Attribute::get(function () {
+            return Languages::getDirection($this->lang);
+        });
     }
 }

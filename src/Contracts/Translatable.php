@@ -2,6 +2,7 @@
 
 namespace Javaabu\Translatable\Contracts;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Models\Language;
 
@@ -185,4 +186,11 @@ interface Translatable
      * @return string
      */
     public function getAdminLocalizedCreateUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string;
+
+    /**
+     * Get the locale direction (ltr or rtl)
+     *
+     * @return Attribute
+     */
+    public function localeDirection(): Attribute;
 }
