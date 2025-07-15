@@ -17,6 +17,21 @@ class Languages
         return app(LanguageRegistrar::class)->getLanguages()->whereNotIn('locale', [app()->getLocale()]);
     }
 
+    public function except($code): Collection
+    {
+        if (! is_array($code)) {
+            $code = [$code];
+        }
+
+        if (! $code) {
+            return $this->all();
+        }
+
+        return $this->all()->filter(function ($language) use ($code) {
+            return ! in_array($language->code, $code);
+        });
+    }
+
     /**
      * Get a single language
      *
