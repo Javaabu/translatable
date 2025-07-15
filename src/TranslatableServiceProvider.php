@@ -7,6 +7,7 @@ use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -48,6 +49,17 @@ class TranslatableServiceProvider extends ServiceProvider
                 $cache_key,
                 $cache_driver
             );
+        });
+
+        // Register the translatable macros for URL generation
+        Redirect::macro('translateRoute', function ($routeName, $parameters = [], $status = 302, $headers = []) {
+            $url = translate_route($routeName, $parameters);
+            return redirect()->to($url, $status, $headers);
+        });
+
+        Redirect::macro('translateAction', function ($action, $parameters = [], $status = 302, $headers = []) {
+            $url = translate_action($action, $parameters);
+            return redirect()->to($url, $status, $headers);
         });
     }
 

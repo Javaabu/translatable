@@ -60,7 +60,7 @@ if (!function_exists('translate_url')) {
 
 if (!function_exists('translate_route')) {
     /**
-     * Generate a translatable route for the model.
+     * Generate a translatable url using the route method.
      *
      * @param  string                $name
      * @param  array|string|mixed    $parameters
@@ -82,6 +82,33 @@ if (!function_exists('translate_route')) {
         $parameters['language'] = $locale;
 
         return route($name, $parameters, $absolute);
+    }
+}
+
+if (!function_exists('translate_action')) {
+    /**
+     * Generate a translatable url using the action method.
+     *
+     * @param  string|array          $action
+     * @param  array|string|mixed    $parameters
+     * @param  bool                  $absolute
+     * @param  string|Language|null  $locale
+     * @return string
+     */
+    function translate_action(string|array $action, mixed $parameters = [], bool $absolute = true, Language|string $locale = null): string
+    {
+        if ($locale instanceof Language) {
+            $locale = $locale->code;
+        }
+
+        if (!$locale) {
+            $locale = app()->getLocale();
+        }
+
+        $parameters = Arr::wrap($parameters);
+        $parameters['language'] = $locale;
+
+        return \Illuminate\Support\Facades\URL::action($action, $parameters, $absolute);
     }
 }
 
