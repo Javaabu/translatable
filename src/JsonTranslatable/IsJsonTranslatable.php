@@ -70,6 +70,17 @@ trait IsJsonTranslatable
 
         $translations = $this->getAttributeValue('translations');
 
+        if (isset($translations[$locale]) && array_key_exists($field, $translations[$locale])) {
+            $value = $translations[$locale][$field];
+
+            if (! $value && $fallback) {
+                // If the value is empty, return the default value if fallback is true
+                return $this->getAttributeValue($field);
+            }
+
+            return $value;
+        }
+
         // Check if translations for that locale exists
         if (! isset($translations[$locale])) {
             return $fallback ? $this->getAttributeValue($field) : null;
@@ -266,7 +277,7 @@ trait IsJsonTranslatable
         }
 
         if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+            $route_name = $this->getRouteName();
         }
 
         return translate_route("{$portal}.{$route_name}.show", $this, locale: $locale);
@@ -282,7 +293,7 @@ trait IsJsonTranslatable
         }
 
         if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+            $route_name = $this->getRouteName();
         }
 
         return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
@@ -298,7 +309,7 @@ trait IsJsonTranslatable
         }
 
         if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
+            $route_name = $this->getRouteName();
         }
 
         return translate_route("{$portal}.{$route_name}.edit", $this, locale: $locale);
