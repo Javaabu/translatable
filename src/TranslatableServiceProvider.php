@@ -8,6 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -60,6 +61,29 @@ class TranslatableServiceProvider extends ServiceProvider
         Redirect::macro('translateAction', function ($action, $parameters = [], $status = 302, $headers = []) {
             $url = translate_action($action, $parameters);
             return redirect()->to($url, $status, $headers);
+        });
+
+        Request::macro('portal', function (): string {
+            $req         = request();
+            $adminDomain = config('app.admin_domain');          // e.g. 'admin.ncs.test' or null
+            $adminPrefix = config('app.admin_prefix', 'admin'); // e.g. 'admin'
+
+            // admin via dedicated domain
+            if ($adminDomain && $req->getHost() === $adminDomain) {
+                return 'admin';
+            }
+
+            // admin via prefix: ncs.test/admin/...
+            if ($req->segment(1) === $adminPrefix) {
+                return 'admin';
+            }
+
+            // pattern: ncs.test/{locale}/{portal}
+            return $req->segment(2) ?? 'public';
+        });
+
+        Request::macro('isPortal', function (string $portal): bool {
+            return request()->portal() === $portal;
         });
     }
 
