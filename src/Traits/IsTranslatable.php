@@ -4,7 +4,6 @@ namespace Javaabu\Translatable\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
@@ -255,7 +254,7 @@ trait IsTranslatable
             return $this->translate(
                 $field,
                 $locale,
-                // config('translatable.lang_suffix_should_fallback', false)
+            // config('translatable.lang_suffix_should_fallback', false)
             );
         }
 
@@ -319,15 +318,8 @@ trait IsTranslatable
         });
     }
 
-    /**
-     * @return string
-     */
-    public function getRouteName(): string
+    public function languageSwitcherRouteName(): null|string
     {
-        $default = str($this->getMorphClass())->plural()->slug('-')->lower();
-
-        return match (Request::portal()) {
-            default => $default,
-        };
+        return null;
     }
 }

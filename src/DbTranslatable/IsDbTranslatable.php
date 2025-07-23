@@ -246,73 +246,13 @@ trait IsDbTranslatable
         return empty($this->translatable_parent_id);
     }
 
+    /**
+     * Check if the current translation can update its parent translation.
+     *
+     * @return bool
+     */
     public function canUpdateTranslatableParent(): bool
     {
         return (! $this->isRootTranslation()) || (! $this->hasTranslation());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
-    {
-        if ($locale instanceof Language) {
-            $locale = $locale->code;
-        }
-
-        $record = $this->getTranslation($locale);
-
-        // If a translation record is not found, stands to reason the user wants to have the link to create a new translation.
-        if (! $record) {
-            return $this->getAdminLocalizedCreateUrl($locale, $route_name, $portal);
-        }
-
-        // If route name is not given we will construct it from the base model name
-        if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
-        }
-
-        return translate_route("{$portal}.{$route_name}.show", $record, locale: $locale);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * TODO: There is a possibility that the all the getAdminLocalized*Url methods can be merged into one method
-     */
-    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
-    {
-        if ($locale instanceof Language) {
-            $locale = $locale->code;
-        }
-
-        $record = $this->getTranslation($locale);
-
-        // If a translation record is not found, stands to reason the user wants to have the link to create a new translation.
-        if (! $record) {
-            return $this->getAdminLocalizedCreateUrl($locale, $route_name, $portal);
-        }
-
-        if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
-        }
-
-        return translate_route("{$portal}.{$route_name}.edit", $record, locale: $locale);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getAdminLocalizedCreateUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string
-    {
-        if ($locale instanceof Language) {
-            $locale = $locale->code;
-        }
-
-        if (! $route_name) {
-            $route_name = str($this->getMorphClass())->plural()->slug('-')->lower();
-        }
-
-        return translate_route("{$portal}.{$route_name}.create", parameters: ['lang_parent' => $this->id], locale: $locale);
     }
 }

@@ -4,7 +4,6 @@ namespace Javaabu\Translatable\Contracts;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
-use Javaabu\Translatable\Models\Language;
 
 interface Translatable
 {
@@ -152,45 +151,15 @@ interface Translatable
     public function deleteTranslation(string $locale): void;
 
     /**
-     * Get the localized URL for the admin portal
-     *
-     * can be used for other portals as well by passing the portal name
-     *
-     * @param  Language|string  $locale
-     * @param  string|null      $route_name
-     * @param  string           $portal
-     * @return string
-     */
-    public function getAdminLocalizedUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string;
-
-    /**
-     * Get the localized edit URL for the admin portal
-     *
-     * can be used for other portals as well by passing the portal name
-     *
-     * @param  Language|string  $locale
-     * @param  string|null      $route_name
-     * @param  string           $portal
-     * @return string
-     */
-    public function getAdminLocalizedEditUrl(Language|string $locale, ?string $route_name = null, string $portal = 'admin'): string;
-
-    /**
-     * Get the localized create URL for the admin portal
-     *
-     * can be used for other portals as well by passing the portal name
-     *
-     * @param  Language|string  $locale
-     * @param  string|null      $route_name
-     * @param  string           $portal
-     * @return string
-     */
-    public function getAdminLocalizedCreateUrl(Language|string $locale, ?string $route_name = null, string $portal = "admin"): string;
-
-    /**
      * Get the locale direction (ltr or rtl)
      *
      * @return Attribute
      */
     public function localeDirection(): Attribute;
+
+    public function getRouteName(): null|string;
+
+    public function getRouteParams(): array;
+
+    public function languageSwitcherRouteName(): null|string;
 }

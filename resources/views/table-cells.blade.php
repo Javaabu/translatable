@@ -3,12 +3,12 @@
         <div class="{{ config('translatable.styles.table-cell-wrapper') }}">
             @if($model->hasTranslation($language->code))
                 <a class="actions__item {{ config('translatable.styles.icons.edit') }}"
-                   href="{{ $model->getAdminLocalizedUrl($language->code) }}"
+                   href="{{ $getUrl('edit', $language->code) }}"
                    title="{{ _d('Edit Translation') }}">
                 </a>
             @else
                 <a class="actions__item text-decoration-none {{ config('translatable.styles.icons.add') }}"
-                   href="{{ $model->getAdminLocalizedCreateUrl($language->code) }}"
+                   href="{{ $getUrl('edit', $language->code) }}"
                    title="{{ _d('Add Translation') }}">
                 </a>
             @endif
