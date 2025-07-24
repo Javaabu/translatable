@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Javaabu\Translatable\Translatable
- *
  */
 class Translatable extends Facade
 {

@@ -1,6 +1,7 @@
 <?php
 
 namespace Javaabu\Translatable\JsonTranslatable;
+
 use Illuminate\Support\Arr;
 use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
@@ -25,14 +26,12 @@ trait IsJsonTranslatable
 
     /**
      * Get fields that will be ignored for translation
-     *
-     * @return array
      */
     public function getFieldsIgnoredForTranslation(): array
     {
         return array_values(array_unique(array_merge(
             $this->fields_ignored_for_translation,
-            config('translatable.fields_ignored_for_translation')
+            config('translatable.fields_ignored_for_translation'),
         )));
     }
 
@@ -40,16 +39,11 @@ trait IsJsonTranslatable
      * Translate a given field to the given locale
      *
      * If fallback is true, fallback to default locale if given locale is unavailable
-     *
-     * @param string $field
-     * @param string|null $locale
-     * @param bool $fallback
-     * @return mixed
      */
     public function translate(string $field, ?string $locale = null, bool $fallback = true): mixed
     {
         // Use current app locale whenever locale isn't provided
-        if (is_null($locale)) {
+        if ($locale === null) {
             $locale = app()->getLocale();
         }
 
@@ -59,12 +53,12 @@ trait IsJsonTranslatable
         }
 
         // If the locale is not allowed then return null
-        if (! $this->isAllowedTranslationLocale($locale)) {
+        if ( ! $this->isAllowedTranslationLocale($locale)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
         // If the field is not in the translatable fields list then return null
-        if (! $this->isTranslatable($field)) {
+        if ( ! $this->isTranslatable($field)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
@@ -73,7 +67,7 @@ trait IsJsonTranslatable
         if (isset($translations[$locale]) && array_key_exists($field, $translations[$locale])) {
             $value = $translations[$locale][$field];
 
-            if (! $value && $fallback) {
+            if ( ! $value && $fallback) {
                 // If the value is empty, return the default value if fallback is true
                 return $this->getAttributeValue($field);
             }
@@ -82,7 +76,7 @@ trait IsJsonTranslatable
         }
 
         // Check if translations for that locale exists
-        if (! isset($translations[$locale])) {
+        if ( ! isset($translations[$locale])) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
@@ -91,8 +85,6 @@ trait IsJsonTranslatable
 
     /**
      * Gets default translation locale
-     *
-     * @return string
      */
     public function getDefaultTranslationLocale(): string
     {
@@ -101,22 +93,20 @@ trait IsJsonTranslatable
 
     /**
      * Clear translations for a given language or for all languages if none is given
-     *
-     * @param string|null $locale
-     * @return void
      */
     public function clearTranslations(?string $locale = null): void
     {
         // clear all translations if none is provided
-        if (is_null($locale)) {
+        if ($locale === null) {
             $this->translations = null;
             $this->save();
+
             return;
         }
 
         $translations = $this->getAttributeValue('translations');
 
-        if (! isset($translations[$locale])) {
+        if ( ! isset($translations[$locale])) {
             return;
         }
 
@@ -128,13 +118,10 @@ trait IsJsonTranslatable
 
     /**
      * Ensures that translations exist for a given locale
-     *
-     * @param string|null $locale
-     * @return bool
      */
     public function hasTranslation(?string $locale = null): bool
     {
-        if (is_null($locale)) {
+        if ($locale === null) {
             $locale = app()->getLocale();
         }
 
@@ -148,20 +135,19 @@ trait IsJsonTranslatable
     /**
      * Add a new locale to this object
      *
-     * @param string $locale
-     * @param string $field
-     * @param string $value
+     * @param  string  $value
      * @return $this
+     *
      * @throws LanguageNotAllowedException
      * @throws FieldNotAllowedException
      */
     public function addTranslation(string $locale, string $field, $value): static
     {
-        if (! $this->isAllowedTranslationLocale($locale)) {
+        if ( ! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
-        if (! $this->isTranslatable($field)) {
+        if ( ! $this->isTranslatable($field)) {
             throw FieldNotAllowedException::create($field, $locale);
         }
 
@@ -172,21 +158,22 @@ trait IsJsonTranslatable
             $this->setAttributeInternal($field, $value);
             $this->setAttributeInternal('lang', $locale);
             $this->save();
+
             return $this;
         }
 
         $translations[$locale] = array_merge(
             array_key_exists($locale, $translations) ? $translations[$locale] : [],
             [$field => $value],
-            ['lang' => $locale]
+            ['lang' => $locale],
         );
         $this->translations = $translations;
 
-        if (! $this->isDefaultTranslationLocale($locale)) {
+        if ( ! $this->isDefaultTranslationLocale($locale)) {
             $this->setTranslationAttributeValue($field, $locale, $value);
 
             // if it's a new model and the default value is not set, set the default
-            if ((! $this->exists) && (! parent::getAttribute($field))) {
+            if (( ! $this->exists) && ( ! parent::getAttribute($field))) {
                 $this->setAttributeInternal($field, $value);
             }
         }
@@ -205,14 +192,14 @@ trait IsJsonTranslatable
             throw CannotDeletePrimaryTranslationException::create($locale);
         }
 
-        if (! array_key_exists($locale, $this->translations)) {
+        if ( ! array_key_exists($locale, $this->translations)) {
             return;
         }
 
         $this->skipTranslation = true;
 
         $translations = $this->translations ?? [];
-        if (! $this->isDefaultTranslationLocale($locale)) {
+        if ( ! $this->isDefaultTranslationLocale($locale)) {
             unset($translations[$locale]);
         } else {
             throw CannotDeletePrimaryTranslationException::create($locale);
@@ -239,7 +226,7 @@ trait IsJsonTranslatable
 
         foreach ($translatable_fillables as $fillable) {
             foreach ($language_codes as $code) {
-                $suffixed_fillables[] = $fillable.'_'.$code;
+                $suffixed_fillables[] = $fillable . '_' . $code;
             }
         }
 
@@ -253,6 +240,7 @@ trait IsJsonTranslatable
 
     /**
      * @return $this
+     *
      * @throws FieldNotAllowedException
      * @throws LanguageNotAllowedException
      */

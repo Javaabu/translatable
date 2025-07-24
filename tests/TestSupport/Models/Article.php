@@ -12,8 +12,8 @@ use Javaabu\Translatable\Tests\TestSupport\Factories\ArticleFactory;
 class Article extends Model implements Translatable
 {
     use HasFactory;
-    use SoftDeletes;
     use IsJsonTranslatable;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -21,7 +21,7 @@ class Article extends Model implements Translatable
         'body',
         'author_id',
         'translations',
-        'lang'
+        'lang',
     ];
 
     protected $casts = [
@@ -44,7 +44,7 @@ class Article extends Model implements Translatable
     public function getNonTranslatablePivots(): array
     {
         return [
-            'author_id'
+            'author_id',
         ];
     }
 }

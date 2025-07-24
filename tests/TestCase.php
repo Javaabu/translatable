@@ -9,8 +9,7 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,7 +23,7 @@ abstract class TestCase extends BaseTestCase
         return [
             TranslatableServiceProvider::class,
             HelpersServiceProvider::class,
-            TestServiceProvider::class
+            TestServiceProvider::class,
         ];
     }
 }

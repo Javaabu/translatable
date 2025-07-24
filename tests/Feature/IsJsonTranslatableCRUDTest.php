@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 
 class IsJsonTranslatableCRUDTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -55,6 +55,7 @@ class IsJsonTranslatableCRUDTest extends TestCase
                     'slug'      => 'required',
                     'author_id' => 'required|exists:authors,id',
                 ]);
+
                 return Article::create($validated);
             });
 
@@ -66,6 +67,7 @@ class IsJsonTranslatableCRUDTest extends TestCase
                     'slug'      => '',
                     'author_id' => 'exists:authors,id',
                 ]);
+
                 return $article->update($validated);
             });
         });
@@ -97,28 +99,28 @@ class IsJsonTranslatableCRUDTest extends TestCase
         $this->assertDatabaseHas('articles', [
             'title'        => $article->title,
             'body'         => $article->body,
-            'translations' => JSON::encode([
+            'translations' => Json::encode([
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'lang'  => 'dv'
-                ]
-            ])
+                    'lang'  => 'dv',
+                ],
+            ]),
         ]);
 
         // ensure slugs can't be added
         $this->patch('/dv/articles/' . $article->id, [
-            'slug' => 'mee-dhivehi-slug-eh'
+            'slug' => 'mee-dhivehi-slug-eh',
         ]);
 
         $this->assertDatabaseHas('articles', [
             'title'        => $article->title,
             'body'         => $article->body,
-            'translations' => JSON::encode([
+            'translations' => Json::encode([
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'lang'  => 'dv'
-                ]
-            ])
+                    'lang'  => 'dv',
+                ],
+            ]),
         ]);
     }
 
@@ -126,25 +128,25 @@ class IsJsonTranslatableCRUDTest extends TestCase
     public function it_can_edit_a_translation()
     {
         $article = Article::factory()->withAuthor()->create([
-            'lang' => 'en'
+            'lang' => 'en',
         ]);
-        $article->title_dv = "Mee dhivehi title eh";
+        $article->title_dv = 'Mee dhivehi title eh';
         $article->save();
 
         $res = $this->patch('/dv/articles/' . $article->id, [
-            'title' => 'Mee ehen dhivehi title eh'
+            'title' => 'Mee ehen dhivehi title eh',
         ]);
 
         app()->setLocale('en');
         $this->assertDatabaseHas('articles', [
             'title'        => $article->title,
             'body'         => $article->body,
-            'translations' => JSON::encode([
+            'translations' => Json::encode([
                 'dv' => [
                     'title' => 'Mee ehen dhivehi title eh',
-                    'lang'  => 'dv'
-                ]
-            ])
+                    'lang'  => 'dv',
+                ],
+            ]),
         ]);
     }
 }

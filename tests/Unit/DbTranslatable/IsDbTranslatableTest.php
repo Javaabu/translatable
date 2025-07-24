@@ -15,7 +15,7 @@ class IsDbTranslatableTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -336,7 +336,7 @@ class IsDbTranslatableTest extends TestCase
     public function it_can_clear_translations_for_one_locale()
     {
         $post = Post::factory()->withAuthor()->create([
-            'lang' => 'en'
+            'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
             'lang'                   => 'dv',
@@ -364,7 +364,7 @@ class IsDbTranslatableTest extends TestCase
     public function it_can_clear_translations_for_default_locale()
     {
         $post = Post::factory()->withAuthor()->create([
-            'lang' => 'en'
+            'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
             'lang'                   => 'dv',
@@ -395,7 +395,7 @@ class IsDbTranslatableTest extends TestCase
     public function it_can_clear_translations_for_locale_via_translatable_parent()
     {
         $post = Post::factory()->withAuthor()->create([
-            'lang' => 'en'
+            'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
             'lang'                   => 'dv',
@@ -451,7 +451,7 @@ class IsDbTranslatableTest extends TestCase
     public function it_can_check_if_any_translation_for_a_specific_locale()
     {
         $post = Post::factory()->withAuthor()->create([
-            'lang' => 'en'
+            'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
             'lang'                   => 'dv',
@@ -513,13 +513,13 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
 
-//        $translation = $article->addTranslation('dv', [
-//            'title' => 'Mee dhivehi title eh',
-//            'slug' => 'mee-dhivehi-slug-eh',
-//            'body' => 'Mee dhivehi liyumeh',
-//        ]);
-//
-//        $translation->save();
+        //        $translation = $article->addTranslation('dv', [
+        //            'title' => 'Mee dhivehi title eh',
+        //            'slug' => 'mee-dhivehi-slug-eh',
+        //            'body' => 'Mee dhivehi liyumeh',
+        //        ]);
+        //
+        //        $translation->save();
 
         $post->addTranslation('dv', 'title', 'Mee dhivehi title eh');
 
@@ -547,7 +547,7 @@ class IsDbTranslatableTest extends TestCase
     {
         $post = Post::factory()->withAuthor()->create([
             'lang'  => 'en',
-            'title' => 'This is an English title'
+            'title' => 'This is an English title',
         ]);
 
         app()->setLocale('dv');
@@ -647,8 +647,8 @@ class IsDbTranslatableTest extends TestCase
             'lang' => null,
         ]);
 
-        $post->slug = "mee-dhivehi-slug-eh";
-        $post->title = "Mee dhivehi title eh";
+        $post->slug = 'mee-dhivehi-slug-eh';
+        $post->title = 'Mee dhivehi title eh';
 
         $this->assertEquals('dv', $post->lang);
         $this->assertEquals('Mee dhivehi title eh', $post->title);
@@ -696,7 +696,7 @@ class IsDbTranslatableTest extends TestCase
         $this->expectException(CannotDeletePrimaryTranslationException::class);
         $post = Post::factory()->withAuthor()->create([
             'lang'  => 'en',
-            'title' => 'This is an English title'
+            'title' => 'This is an English title',
         ]);
 
         $post->addTranslations('dv', [

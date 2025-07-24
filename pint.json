@@ -1,5 +1,5 @@
 {
-    "preset": "per",
+    "preset": "laravel",
     "rules": {
         "align_multiline_comment": true,
         "array_indentation": true,
@@ -8,10 +8,14 @@
         "blank_line_after_opening_tag": true,
         "combine_consecutive_issets": true,
         "combine_consecutive_unsets": true,
+        "binary_operator_spaces": {
+            "operators": {
+                "=>" : "align"
+            }
+        },
         "concat_space": {
             "spacing": "one"
         },
-        "declare_parentheses": true,
         "explicit_string_variable": true,
         "fully_qualified_strict_types": true,
         "global_namespace_import": {
@@ -25,7 +29,9 @@
         "mb_str_functions": true,
         "method_chaining_indentation": true,
         "modernize_strpos": true,
-        "new_with_braces": true,
+        "new_with_braces": {
+            "anonymous_class": false
+        },
         "no_empty_comment": true,
         "not_operator_with_space": true,
         "ordered_traits": true,
@@ -42,7 +48,10 @@
         },
         "modernize_types_casting": true,
         "no_superfluous_elseif": true,
+        "no_superfluous_phpdoc_tags": true,
         "no_useless_else": true,
+        "phpdoc_trim": true,
+        "no_trailing_whitespace_in_comment": true,
         "nullable_type_declaration_for_default_null_value": true,
         "ordered_imports": {
             "sort_algorithm": "alpha"

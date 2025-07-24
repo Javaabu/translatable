@@ -2,15 +2,13 @@
 
 namespace Javaabu\Translatable;
 
-use \Javaabu\Translatable\Facades\Languages as LanguagesFacade;
+use Javaabu\Translatable\Facades\Languages as LanguagesFacade;
 use Javaabu\Translatable\Models\Language;
 
 class Translatable
 {
     /**
      * Return all the translation locales allowed in the config file
-     *
-     * @return array
      */
     public function getAllowedTranslationLocales(): array
     {
@@ -21,9 +19,6 @@ class Translatable
 
     /**
      * Check if a given locale is allowed to translate to
-     *
-     * @param  Language|string  $locale
-     * @return bool
      */
     public function isAllowedTranslationLocale(Language|string $locale): bool
     {

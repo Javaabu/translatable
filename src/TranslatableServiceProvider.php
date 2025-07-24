@@ -48,23 +48,25 @@ class TranslatableServiceProvider extends ServiceProvider
                 $cache_manager,
                 $cache_expiration_time,
                 $cache_key,
-                $cache_driver
+                $cache_driver,
             );
         });
 
         // Register the translatable macros for URL generation
         Redirect::macro('translateRoute', function ($routeName, $parameters = [], $status = 302, $headers = []) {
             $url = translate_route($routeName, $parameters);
+
             return redirect()->to($url, $status, $headers);
         });
 
         Redirect::macro('translateAction', function ($action, $parameters = [], $status = 302, $headers = []) {
             $url = translate_action($action, $parameters);
+
             return redirect()->to($url, $status, $headers);
         });
 
         Request::macro('portal', function (): string {
-            $req         = request();
+            $req = request();
             $adminDomain = config('app.admin_domain');          // e.g. 'admin.ncs.test' or null
             $adminPrefix = config('app.admin_prefix', 'admin'); // e.g. 'admin'
 
@@ -105,7 +107,6 @@ class TranslatableServiceProvider extends ServiceProvider
         });
         $this->app->alias(Translatable::class, 'translatable');
 
-
         $this->app->singleton(Languages::class, function () {
             return new Languages();
         });
@@ -115,8 +116,6 @@ class TranslatableServiceProvider extends ServiceProvider
     /**
      * Database Migration Macros that can be used instead
      * of calling the static functions directly.
-     *
-     * @return void
      */
     public function registerDatabaseMacros(): void
     {
@@ -140,8 +139,6 @@ class TranslatableServiceProvider extends ServiceProvider
 
     /**
      * Offer publishing
-     *
-     * @return void
      */
     public function offerPublishing(): void
     {
@@ -176,8 +173,6 @@ class TranslatableServiceProvider extends ServiceProvider
 
     /**
      * Register route model binding with the given language class
-     *
-     * @return void
      */
     public function registerRouteModelBindings(): void
     {
@@ -195,7 +190,7 @@ class TranslatableServiceProvider extends ServiceProvider
         $migrationsPath = 'migrations/' . dirname($migrationFileName) . '/';
         $migrationFileName = basename($migrationFileName);
 
-        $len = strlen($migrationFileName) + 4;
+        $len = mb_strlen($migrationFileName) + 4;
 
         if (Str::contains($migrationFileName, '/')) {
             $migrationsPath .= Str::of($migrationFileName)->beforeLast('/')->finish('/');
@@ -203,7 +198,7 @@ class TranslatableServiceProvider extends ServiceProvider
         }
 
         foreach (glob(database_path("{$migrationsPath}*.php")) as $filename) {
-            if ((substr($filename, -$len) === $migrationFileName . '.php')) {
+            if ((mb_substr($filename, -$len) === $migrationFileName . '.php')) {
                 return $filename;
             }
         }

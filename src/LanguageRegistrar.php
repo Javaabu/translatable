@@ -2,6 +2,8 @@
 
 namespace Javaabu\Translatable;
 
+use function array_key_exists;
+
 use DateInterval;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Cache\Repository;
@@ -12,33 +14,32 @@ use Javaabu\Translatable\Models\Language;
 class LanguageRegistrar
 {
     protected Repository $cache;
+
     protected CacheManager $cache_manager;
+
     protected string $language_class;
-    protected Collection|null $languages = null;
+
+    protected ?Collection $languages = null;
+
     public static int|DateInterval $cache_expiration_time;
+
     public static string $cache_key;
+
     public static string $cache_driver;
 
     /**
      * PermissionRegistrar constructor.
-     *
-     * @param  string                 $language_class
-     * @param  CacheManager           $cache_manager
-     * @param  DateInterval|int|null  $cache_expiration_time
-     * @param  string|null            $cache_key
-     * @param  string|null            $cache_driver
      */
     public function __construct(
-        string           $language_class,
-        CacheManager     $cache_manager,
-        DateInterval|int $cache_expiration_time = null,
-        string           $cache_key = null,
-        string           $cache_driver = null
-    )
-    {
+        string $language_class,
+        CacheManager $cache_manager,
+        DateInterval|int|null $cache_expiration_time = null,
+        ?string $cache_key = null,
+        ?string $cache_driver = null,
+    ) {
         $this->language_class = $language_class;
         $this->cache_manager = $cache_manager;
-        static::$cache_expiration_time = $cache_expiration_time ?? \DateInterval::createFromDateString('24 hours');
+        static::$cache_expiration_time = $cache_expiration_time ?? DateInterval::createFromDateString('24 hours');
         static::$cache_key = $cache_key ?? 'languages_cache';
 
         static::$cache_driver = $cache_driver ?? 'default';
@@ -48,8 +49,6 @@ class LanguageRegistrar
 
     /**
      * Get the cache store driver
-     *
-     * @return Repository
      */
     protected function getCacheStoreFromConfig(): Repository
     {
@@ -62,7 +61,7 @@ class LanguageRegistrar
         }
 
         // if an undefined cache store is specified, fallback to 'array' which is Laravel's closest equiv to 'none'
-        if (!\array_key_exists($cache_driver, config('cache.stores'))) {
+        if ( ! array_key_exists($cache_driver, config('cache.stores'))) {
             $cache_driver = 'array';
         }
 
@@ -81,10 +80,6 @@ class LanguageRegistrar
 
     /**
      * Get the languages based on the passed params.
-     *
-     * @param  array  $params
-     *
-     * @return Collection
      */
     public function getLanguages(array $params = []): Collection
     {
@@ -113,8 +108,6 @@ class LanguageRegistrar
 
     /**
      * Get an instance of the language class.
-     *
-     * @return Language
      */
     public function getLanguageClass(): Language
     {
@@ -123,8 +116,6 @@ class LanguageRegistrar
 
     /**
      * Get the instance of the Cache Store.
-     *
-     * @return Store
      */
     public function getCacheStore(): Store
     {

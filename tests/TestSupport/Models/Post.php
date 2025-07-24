@@ -12,8 +12,8 @@ use Javaabu\Translatable\Tests\TestSupport\Factories\PostFactory;
 
 class Post extends Model implements Translatable
 {
-    use IsDbTranslatable;
     use HasFactory;
+    use IsDbTranslatable;
     use SoftDeletes;
 
     protected $fillable = [
@@ -21,7 +21,7 @@ class Post extends Model implements Translatable
         'slug',
         'body',
         'author_id',
-        'lang'
+        'lang',
     ];
 
     protected static function newFactory(): PostFactory
@@ -38,14 +38,14 @@ class Post extends Model implements Translatable
     {
         return [
             'title',
-            'body'
+            'body',
         ];
     }
 
     public function getNonTranslatablePivots(): array
     {
         return [
-            'author_id'
+            'author_id',
         ];
     }
 }

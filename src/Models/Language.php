@@ -18,15 +18,11 @@ class Language extends Model implements AdminModel
 
     /**
      * The attributes that would be logged
-     *
-     * @var array
      */
     protected static array $logAttributes = ['*'];
 
     /**
      * Changes to these attributes only will not trigger a log
-     *
-     * @var array
      */
     protected static array $ignoreChangedAttributes = ['created_at', 'updated_at'];
 
@@ -91,8 +87,6 @@ class Language extends Model implements AdminModel
 
     /**
      * Get default translation locale
-     *
-     * @return string
      */
     public static function getDefaultTranslationLocale(): string
     {
@@ -101,8 +95,6 @@ class Language extends Model implements AdminModel
 
     /**
      * Get default translation locale
-     *
-     * @return string
      */
     public static function getDefaultAppLocale(): string
     {

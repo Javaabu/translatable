@@ -2,7 +2,4 @@
 
 namespace Javaabu\Translatable\Contracts;
 
-interface JsonTranslatable extends Translatable
-{
-
-}
+interface JsonTranslatable extends Translatable {}

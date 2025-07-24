@@ -2,7 +2,7 @@
 
 return [
     // Allows for custom models
-    'language_model'                 => \Javaabu\Translatable\Models\Language::class,
+    'language_model'                 => Javaabu\Translatable\Models\Language::class,
 
     // Standard fields to be ignored for translation on all models
     'fields_ignored_for_translation' => [
@@ -21,7 +21,7 @@ return [
 
     // Cache configuration for the Language Registrar
     'cache'                          => [
-        'expiration_time' => \DateInterval::createFromDateString('24 hours'),
+        'expiration_time' => DateInterval::createFromDateString('24 hours'),
         'key'             => 'translation.languages.cache',
         'driver'          => 'default',
     ],
@@ -29,9 +29,9 @@ return [
     'styles' => [
         'table-cell-wrapper' => 'd-flex justify-content-center align-items-center',
 
-        'icons' => [
+        'icons'              => [
             'add'  => 'fas fa-plus',
             'edit' => 'fas fa-edit',
-        ]
-    ]
+        ],
+    ],
 ];

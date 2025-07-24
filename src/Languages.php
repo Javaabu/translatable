@@ -19,11 +19,11 @@ class Languages
 
     public function except($code): Collection
     {
-        if (! is_array($code)) {
+        if ( ! is_array($code)) {
             $code = [$code];
         }
 
-        if (! $code) {
+        if ( ! $code) {
             return $this->all();
         }
 
@@ -34,13 +34,10 @@ class Languages
 
     /**
      * Get a single language
-     *
-     * @param  string|null  $code
-     * @return Language|null
      */
-    public function get(string $code = null): Language|null
+    public function get(?string $code = null): ?Language
     {
-        if (!$code) {
+        if ( ! $code) {
             $code = $this->currentLanguageCode();
         }
 
@@ -49,27 +46,21 @@ class Languages
 
     /**
      * Get direction for a language
-     *
-     * @param  string|null  $code
-     * @return string
      */
-    public function getDirection(string $code = null): string
+    public function getDirection(?string $code = null): string
     {
         return $this->get($code)?->is_rtl ? 'rtl' : 'ltr';
     }
 
-    public function isRtl(string $code = null): bool
+    public function isRtl(?string $code = null): bool
     {
         return $this->getDirection($code) === 'rtl';
     }
 
     /**
      * Check if a given language is a valid language
-     *
-     * @param  string|null  $code
-     * @return bool
      */
-    public function has(string $code = null): bool
+    public function has(?string $code = null): bool
     {
         return $this->get($code) !== null;
     }
@@ -81,8 +72,6 @@ class Languages
 
     /**
      * Get current language code
-     *
-     * @return string
      */
     public function currentLanguageCode(): string
     {
@@ -91,8 +80,6 @@ class Languages
 
     /**
      * Set the app locale to the default translation locale
-     *
-     * @return void
      */
     public function setToTranslationLocale(): void
     {
@@ -101,8 +88,6 @@ class Languages
 
     /**
      * Get default language code
-     *
-     * @return string
      */
     public function defaultLanguageCode(): string
     {
@@ -111,8 +96,6 @@ class Languages
 
     /**
      * Set the app locale to the app locale
-     *
-     * @return void
      */
     public function setToAppLocale(): void
     {
@@ -121,8 +104,6 @@ class Languages
 
     /**
      * Get default app locale
-     *
-     * @return string
      */
     public function defaultAppLocale(): string
     {
@@ -131,9 +112,6 @@ class Languages
 
     /**
      * Check if the language is the current language
-     *
-     * @param  string|Language  $code
-     * @return bool
      */
     public function isCurrent(string|Language $code): bool
     {
@@ -146,20 +124,16 @@ class Languages
         return $code === $current;
     }
 
-
     /**
      * Check if the language is the default
-     *
-     * @param  string|Language|null  $code
-     * @return bool
      */
-    public function isDefault(string|Language $code = null): bool
+    public function isDefault(string|Language|null $code = null): bool
     {
         if ($code instanceof Language) {
             $code = $code->code;
         }
 
-        if (!$code) {
+        if ( ! $code) {
             $code = $this->currentLanguageCode();
         }
 

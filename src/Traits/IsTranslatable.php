@@ -10,6 +10,7 @@ use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Facades\Translatable;
 use Javaabu\Translatable\Models\Language;
+use Schema;
 
 trait IsTranslatable
 {
@@ -22,30 +23,25 @@ trait IsTranslatable
 
     /**
      * Get all fields including pivots and fields ignored for translation
-     *
-     * @return array
      */
     public function getAllAttributes(): array
     {
-        return \Schema::getColumnListing($this->getTable());
+        return Schema::getColumnListing($this->getTable());
     }
 
     /**
      * Get non-translatable fields without pivots and fields ignored for translation
      *
      * Use `getAllNonTranslatables` to get non translatables including pivots and fields ignored for translation
-     *
-     * @return array
      */
     public function getNonTranslatables(): array
     {
         $all_fields = $this->getAllAttributes();
 
-
         $hide = array_merge(
             $this->getTranslatables(),
             $this->getFieldsIgnoredForTranslation(),
-            $this->getNonTranslatablePivots()
+            $this->getNonTranslatablePivots(),
         );
 
         return array_values(array_diff($all_fields, $hide));
@@ -53,23 +49,18 @@ trait IsTranslatable
 
     /**
      * Get all non-translatable fields, including pivots and fields ignored for translation
-     *
-     * @return array
      */
     public function getAllNonTranslatables(): array
     {
         return array_merge(
             $this->getNonTranslatables(),
             $this->getFieldsIgnoredForTranslation(),
-            $this->getNonTranslatablePivots()
+            $this->getNonTranslatablePivots(),
         );
     }
 
     /**
      * Check if relation is a non translatable pivot
-     *
-     * @param  string  $relation
-     * @return bool
      */
     public function isNonTranslatablePivot(string $relation): bool
     {
@@ -78,9 +69,6 @@ trait IsTranslatable
 
     /**
      * Check if a given locale is the current default locale
-     *
-     * @param  string  $locale
-     * @return bool
      */
     public function isDefaultTranslationLocale(string $locale): bool
     {
@@ -89,9 +77,6 @@ trait IsTranslatable
 
     /**
      * Check if a given locale is allowed to translate to
-     *
-     * @param  string  $locale
-     * @return bool
      */
     public function isAllowedTranslationLocale(string $locale): bool
     {
@@ -100,8 +85,6 @@ trait IsTranslatable
 
     /**
      * Return all the translation locales allowed in the config file
-     *
-     * @return array
      */
     public function getAllowedTranslationLocales(): array
     {
@@ -110,20 +93,17 @@ trait IsTranslatable
 
     /**
      * Check if a given field is translatable
-     *
-     * @param  string  $field
-     * @return bool
      */
     public function isTranslatable(string $field): bool
     {
-//        $languageCodes = Languages::all()->pluck('code')->all();
-//
-//        foreach ($languageCodes as $code) {
-//            if (str_ends_with($field, "_$code")) {
-//                $field = substr($field, 0, -strlen("_$code"));
-//                break;
-//            }
-//        }
+        //        $languageCodes = Languages::all()->pluck('code')->all();
+        //
+        //        foreach ($languageCodes as $code) {
+        //            if (str_ends_with($field, "_$code")) {
+        //                $field = substr($field, 0, -strlen("_$code"));
+        //                break;
+        //            }
+        //        }
 
         return in_array($field, $this->getTranslatables());
     }
@@ -131,14 +111,13 @@ trait IsTranslatable
     /**
      * Bulk add translatable fields
      *
-     * @param  string  $locale
-     * @param  array   $fields
      * @return $this
+     *
      * @throws LanguageNotAllowedException|FieldNotAllowedException
      */
     public function addTranslations(string $locale, array $fields): static
     {
-        if (!$this->isAllowedTranslationLocale($locale)) {
+        if ( ! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
@@ -153,28 +132,23 @@ trait IsTranslatable
      * Get the field and locale for a given attribute if possible
      *
      * <code>'title_en'</code> would return <code>['title', 'en']</code>
-     *
-     * @param  string  $key
-     * @return array
      */
     public function getFieldAndLocale(string $key): array
     {
         $locale = Str::afterLast($key, '_');
 
-        if (empty($locale) || (!$this->isAllowedTranslationLocale($locale))) {
+        if (empty($locale) || ( ! $this->isAllowedTranslationLocale($locale))) {
             return [$key, null];
         }
 
         $field = Str::beforeLast($key, '_');
+
         return [$field, $locale];
     }
 
     /**
      * Suffix the translatable fields in the given array
      * with the language codes
-     *
-     * @param  array  $attributes
-     * @return array
      */
     public function suffixTranslatables(array $attributes): array
     {
@@ -197,9 +171,6 @@ trait IsTranslatable
 
     /**
      * Helper to check if a form field should be disabled or not
-     *
-     * @param  string  $field
-     * @return bool
      */
     public function isFormFieldDisabled(string $field): bool
     {
@@ -207,15 +178,11 @@ trait IsTranslatable
             return false;
         }
 
-        return !in_array($field, $this->getTranslatables());
+        return ! in_array($field, $this->getTranslatables());
     }
 
     /**
      * Set translation attribute value
-     *
-     * @param  string           $attribute
-     * @param  Language|string  $locale
-     * @param                   $translation
      */
     public function setTranslationAttributeValue(string $attribute, Language|string $locale, $translation): void
     {
@@ -236,7 +203,7 @@ trait IsTranslatable
     public function getAttribute($key): mixed
     {
         // Add support for compoships
-        if (is_array($key)) { //Check for multi-columns relationship
+        if (is_array($key)) { // Check for multi-columns relationship
             return array_map(function ($k) {
                 // recursive call with a string
                 return self::getAttribute($k);
@@ -254,7 +221,7 @@ trait IsTranslatable
             return $this->translate(
                 $field,
                 $locale,
-            // config('translatable.lang_suffix_should_fallback', false)
+                // config('translatable.lang_suffix_should_fallback', false)
             );
         }
 
@@ -284,7 +251,7 @@ trait IsTranslatable
         $lang = $this->getAttribute('lang');
         $locale = app()->getLocale();
         if (empty($lang)) {
-            parent::setAttribute("lang", $locale);
+            parent::setAttribute('lang', $locale);
             $lang = $locale;
         }
         if ($locale !== $lang && $this->isTranslatable($field)) {
@@ -303,13 +270,12 @@ trait IsTranslatable
         $this->skipTranslation = true;
         $result = $this->setAttribute($key, $value);
         $this->skipTranslation = false;
+
         return $result;
     }
 
     /**
      * Get the locale direction (ltr or rtl)
-     *
-     * @return Attribute
      */
     public function localeDirection(): Attribute
     {
@@ -318,7 +284,7 @@ trait IsTranslatable
         });
     }
 
-    public function languageSwitcherRouteName(): null|string
+    public function languageSwitcherRouteName(): ?string
     {
         return null;
     }

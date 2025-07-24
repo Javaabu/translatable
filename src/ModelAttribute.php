@@ -5,12 +5,9 @@ namespace Javaabu\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Javaabu\Translatable\Contracts\Translatable;
 
-
 class ModelAttribute
 {
-    public function __construct(public Model $model, public string $attribute)
-    {
-    }
+    public function __construct(public Model $model, public string $attribute) {}
 
     public function __toString(): string
     {

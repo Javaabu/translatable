@@ -11,10 +11,10 @@ use PHPUnit\Framework\Attributes\Test;
 
 class LocaleMiddlewareTest extends TestCase
 {
-    use RefreshDatabase;
     use MakesHttpRequests;
+    use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

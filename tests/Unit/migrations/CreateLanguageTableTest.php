@@ -14,7 +14,7 @@ class CreateLanguageTableTest extends TestCase
     #[Test]
     public function it_can_migrate_up_languages_table()
     {
-//        self::markTestIncomplete();
+        //        self::markTestIncomplete();
         $this->withoutExceptionHandling();
         $this->assertTrue(Schema::hasTable('languages'));
         $this->assertTrue(Schema::hasColumn('languages', 'name'));

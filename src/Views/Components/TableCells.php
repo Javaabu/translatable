@@ -14,11 +14,10 @@ class TableCells extends Component
 
     public function __construct(
         public Translatable $model,
-        public string       $route_name = '',
-        public array        $route_params = [],
-        public string       $create_url = ''
-    )
-    {
+        public string $route_name = '',
+        public array $route_params = [],
+        public string $create_url = '',
+    ) {
         $this->languages = Languages::allExceptCurrent();
     }
 
@@ -33,7 +32,7 @@ class TableCells extends Component
         return translate_route(
             filled($this->route_name) ? $this->route_name : $this->model->getRouteName() . '.' . $action,
             $params,
-            locale: $locale
+            locale: $locale,
         );
     }
 

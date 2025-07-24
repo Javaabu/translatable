@@ -15,7 +15,7 @@ class IsJsonTranslatableTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         Language::create([
@@ -163,8 +163,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertEquals('Mee dhivehi title eh', $article->translate('title', 'dv'));
@@ -204,7 +204,7 @@ class IsJsonTranslatableTest extends TestCase
                     'slug'  => 'mee-dhivehi-slug-eh',
                     'body'  => 'Mee dhivehi liyumeh',
                 ],
-            ]
+            ],
         ]);
 
         $this->assertEquals('This is an English title', $article->translate('title', 'jp'));
@@ -230,8 +230,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertEquals('Mee dhivehi title eh', $article->title_dv);
@@ -255,8 +255,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $tmp = app()->getLocale();
@@ -280,8 +280,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertTrue($article->isTranslatable('title'));
@@ -301,8 +301,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         // check if it can clear language that doesn't exist
@@ -329,8 +329,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $article->clearTranslations();
@@ -354,8 +354,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertFalse($article->hasTranslation('fr'));
@@ -381,8 +381,8 @@ class IsJsonTranslatableTest extends TestCase
                     'title' => 'Kore wa taitorudesu',
                     'slug'  => 'kore-wa-namekujidesu',
                     'body'  => 'Kore wa kijidesu',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertFalse($article->isDefaultTranslationLocale('fr'));
@@ -399,13 +399,13 @@ class IsJsonTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
 
-//        $translation = $article->addTranslation('dv', [
-//            'title' => 'Mee dhivehi title eh',
-//            'slug' => 'mee-dhivehi-slug-eh',
-//            'body' => 'Mee dhivehi liyumeh',
-//        ]);
-//
-//        $translation->save();
+        //        $translation = $article->addTranslation('dv', [
+        //            'title' => 'Mee dhivehi title eh',
+        //            'slug' => 'mee-dhivehi-slug-eh',
+        //            'body' => 'Mee dhivehi liyumeh',
+        //        ]);
+        //
+        //        $translation->save();
 
         $article->addTranslation('dv', 'title', 'Mee dhivehi title eh');
 
@@ -519,7 +519,7 @@ class IsJsonTranslatableTest extends TestCase
             'lang' => null,
         ]);
 
-        $article->slug = "mee-dhivehi-slug-eh";
+        $article->slug = 'mee-dhivehi-slug-eh';
         $article->addTranslations('dv', [
             'title' => 'Mee dhivehi title eh',
         ]);
@@ -570,7 +570,7 @@ class IsJsonTranslatableTest extends TestCase
         $this->expectException(CannotDeletePrimaryTranslationException::class);
         $article = Article::factory()->withAuthor()->create([
             'lang'  => 'en',
-            'title' => 'This is an English title'
+            'title' => 'This is an English title',
         ]);
 
         $article->addTranslations('dv', [
@@ -588,7 +588,7 @@ class IsJsonTranslatableTest extends TestCase
         $article = new Article();
         $attributes = [
             'title' => 'Test Title',
-            'body' => 'Test Body',
+            'body'  => 'Test Body',
         ];
         $article->fill($attributes);
         $this->assertEquals('Test Title', $article->title);
@@ -601,8 +601,8 @@ class IsJsonTranslatableTest extends TestCase
         $article = new Article();
         $attributes = [
             'title' => 'Test Title',
-            'body' => 'Test Body',
-            'slug' => 'test-title',
+            'body'  => 'Test Body',
+            'slug'  => 'test-title',
         ];
         $article->fill($attributes);
         $this->assertEquals('Test Title', $article->title);

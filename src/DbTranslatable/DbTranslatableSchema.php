@@ -15,7 +15,6 @@ class DbTranslatableSchema
 
     public static function revert(Blueprint $table): void
     {
-//        $table->dropForeign('translatable_parent_id');
         $table->dropIndex($table->getTable() . '_lang_index');
 
         $table->dropColumn(['translatable_parent_id', 'lang']);

@@ -12,10 +12,9 @@ class LanguageFacadeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-
 
         Language::create([
             'name'   => 'English',

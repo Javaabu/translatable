@@ -12,10 +12,6 @@ class LocaleMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @param  Closure  $next
-     * @return mixed
      */
     public function handle(Request $request, Closure $next): mixed
     {
@@ -25,7 +21,6 @@ class LocaleMiddleware
             $locale = $this->getDefaultLocale();
         }
 
-
         $this->setUserLocale($locale, $request);
 
         return $next($request);
@@ -33,9 +28,6 @@ class LocaleMiddleware
 
     /**
      * Get the user locale
-     *
-     * @param  Request  $request
-     * @return Language|string|null
      */
     protected function getUserLocale(Request $request): Language|string|null
     {
@@ -46,7 +38,7 @@ class LocaleMiddleware
             return $locale;
         }
 
-        if (!is_api_request($request)) {
+        if ( ! is_api_request($request)) {
             // then try the session
             $locale = $this->getLocaleFromSession($request);
             if ($locale) {
@@ -59,9 +51,6 @@ class LocaleMiddleware
 
     /**
      * Get the locale from the route
-     *
-     * @param  Request  $request
-     * @return Language|null
      */
     protected function getLocaleFromRequest(Request $request): ?Language
     {
@@ -69,7 +58,7 @@ class LocaleMiddleware
             ?: $request->input('language')
                 ?: $request->query('lang');
 
-        if (!$locale || !TranslatableFacade::isAllowedTranslationLocale($locale)) {
+        if ( ! $locale || ! TranslatableFacade::isAllowedTranslationLocale($locale)) {
             return null;
         }
 
@@ -78,9 +67,6 @@ class LocaleMiddleware
 
     /**
      * Get the locale from the session
-     *
-     * @param  Request  $request
-     * @return string|null
      */
     protected function getLocaleFromSession(Request $request): ?string
     {
@@ -89,8 +75,6 @@ class LocaleMiddleware
 
     /**
      * Get the default locale
-     *
-     * @return string
      */
     protected function getDefaultLocale(): string
     {
@@ -99,9 +83,6 @@ class LocaleMiddleware
 
     /**
      * Set the user locale
-     *
-     * @param           $locale
-     * @param  Request  $request
      */
     protected function setUserLocale($locale, Request $request): void
     {
@@ -110,7 +91,7 @@ class LocaleMiddleware
             $locale = $locale->code;
         }
 
-        if (!is_api_request($request)) {
+        if ( ! is_api_request($request)) {
             $request->session()->put('language', $locale);
         }
 

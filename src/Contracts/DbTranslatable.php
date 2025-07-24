@@ -11,5 +11,4 @@ interface DbTranslatable extends Translatable
     public function getTranslation(?string $locale = null): ?static;
 
     public function isDefaultTranslation(): bool;
-
 }
