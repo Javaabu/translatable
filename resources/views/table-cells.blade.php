@@ -8,7 +8,7 @@
                 </a>
             @else
                 <a class="actions__item text-decoration-none {{ config('translatable.styles.icons.add') }}"
-                   href="{{ $getUrl('edit', $language->code) }}"
+                   href="{{ $getUrl($isModelDbTranslatable() ? 'create' : 'edit', $language->code) }}"
                    title="{{ _d('Add Translation') }}">
                 </a>
             @endif
