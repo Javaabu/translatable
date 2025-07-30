@@ -249,9 +249,9 @@ trait IsDbTranslatable
         return empty($this->translatable_parent_id);
     }
 
-    public function scopeRootTranslations(Builder $builder): Builder
+    public function scopeRootTranslations(Builder $query): Builder
     {
-        return $builder->whereNull('translatable_parent_id');
+        return $query->whereNull('translatable_parent_id');
     }
 
     /**
