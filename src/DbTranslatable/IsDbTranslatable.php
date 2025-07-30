@@ -2,6 +2,7 @@
 
 namespace Javaabu\Translatable\DbTranslatable;
 
+use Illuminate\Database\Eloquent\Builder;
 use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
@@ -246,6 +247,11 @@ trait IsDbTranslatable
     public function isRootTranslation(): bool
     {
         return empty($this->translatable_parent_id);
+    }
+
+    public function scopeRootTranslations(Builder $builder)
+    {
+        return $builder->whereNull('translatable_parent_id');
     }
 
     /**
