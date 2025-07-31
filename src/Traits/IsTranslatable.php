@@ -221,7 +221,7 @@ trait IsTranslatable
             return $this->translate(
                 $field,
                 $locale,
-                // config('translatable.lang_suffix_should_fallback', false)
+                config('translatable.lang_suffix_should_fallback', false)
             );
         }
 

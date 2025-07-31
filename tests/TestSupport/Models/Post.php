@@ -48,4 +48,14 @@ class Post extends Model implements Translatable
             'author_id',
         ];
     }
+
+    public function getRouteName(): string
+    {
+        return 'posts';
+    }
+
+    public function getRouteParams(): array
+    {
+        return ['post' => $this->id];
+    }
 }

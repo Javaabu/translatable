@@ -47,4 +47,14 @@ class Article extends Model implements Translatable
             'author_id',
         ];
     }
+
+    public function getRouteName(): string
+    {
+        return 'articles';
+    }
+
+    public function getRouteParams(): array
+    {
+        return ['article' => $this->id];
+    }
 }
