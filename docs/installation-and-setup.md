@@ -3,30 +3,54 @@ title: Installation & Setup
 sidebar_position: 1.2
 ---
 
-# Installation
+# Installation & Setup
 
-You can install the package via composer:
+Getting started with Translatable is a straightforward process. This guide will walk you through installing the package, configuring it, and setting up your models to be translatable.
+
+## 1. Installation
+
+First, pull the package into your project using Composer:
 
 ```bash
 composer require javaabu/translatable
 ```
 
-# Publishing the config file
+Laravel's package auto-discovery feature will automatically register the necessary service provider.
 
-Publishing the config file is optional:
+## 2. Publishing Assets
+
+Next, you'll need to publish the package's assets. This includes migrations, configuration files, and optional views.
+
+### Migrations
+
+Publish the migrations file, which will add a `languages` table to your database:
+
+```bash
+php artisan vendor:publish --provider="Javaabu\Translatable\TranslatableServiceProvider" --tag="translatable-migrations"
+```
+
+After publishing, run the migration to create the table:
+
+```bash
+php artisan migrate
+```
+
+### Configuration File (Optional)
+
+If you need to customize the package's behavior, you can publish the configuration file:
 
 ```bash
 php artisan vendor:publish --provider="Javaabu\Translatable\TranslatableServiceProvider" --tag="translatable-config"
 ```
 
-This is the default content of the config file:
+This will create a `config/translatable.php` file. Here's an overview of the available options:
 
-```php
+```php title="config/translatable.php"
 return [
-    // Allows for custom models
-    'language_model' => \Javaabu\Translatable\Models\Language::class,
+    // Specify a custom model for languages if you need to extend the default one.
+    'language_model'                 => Javaabu\Translatable\Models\Language::class,
 
-    // Standard fields to be ignored for translation on all models
+    // Define fields that should never be translated on any model.
     'fields_ignored_for_translation' => [
         'id',
         'lang',
@@ -35,42 +59,63 @@ return [
         'deleted_at',
     ],
 
-    // Whether attr_dv should fall back to app locale if translations do not exist
-    'lang_suffix_should_fallback' => false,
+    // Set to `true` if you want suffixed attributes (e.g., `title_dv`) to fall back
+    // to the default application locale if a translation doesn't exist.
+    'lang_suffix_should_fallback'    => false,
 
-    // Default locale before translations are added
-    'default_locale' => 'en',
+    // The default locale to use before any translations are added.
+    'default_locale'                 => 'en',
+
+    // Cache configuration for the Language Registrar, which stores language lists.
+    'cache'                          => [
+        'expiration_time' => DateInterval::createFromDateString('24 hours'),
+        'key'             => 'translation.languages.cache',
+        'driver'          => 'default',
+    ],
+
+    // CSS classes for styling the Blade components.
+    'styles' => [
+        'table-cell-wrapper' => 'd-flex justify-content-center align-items-center',
+
+        'icons'              => [
+            'add'  => 'fas fa-plus',
+            'edit' => 'fas fa-edit',
+        ],
+    ],
 ];
-
-
 ```
 
-# Setup
+## 3. Making Your Models Translatable
 
+Now for the fun part! To make an Eloquent model translatable, you need to perform two steps: update its migration and add a trait to the model itself.
 
-Translatables currently provides **two** different types of translatables, `Db` and `Json`. Check out [Difference between DB and JSON translatable](./basic-usage/difference-isdbtranslatable-isjsontranslatable.md) to learn the differences and design considerations for both
+Translatable offers two strategies for storing translations:
 
-## Setting up your migrations
+- **Database-based (`DbTranslatable`):** Stores each language as a new row in the model's table. Better for complex queries and indexing.
+- **JSON-based (`JsonTranslatable`):** Stores all translations in a single JSON column. Simpler and requires fewer database queries.
 
-If you are setting up a new model, you can simply add either `$table->dbTranslatable();` or `$table->jsonTranslatable();` into your migration schema create function.
-
-:::warning
-
-Use one or the other, **DON'T use both at the same time**.
-
+:::tip
+To understand the pros and cons of each approach, check out the [Difference between DB and JSON translatable](./basic-usage/difference-isdbtranslatable-isjsontranslatable.md) page.
 :::
 
-```php
-use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
+### Step 3.1: Update the Migration
+
+You need to add the necessary columns to your model's table. Choose **one** of the following methods.
+
+```php title="database/migrations/your_create_model_table.php"
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('author');
+            // ... other columns
 
-            // ...
-
+            // Choose one of the following:
             $table->dbTranslatable();
             // OR
             $table->jsonTranslatable();
@@ -84,48 +129,59 @@ return new class extends Migration {
 };
 ```
 
-Or if you have already made the model, you can write a migration to add the columns to the existing table.
+If you have an existing table, you can create a new migration to add the columns:
 
 ```php
-use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
-
-return new class extends Migration {
-    public function up(): void
-    {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->dbTranslatable();
-            // OR
-            $table->jsonTranslatable();
-        });
-    }
-
-    public function down(): void
-    {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropDbTranslatable();
-            // OR
-            $table->dropJsonTranslatable();
-        });
-    }
-};
+Schema::table('posts', function (Blueprint $table) {
+    // Choose one
+    $table->dbTranslatable();
+    // OR
+    $table->jsonTranslatable();
+});
 ```
 
-## Setting up your models
+### Step 3.2: Update the Model
 
+Finally, implement the correct contract and add the corresponding trait to your model. Again, choose the setup that matches the migration you created.
 
-All you need to do is add the `Translatable` implementation using the `IsDbTranslatable` or `IsJsonTranslatable` trait.
+#### For DB-based Translations
 
-```php
-...
-use Javaabu\Translatable\Contracts\Translatable;use Javaabu\Translatable\DbTranslatable\IsDbTranslatable;
+If you used `$table->dbTranslatable()`, your model should implement the `DbTranslatable` contract and use the `IsDbTranslatable` trait.
 
-class Post extends Model implements Translatable
+```php title="app/Models/Post.php"
+use Illuminate\Database\Eloquent\Model;
+use Javaabu\Translatable\Contracts\DbTranslatable as DbTranslatableContract;
+use Javaabu\Translatable\DbTranslatable\IsDbTranslatable;
+
+class Post extends Model implements DbTranslatableContract
 {
     use IsDbTranslatable;
-    // OR
-    use IsJsonTranslatable;
 
-...
+    // ... your model properties
+
+    // IMPORTANT: Add the fields you want to translate here
+    public array $translatable = ['title', 'content'];
+}
 ```
 
-Once this is setup, you are good to go!
+#### For JSON-based Translations
+
+If you used `$table->jsonTranslatable()`, your model should implement the `JsonTranslatable` contract and use the `IsJsonTranslatable` trait.
+
+```php title="app/Models/Post.php"
+use Illuminate\Database\Eloquent\Model;
+use Javaabu\Translatable\Contracts\JsonTranslatable as JsonTranslatableContract;
+use Javaabu\Translatable\JsonTranslatable\IsJsonTranslatable;
+
+class Post extends Model implements JsonTranslatableContract
+{
+    use IsJsonTranslatable;
+
+    // ... your model properties
+
+    // IMPORTANT: Add the fields you want to translate here
+    public array $translatable = ['title', 'content'];
+}
+```
+
+And that's it! Your model is now set up for translations. You can start adding and fetching translated attributes right away.
