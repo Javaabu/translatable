@@ -210,9 +210,12 @@ trait IsTranslatable
             }, $key);
         }
 
-        // translate using current app locale if possible
+        // Translate using the current app locale if possible
         if ($this->isTranslatable($key)) {
-            return $this->translate($key, app()->currentLocale());
+            $translated_value = $this->translate($key, app()->currentLocale());
+
+            // Return translated value if not null, otherwise fallback to original value
+            return $translated_value ?? parent::getAttribute($key);
         }
 
         // check if is a suffixed attribute
