@@ -8,7 +8,6 @@ use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Languages;
-use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Traits\IsTranslatable;
 
 trait IsJsonTranslatable
