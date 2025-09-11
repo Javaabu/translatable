@@ -71,6 +71,11 @@ trait IsDbTranslatable
 
         $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
 
+        // Return fast if there is no default translation
+        if ( ! $defaultTranslation) {
+            return null;
+        }
+
         // If the requested locale is the same as the default translation's lang, return the default translation
         if ($defaultTranslation->lang === $locale) {
             return $defaultTranslation;
