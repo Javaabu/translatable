@@ -77,7 +77,12 @@ class LanguageRegistrar
     {
         $this->languages = null;
 
-        $this->cache->forget(self::$cache_key);
+        try {
+            $this->cache->forget(self::$cache_key);
+        } catch (QueryException $e) {
+            // silently fail if languages can't be cleared
+            Log::error('LanguageRegistrarClearError: ' . $e->getMessage());
+        }
     }
 
     /**
