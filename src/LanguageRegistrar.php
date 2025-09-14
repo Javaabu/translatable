@@ -98,13 +98,9 @@ class LanguageRegistrar
                         ->active()
                         ->get();
                 } catch (QueryException $e) {
-                    if (app()->runningUnitTests()) {
-                        // silently fail if languages can't be loaded in tests
-                        Log::error('LanguageRegistrarError: ' . $e->getMessage());
-                        return collect();
-                    }
-
-                    throw $e;
+                    // silently fail if languages can't be loaded
+                    Log::error('LanguageRegistrarError: ' . $e->getMessage());
+                    return collect();
                 }
             });
         }
