@@ -2,6 +2,8 @@
 
 namespace Javaabu\Translatable;
 
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 use function array_key_exists;
 
 use DateInterval;
@@ -75,7 +77,12 @@ class LanguageRegistrar
     {
         $this->languages = null;
 
-        $this->cache->forget(self::$cache_key);
+        try {
+            $this->cache->forget(self::$cache_key);
+        } catch (QueryException $e) {
+            // silently fail if languages can't be cleared
+            Log::error('LanguageRegistrarClearError: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -90,11 +97,17 @@ class LanguageRegistrar
 
         // Load up languages from cache
         if ($this->languages === null) {
-            $this->languages = $this->cache->remember(self::$cache_key, self::$cache_expiration_time, function () {
-                return $this->getLanguageClass()
-                    ->active()
-                    ->get();
-            });
+            try {
+                $this->languages = $this->cache->remember(self::$cache_key, self::$cache_expiration_time, function () {
+                        return $this->getLanguageClass()
+                            ->active()
+                            ->get();
+                });
+            } catch (QueryException $e) {
+                // silently fail if languages can't be loaded
+                Log::error('LanguageRegistrarError: ' . $e->getMessage());
+                $this->languages = collect();
+            }
         }
 
         $languages = clone $this->languages;
