@@ -174,7 +174,7 @@ trait IsTranslatable
      */
     public function isFormFieldDisabled(string $field): bool
     {
-        if ($this->lang === app()->getLocale()) {
+        if ($this->lang === translation_locale()) {
             return false;
         }
 
@@ -252,7 +252,7 @@ trait IsTranslatable
 
         // set to translation via app locale
         $lang = $this->getAttribute('lang');
-        $locale = app()->getLocale();
+        $locale = translation_locale();
         if (empty($lang)) {
             parent::setAttribute('lang', $locale);
             $lang = $locale;

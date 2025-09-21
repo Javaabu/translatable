@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
@@ -172,12 +173,12 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertNull($article->translate('slug', 'dv', false));
 
         $tmp = app()->getLocale();
-        app()->setLocale('en');
+        Languages::setCurrentLocale('en');
         $this->assertEquals('This is an English title', $article->translate('title'));
         $this->assertEquals('This is an English body', $article->translate('body'));
         $this->assertEquals('this-is-an-english-slug', $article->translate('slug'));
 
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
         $this->assertEquals('Mee dhivehi title eh', $article->translate('title'));
         $this->assertEquals('Mee dhivehi liyumeh', $article->translate('body'));
         $this->assertNull($article->translate('slug', fallback: false));

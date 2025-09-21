@@ -45,6 +45,7 @@ class LanguageFacadeTest extends TestCase
     #[Test]
     public function it_can_get_all_except_current_language()
     {
+        Languages::setCurrentLocale('en');
         $all_languages = Languages::allExceptCurrent();
 
         $this->assertCount(2, $all_languages);
@@ -55,6 +56,7 @@ class LanguageFacadeTest extends TestCase
     #[Test]
     public function it_can_get_current_language_code()
     {
+        Languages::setCurrentLocale('en');
         $lang = Languages::get();
         $this->assertEquals('en', $lang->code);
     }
@@ -87,6 +89,7 @@ class LanguageFacadeTest extends TestCase
     #[Test]
     public function it_can_check_if_language_is_current_language()
     {
+        Languages::setCurrentLocale('en');
         $is_current = Languages::isCurrent('en');
         $is_not_current = Languages::isCurrent('fr');
 
@@ -100,6 +103,7 @@ class LanguageFacadeTest extends TestCase
     #[Test]
     public function it_can_check_if_language_is_default_language()
     {
+        Languages::setCurrentLocale('en');
         config()->set('translatable.default_locale', 'dv');
         $is_default = Languages::isDefault('dv');
         $is_not_default = Languages::isDefault('en');
@@ -122,9 +126,10 @@ class LanguageFacadeTest extends TestCase
         $this->assertEquals('rtl', Languages::getDirection('dv'));
         $this->assertEquals('ltr', Languages::getDirection('en'));
 
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
         $this->assertEquals('rtl', Languages::getDirection());
-        app()->setLocale('en');
+
+        Languages::setCurrentLocale('en');
         $this->assertEquals('ltr', Languages::getDirection());
     }
 
@@ -133,10 +138,10 @@ class LanguageFacadeTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
         $this->assertTrue(Languages::isRtl());
 
-        app()->setLocale('en');
+        Languages::setCurrentLocale('en');
         $this->assertFalse(Languages::isRtl());
     }
 }

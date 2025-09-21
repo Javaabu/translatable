@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Post;
@@ -185,12 +186,12 @@ class IsDbTranslatableTest extends TestCase
         $this->assertEquals('This is an English body', $post_jp->translate('body', 'en'));
 
         $tmp = app()->getLocale();
-        app()->setLocale('en');
+        Languages::setCurrentLocale('en');
         $this->assertEquals('This is an English title', $post->translate('title'));
         $this->assertEquals('This is an English body', $post->translate('body'));
         $this->assertEquals('this-is-an-english-slug', $post->translate('slug'));
 
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
         $this->assertEquals('Mee dhivehi title eh', $post->translate('title'));
         $this->assertEquals('Mee dhivehi liyumeh', $post->translate('body'));
         $this->assertNull($post->translate('slug', fallback: false));

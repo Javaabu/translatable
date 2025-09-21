@@ -7,6 +7,16 @@ use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\ModelAttribute;
 use Javaabu\Translatable\Models\Language;
 
+if ( ! function_exists('translation_locale')) {
+    /**
+     * One function helper to get the current locale.
+     */
+    function translation_locale(): ?string
+    {
+        return Languages::currentLanguageCode();
+    }
+}
+
 if ( ! function_exists('appGetLocale')) {
     /**
      * One function helper to get the current locale.
@@ -38,7 +48,7 @@ if ( ! function_exists('translate_url')) {
     function translate_url(?string $path = null, array $parameters = [], ?bool $secure = null, $locale = null): string
     {
         if ( ! $locale) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         $path = $locale . '/' . ltrim($path, '/');
@@ -60,7 +70,7 @@ if ( ! function_exists('translate_route')) {
         }
 
         if ( ! $locale) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         $parameters = Arr::wrap($parameters);
@@ -83,7 +93,7 @@ if ( ! function_exists('translate_action')) {
         }
 
         if ( ! $locale) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         $parameters = Arr::wrap($parameters);
@@ -101,7 +111,7 @@ if ( ! function_exists('locale_direction')) {
     {
         $language = $language instanceof Language
             ? $language
-            : Languages::get($language ?? app()->getLocale());
+            : Languages::get($language ?? translation_locale());
 
         return $language && $language->is_rtl ? 'rtl' : 'ltr';
     }

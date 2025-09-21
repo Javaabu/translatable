@@ -17,7 +17,7 @@ trait IsJsonTranslatable
     public static function bootIsJsonTranslatable(): void
     {
         static::creating(function (Translatable $model) {
-            $model->lang = $model->lang ?: app()->getLocale();
+            $model->lang = $model->lang ?: translation_locale();
         });
     }
 
@@ -43,7 +43,7 @@ trait IsJsonTranslatable
     {
         // Use current app locale whenever locale isn't provided
         if ($locale === null) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         // If default lang just return the field normally
@@ -87,7 +87,7 @@ trait IsJsonTranslatable
      */
     public function getDefaultTranslationLocale(): string
     {
-        return $this->getAttributeValue('lang') ?? app()->getLocale();
+        return $this->getAttributeValue('lang') ?? translation_locale();
     }
 
     /**
@@ -121,7 +121,7 @@ trait IsJsonTranslatable
     public function hasTranslation(?string $locale = null): bool
     {
         if ($locale === null) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         if ($this->lang === $locale) {

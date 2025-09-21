@@ -19,7 +19,7 @@ trait IsDbTranslatable
             // If the model is being created and the developer has not set the `lang`
             // attributes, we will set it to the current application locale.
             if (empty($model->lang)) {
-                $model->lang = app()->getLocale();
+                $model->lang = translation_locale();
             }
         });
     }
@@ -66,7 +66,7 @@ trait IsDbTranslatable
     public function getTranslation(?string $locale = null): ?static
     {
         if ($locale === null) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
@@ -89,7 +89,7 @@ trait IsDbTranslatable
     {
         // Use current app locale whenever locale isn't provided
         if ($locale === null) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         // If the locale is not allowed then return null
@@ -144,7 +144,7 @@ trait IsDbTranslatable
     public function hasTranslation(?string $locale = null): bool
     {
         if ($locale === null) {
-            $locale = app()->getLocale();
+            $locale = translation_locale();
         }
 
         // if the current one is the correct lang no need to fetch from database

@@ -13,7 +13,7 @@ class LocaleMiddleware
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next): mixed
+    public function handle(Request $request, Closure $next, bool $set_app_locale = true): mixed
     {
         $locale = $this->getUserLocale($request);
 
@@ -21,7 +21,7 @@ class LocaleMiddleware
             $locale = $this->getDefaultLocale();
         }
 
-        $this->setUserLocale($locale, $request);
+        $this->setUserLocale($locale, $request, $set_app_locale);
 
         return $next($request);
     }
@@ -84,7 +84,7 @@ class LocaleMiddleware
     /**
      * Set the user locale
      */
-    protected function setUserLocale($locale, Request $request): void
+    protected function setUserLocale($locale, Request $request, bool $set_app_locale = true): void
     {
         // Convert to language code if it is an object
         if ($locale instanceof Language) {
@@ -95,6 +95,6 @@ class LocaleMiddleware
             $request->session()->put('language', $locale);
         }
 
-        app()->setLocale($locale);
+        Languages::setCurrentLocale($locale, $set_app_locale);
     }
 }

@@ -38,7 +38,7 @@ class LanguageTest extends TestCase
     public function it_can_check_if_is_current_language(): void
     {
         $lang = Languages::get('dv');
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
 
         $this->assertTrue($lang->isCurrent());
     }

@@ -7,6 +7,8 @@ use Javaabu\Translatable\Models\Language;
 
 class Languages
 {
+    protected static ?string $current_locale = null;
+
     public function all(): Collection
     {
         return app(LanguageRegistrar::class)->getLanguages();
@@ -14,7 +16,7 @@ class Languages
 
     public function allExceptCurrent(): Collection
     {
-        return app(LanguageRegistrar::class)->getLanguages()->whereNotIn('locale', [app()->getLocale()]);
+        return app(LanguageRegistrar::class)->getLanguages()->whereNotIn('locale', [translation_locale()]);
     }
 
     public function except($code): Collection
@@ -75,7 +77,16 @@ class Languages
      */
     public function currentLanguageCode(): string
     {
-        return app()->getLocale();
+        return static::$current_locale ?: app()->getLocale();
+    }
+
+    public function setCurrentLocale(string $locale, bool $set_app_locale = true): void
+    {
+        static::$current_locale = $locale;
+
+        if ($set_app_locale) {
+            app()->setLocale($locale);
+        }
     }
 
     /**
