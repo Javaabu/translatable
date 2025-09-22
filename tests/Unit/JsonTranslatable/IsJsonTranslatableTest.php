@@ -441,9 +441,9 @@ class IsJsonTranslatableTest extends TestCase
         $article->title = 'Mee dhivehi title eh';
         app()->setLocale('en');
 
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
         $this->assertEquals('Mee dhivehi title eh', $article->title);
-        app()->setLocale('en');
+        Languages::setCurrentLocale('en');
         $this->assertEquals('This is an English title', $article->title);
     }
 
@@ -515,7 +515,9 @@ class IsJsonTranslatableTest extends TestCase
     #[Test]
     public function it_can_implicitly_set_default_locale()
     {
-        app()->setLocale('dv');
+        // app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
+
         $article = Article::factory()->withAuthor()->create([
             'lang' => null,
         ]);

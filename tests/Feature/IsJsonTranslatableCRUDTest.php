@@ -4,6 +4,7 @@ namespace Javaabu\Translatable\Tests\Feature;
 
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Support\Facades\Route;
+use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
@@ -137,7 +138,7 @@ class IsJsonTranslatableCRUDTest extends TestCase
             'title' => 'Mee ehen dhivehi title eh',
         ]);
 
-        app()->setLocale('en');
+        Languages::setCurrentLocale('en');
         $this->assertDatabaseHas('articles', [
             'title'        => $article->title,
             'body'         => $article->body,

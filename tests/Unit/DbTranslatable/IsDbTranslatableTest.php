@@ -554,9 +554,9 @@ class IsDbTranslatableTest extends TestCase
         app()->setLocale('dv');
         $post->title = 'Mee dhivehi title eh';
 
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
         $this->assertEquals('Mee dhivehi title eh', $post->title);
-        app()->setLocale('en');
+        Languages::setCurrentLocale('en');
         $this->assertEquals('This is an English title', $post->title);
     }
 
@@ -643,7 +643,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     public function it_can_implicitly_set_default_locale()
     {
-        app()->setLocale('dv');
+        Languages::setCurrentLocale('dv');
         $post = Post::factory()->withAuthor()->create([
             'lang' => null,
         ]);
