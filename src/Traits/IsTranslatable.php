@@ -212,7 +212,7 @@ trait IsTranslatable
 
         // Translate using the current app locale if possible
         if ($this->isTranslatable($key)) {
-            $translated_value = $this->translate($key, app()->currentLocale());
+            $translated_value = $this->translate($key, translation_locale());
 
             // Return translated value if not null, otherwise fallback to original value
             return $translated_value ?? parent::getAttribute($key);
