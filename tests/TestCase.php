@@ -18,6 +18,13 @@ abstract class TestCase extends BaseTestCase
         $this->app['config']->set('session.serialization', 'php');
     }
 
+    protected function defineRoutes($router): void
+    {
+        $router->get('{language}/articles/{article}', function ($lang, $article) {
+            return "Article {$article} in {$lang}";
+        })->name('articles.show');
+    }
+
     protected function getPackageProviders($app): array
     {
         return [

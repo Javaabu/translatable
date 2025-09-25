@@ -81,7 +81,7 @@ class TranslatableServiceProvider extends ServiceProvider
             }
 
             // pattern: ncs.test/{locale}/{portal}
-            return $req->segment(2) ?? 'public';
+            return $req->segment(2) ?? 'web';
         });
 
         Request::macro('isPortal', function (string $portal): bool {
