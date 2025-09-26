@@ -87,7 +87,12 @@ class TableCellTranslatedUrlGenerationTest extends TestCase
         ]);
 
         app()->setLocale('dv');
-        $post->title = 'Mee dhivehi title eh';
+
+        $dv_post = Post::factory()->withAuthor()->create([
+            'lang'  => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'translatable_parent_id' => $post->id,
+        ]);
 
         $this->assertDatabaseCount('posts', 2);
 
@@ -97,7 +102,11 @@ class TableCellTranslatedUrlGenerationTest extends TestCase
         $en_url = $tableCellComponent->getUrl('show', 'en');
         $this->assertTrue(str($en_url)->contains('/en/posts/' . $post->id), 'English URL does not contain expected path.');
 
+        // Check if the generated dv post and the found dv post is the same
+        $found_dv_post = $post->getTranslation('dv');
+        $this->assertTrue($found_dv_post->is($dv_post), 'The found Dhivehi post does not match the created one.');
+
         $dv_url = $tableCellComponent->getUrl('show', 'dv');
-        $this->assertTrue(str($dv_url)->contains('/dv/posts/' . $post->getTranslation('dv')->id), 'Dhivehi URL does not contain expected path.');
+        $this->assertTrue(str($dv_url)->contains('/dv/posts/' . $found_dv_post->id), 'Dhivehi URL does not contain expected path.');
     }
 }
