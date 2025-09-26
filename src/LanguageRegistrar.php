@@ -2,15 +2,15 @@
 
 namespace Javaabu\Translatable;
 
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Log;
 use function array_key_exists;
 
 use DateInterval;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Javaabu\Translatable\Models\Language;
 
 class LanguageRegistrar
@@ -99,9 +99,9 @@ class LanguageRegistrar
         if ($this->languages === null) {
             try {
                 $this->languages = $this->cache->remember(self::$cache_key, self::$cache_expiration_time, function () {
-                        return $this->getLanguageClass()
-                            ->active()
-                            ->get();
+                    return $this->getLanguageClass()
+                        ->active()
+                        ->get();
                 });
             } catch (QueryException $e) {
                 // silently fail if languages can't be loaded
