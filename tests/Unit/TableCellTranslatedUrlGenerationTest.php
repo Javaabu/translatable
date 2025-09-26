@@ -8,6 +8,7 @@ use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Models\Language;
 use Javaabu\Translatable\Tests\TestCase;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
+use Javaabu\Translatable\Tests\TestSupport\Models\Post;
 use Javaabu\Translatable\Views\Components\TableCells;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -73,5 +74,30 @@ class TableCellTranslatedUrlGenerationTest extends TestCase
 
         $dv_url = $tableCellComponent->getUrl('show', 'dv');
         $this->assertTrue(str($dv_url)->contains('/dv/articles/' . $article->id), 'Dhivehi URL does not contain expected path.');
+    }
+
+    #[Test]
+    public function it_can_generate_show_url_for_db_translatable_record(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $post = Post::factory()->withAuthor()->create([
+            'lang'  => 'en',
+            'title' => 'This is an English title',
+        ]);
+
+        app()->setLocale('dv');
+        $post->title = 'Mee dhivehi title eh';
+
+        $this->assertDatabaseCount('posts', 2);
+
+        Languages::setCurrentLocale('en');
+        $tableCellComponent = new TableCells($post);
+
+        $en_url = $tableCellComponent->getUrl('show', 'en');
+        $this->assertTrue(str($en_url)->contains('/en/posts/' . $post->id), 'English URL does not contain expected path.');
+
+        $dv_url = $tableCellComponent->getUrl('show', 'dv');
+        $this->assertTrue(str($dv_url)->contains('/dv/posts/' . $post->getTranslation('dv')->id), 'Dhivehi URL does not contain expected path.');
     }
 }

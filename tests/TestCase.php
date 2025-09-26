@@ -23,6 +23,10 @@ abstract class TestCase extends BaseTestCase
         $router->get('{language}/articles/{article}', function ($lang, $article) {
             return "Article {$article} in {$lang}";
         })->name('articles.show');
+
+        $router->get('{language}/posts/{post}', function ($lang, $post) {
+            return "Post {$post} in {$lang}";
+        })->name('posts.show');
     }
 
     protected function getPackageProviders($app): array
