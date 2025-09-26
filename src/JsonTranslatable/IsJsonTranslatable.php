@@ -9,7 +9,7 @@ use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Traits\IsTranslatable;
-use Javaabu\Translatable\Traits\JsonTranslatedUrlGenerator;
+use Javaabu\Translatable\Traits\UrlGenerators\JsonTranslatedUrlGenerator;
 
 trait IsJsonTranslatable
 {
