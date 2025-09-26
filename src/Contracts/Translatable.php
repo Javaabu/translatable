@@ -4,6 +4,7 @@ namespace Javaabu\Translatable\Contracts;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Models\Language;
 
 interface Translatable
 {
@@ -114,9 +115,9 @@ interface Translatable
      */
     public function localeDirection(): Attribute;
 
-    public function getRouteName(): ?string;
-
-    public function getRouteParams(): array;
-
     public function languageSwitcherRouteName(): ?string;
+
+    public function url(string $action = 'show', Language|string|null $locale = null, ?string $portal = null): string;
+
+    public function routeKeyForPortal(?string $portal): string;
 }

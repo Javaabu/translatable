@@ -66,7 +66,7 @@ class TableCellTranslatedUrlGenerationTest extends TestCase
         ]);
 
         Languages::setCurrentLocale('en');
-        $tableCellComponent = new TableCells($article, create_url: 'articles/create');
+        $tableCellComponent = new TableCells($article);
 
         $en_url = $tableCellComponent->getUrl('show', 'en');
         $this->assertTrue(str($en_url)->contains('/en/articles/' . $article->id), 'English URL does not contain expected path.');

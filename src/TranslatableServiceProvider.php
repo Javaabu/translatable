@@ -65,7 +65,7 @@ class TranslatableServiceProvider extends ServiceProvider
             return redirect()->to($url, $status, $headers);
         });
 
-        Request::macro('portal', function (): string {
+        Request::macro('portal', function (): ?string {
             $req = request();
             $adminDomain = config('app.admin_domain');          // e.g. 'admin.ncs.test' or null
             $adminPrefix = config('app.admin_prefix', 'admin'); // e.g. 'admin'
@@ -81,7 +81,7 @@ class TranslatableServiceProvider extends ServiceProvider
             }
 
             // pattern: ncs.test/{locale}/{portal}
-            return $req->segment(2) ?? 'web';
+            return $req->segment(2) ?? null;
         });
 
         Request::macro('isPortal', function (string $portal): bool {
