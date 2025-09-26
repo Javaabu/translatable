@@ -14,8 +14,6 @@ use Schema;
 
 trait IsTranslatable
 {
-    use TranslatedUrlGenerator;
-
     private bool $skipTranslation = false;
 
     public function getNonTranslatablePivots(): array

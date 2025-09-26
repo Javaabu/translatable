@@ -5,7 +5,7 @@ namespace Javaabu\Translatable\Traits;
 use Javaabu\Translatable\Models\Language;
 use Request;
 
-trait TranslatedUrlGenerator
+trait JsonTranslatedUrlGenerator
 {
     public function url(string $action = 'show', Language|string|null $locale = null, ?string $portal = null): string
     {

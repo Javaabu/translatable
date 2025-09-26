@@ -7,11 +7,13 @@ use Javaabu\Translatable\Contracts\Translatable;
 use Javaabu\Translatable\Exceptions\CannotDeletePrimaryTranslationException;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
+use Javaabu\Translatable\Traits\DbTranslatedUrlGenerator;
 use Javaabu\Translatable\Traits\IsTranslatable;
 
 trait IsDbTranslatable
 {
     use IsTranslatable;
+    use DbTranslatedUrlGenerator;
 
     public static function bootIsDbTranslatable(): void
     {
@@ -72,7 +74,7 @@ trait IsDbTranslatable
         $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
 
         // Return fast if there is no default translation
-        if ( ! $defaultTranslation) {
+        if (!$defaultTranslation) {
             return null;
         }
 
@@ -93,12 +95,12 @@ trait IsDbTranslatable
         }
 
         // If the locale is not allowed then return null
-        if ( ! $this->isAllowedTranslationLocale($locale)) {
+        if (!$this->isAllowedTranslationLocale($locale)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
         // If the field is not in the translatable fields list then return null
-        if ( ! $this->isTranslatable($field)) {
+        if (!$this->isTranslatable($field)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
@@ -123,7 +125,7 @@ trait IsDbTranslatable
 
     public function clearTranslations(?string $locale = null): void
     {
-        if ( ! $locale) {
+        if (!$locale) {
             // nuke all except the main one
             $parent_id = $this->isDefaultTranslation() ? $this->id : $this->translatable_parent_id;
             self::query()->where('translatable_parent_id', $parent_id)->withTrashed()->forceDelete();
@@ -175,11 +177,11 @@ trait IsDbTranslatable
      */
     public function addTranslation(string $locale, string $field, string $value): static
     {
-        if ( ! $this->isAllowedTranslationLocale($locale)) {
+        if (!$this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
-        if ( ! $this->isTranslatable($field)) {
+        if (!$this->isTranslatable($field)) {
             throw FieldNotAllowedException::create($field, $locale);
         }
 
@@ -200,7 +202,7 @@ trait IsDbTranslatable
         $newTranslation = $defaultTranslation->translations()->where('lang', $locale)->first();
 
         // if there is none, make a new blank translation of this object
-        if ( ! $newTranslation) {
+        if (!$newTranslation) {
             $newTranslation = new self();
             // copy all the attributes of the current object to the new translation
             // this ensures no columns are left null
@@ -264,6 +266,6 @@ trait IsDbTranslatable
      */
     public function canUpdateTranslatableParent(): bool
     {
-        return ( ! $this->isRootTranslation()) || ( ! $this->hasTranslation());
+        return (!$this->isRootTranslation()) || (!$this->hasTranslation());
     }
 }
