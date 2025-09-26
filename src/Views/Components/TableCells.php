@@ -24,7 +24,7 @@ class TableCells extends Component
         $url = $this->model->url($action, $locale);
 
         // If the model is we need to add "lang_parent" to the params
-        if ($this->isModelDbTranslatable()) {
+        if ($this->isModelDbTranslatable() && ($action === 'create')) {
             $url = add_query_arg('lang_parent', $this->model->id, $url);
         }
 
