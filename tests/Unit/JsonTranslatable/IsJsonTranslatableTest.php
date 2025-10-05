@@ -612,4 +612,29 @@ class IsJsonTranslatableTest extends TestCase
         $this->assertEquals('Test Body', $article->body);
         $this->assertEquals('test-title', $article->slug);
     }
+
+    #[Test]
+    public function it_gives_current_locale_language_as_attribute_values()
+    {
+        $article = new Article();
+        $article->fill([
+            'title'        => 'Dhivehi Title',
+            'body'         => 'Test Body',
+            'slug'         => 'dhivehi-title',
+            'lang'         => 'dv',
+            'translations' => [
+                'en' => [
+                    'title' => 'English Title',
+                ],
+            ],
+        ]);
+
+        Languages::setCurrentLocale('dv');
+        $attributes = $article->toArray();
+        $this->assertEquals('Dhivehi Title', $attributes['title']);
+
+        Languages::setCurrentLocale('en');
+        $attributes = $article->toArray();
+        $this->assertEquals('English Title', $attributes['title']);
+    }
 }

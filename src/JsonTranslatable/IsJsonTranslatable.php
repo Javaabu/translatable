@@ -255,4 +255,44 @@ trait IsJsonTranslatable
 
         return parent::fill($attributes);
     }
+
+    /**
+     * Get the value of an attribute using its mutator for array conversion.
+     *
+     * @param  string  $key
+     */
+    protected function mutateAttributeForArray($key, $value)
+    {
+        // check if is a suffixed attribute
+        [$field, $locale] = $this->getFieldAndLocale($key);
+
+        if ($locale && $this->isTranslatable($field)) {
+            return $this->{$key};
+        }
+
+        return parent::mutateAttributeForArray($key, $value);
+    }
+
+    public function attributesToArray()
+    {
+        $attributes = parent::attributesToArray();
+
+        return $this->addTranslatableAttributesToArray($attributes);
+    }
+
+    /**
+     * Add the translatable attributes to the attributes array.
+     */
+    protected function addTranslatableAttributesToArray(array $attributes): array
+    {
+        foreach ($this->getTranslatables() as $key) {
+            if ( ! isset($attributes[$key])) {
+                continue;
+            }
+
+            $attributes[$key] = $this->translate($key);
+        }
+
+        return $attributes;
+    }
 }
