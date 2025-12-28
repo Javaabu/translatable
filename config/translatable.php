@@ -29,9 +29,12 @@ return [
     'styles' => [
         'table-cell-wrapper' => 'd-flex justify-content-center align-items-center',
 
-        'icons'              => [
+        'icons' => [
             'add'  => 'fas fa-plus',
             'edit' => 'fas fa-edit',
         ],
     ],
+
+    'default_portal'         => 'web',
+    'default_redirect_route' => 'home',
 ];

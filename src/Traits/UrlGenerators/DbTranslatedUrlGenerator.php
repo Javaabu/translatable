@@ -36,7 +36,16 @@ trait DbTranslatedUrlGenerator
         } elseif ($translation = $this->getTranslation($localeCode)) {
             $params[] = $translation->routeKeyForPortal($portal);
         } else {
+            // If the portal is the default portal, and there is no translation available, redirect to default route
+            if ($portal === config('translatable.default_portal')) {
+                return translate_route(config('translatable.default_redirect'));
+            }
+
+            // Switch to the create route if no translation exists
             $route_name = $portal ? "{$portal}.{$model_route_name}.create" : "{$model_route_name}.create";
+
+            // Add in the lang parent param to indicate which model to translate
+            $params['lang_parent'] = $this->getKey();
         }
 
         return translate_route(name: $route_name, parameters: $params, locale: $localeCode);
