@@ -16,6 +16,7 @@ You can install the package via composer:
 composer require javaabu/translatable
 ```
 
+
 ## Usage
 
 To get started with this package, you can simply add `$table->dbTranslatable();` or `$table->jsonTranslatable();` to your migration `up` function.
