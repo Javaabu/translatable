@@ -27,16 +27,16 @@
     ],
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0",
-        "javaabu/helpers": "^1.61"
+        "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "javaabu/helpers": "^1.70"
     },
     "suggest": {
         "javaabu/forms": "For the little buttons and table cells that are provided."
     },
     "require-dev": {
         "laravel/pint": "^1.14",
-        "orchestra/testbench": "^7.0 || ^8.0 || ^9.16 || ^10.0",
-        "phpunit/phpunit": "^9.5 || ^10.5 || ^11.5"
+        "orchestra/testbench": "^7.0 || ^8.0 || ^9.16 || ^10.0 || ^11.0",
+        "phpunit/phpunit": "^9.5 || ^10.5 || ^11.5.3 || ^12.5.8 || ^13.0.3"
     },
     "autoload": {
         "psr-4": {
@@ -61,6 +61,12 @@
             ]
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/javaabu/laravel-settings.git"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
