@@ -24,3 +24,5 @@ All notable changes to `javaabu/translatable` are documented in this file.
 - The `styles` config is gone: the components follow javaabu/forms' framework
 - **Inertia React components**, imported as `@javaabu/translatable` through javaabu/manifest: `TranslatableProvider`, `TranslatableField`/`Text`/`Textarea`, `LanguageSwitcher`, `TranslationStatus`, `TranslationHeadings`/`TranslationCells`, `TranslationNotice`, with `en`/`dv` strings through @javaabu/i18n
 - With `translatable.views` set to `inertia`, the languages are shared with every Inertia page as the `translatable` prop
+- Docs rewritten for people and agents (`docs/`, `llms.txt`), with an upgrade guide from v2; Laravel Boost guideline and skill; `AGENTS.md` for contributors
+- Every string in English and Dhivehi, with the PHP and React lines kept identical by a test

@@ -13,3 +13,10 @@
 /pint.json          export-ignore
 /AGENTS.md          export-ignore
 /CLAUDE.md          export-ignore
+/package.json       export-ignore
+/pnpm-lock.yaml     export-ignore
+/tsconfig.json      export-ignore
+/vitest.config.ts   export-ignore
+/eslint.config.js   export-ignore
+/.prettierrc.json   export-ignore
+/.prettierignore    export-ignore

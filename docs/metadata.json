@@ -1,5 +1,5 @@
 {
     "name": "Translatable",
-    "description": "Adds multi-lingual to Laravel models",
-    "version": "1"
+    "description": "Multilingual Eloquent models for Laravel, with Blade and Inertia React components",
+    "version": "3"
 }
