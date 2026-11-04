@@ -8,7 +8,7 @@ Everything has a default; publish the file only to change one (`php artisan vend
 | Key | Default | What |
 | --- | --- | --- |
 | `enabled` | `env('TRANSLATABLE_ENABLED', true)` | Turns translations off without uninstalling. Other packages check it through `Translatable::enabled()`. |
-| `language_model` | `Javaabu\Translatable\Models\Language` | The languages table model. Extend the default one. |
+| `language_model` | `Javaabu\Translatable\Models\Language` | The languages table model. Extend the default one, or use `Javaabu\Translatable\Models\AdminLanguage` to get javaabu/helpers' `AdminModel` (needs javaabu/helpers). |
 | `fields_ignored_for_translation` | `id`, `lang`, `created_at`, `updated_at`, `deleted_at` | Never translated, on every model |
 | `lang_suffix_should_fallback` | `false` | Whether `$post->title_dv` falls back to the model's own value when missing |
 | `default_locale` | `en` | The language of rows without a `lang`, the middleware's fallback, and the first language in the views. Must be an active language. |

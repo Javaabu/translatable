@@ -5,6 +5,7 @@ All notable changes to `javaabu/translatable` are documented in this file.
 ## 3.0.0 - Unreleased
 
 - Requires PHP 8.4 and Laravel 12 or 13
+- javaabu/helpers is no longer required (it pinned javaabu/settings v1). `Language` keeps `admin_url`, `admin_link_name` and `search()`; apps that need helpers' `AdminModel` set `translatable.language_model` to `Models\AdminLanguage`. CI checks that neither helpers nor settings is in the production dependency tree
 - Javaabu codestyle enforced with Pint; CI runs PHP 8.4/8.5 × Laravel 12/13 × lowest/stable, with coverage on Codecov
 - **Contract for other packages:** `Translatable::enabled()`, `supports()`, `locales()`, `inputs()`, `rules()`, `values()`, `status()` and `shared()`, with `Locale` and `LocaleInput` value objects. See `docs/advanced-usage/for-package-authors.md`
 - `Javaabu\Translatable\Testing\InteractsWithLanguages` for tests in apps and packages

@@ -81,6 +81,40 @@ jobs:
       - name: Check code style
         run: vendor/bin/pint --test
 
+      - name: No javaabu/settings or javaabu/helpers in production dependencies
+        run: |
+          if composer show --tree --no-dev | grep -E 'javaabu/(settings|helpers)'; then
+            echo "javaabu/translatable must not require javaabu/settings or javaabu/helpers (see #11)"
+            exit 1
+          fi
+
+  without-helpers:
+    runs-on: ubuntu-latest
+
+    name: Tests without javaabu/helpers
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv, intl
+          coverage: none
+
+      - name: Install dependencies without javaabu/helpers
+        run: |
+          composer remove --dev javaabu/helpers --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Check javaabu/helpers isn't installed
+        run: "! composer show javaabu/helpers"
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --exclude-group helpers
+
   js:
     runs-on: ubuntu-latest
 

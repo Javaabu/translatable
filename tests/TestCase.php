@@ -3,7 +3,6 @@
 namespace Javaabu\Translatable\Tests;
 
 use Javaabu\Forms\FormsServiceProvider;
-use Javaabu\Helpers\HelpersServiceProvider;
 use Javaabu\Manifest\ManifestServiceProvider;
 use Javaabu\Translatable\Tests\TestSupport\Providers\TestServiceProvider;
 use Javaabu\Translatable\TranslatableServiceProvider;
@@ -36,12 +35,13 @@ abstract class TestCase extends BaseTestCase
 
     protected function getPackageProviders($app): array
     {
-        return [
+        // javaabu/helpers is a dev dependency for AdminLanguage only; the rest runs without it
+        return array_values(array_filter([
             TranslatableServiceProvider::class,
-            HelpersServiceProvider::class,
+            class_exists('Javaabu\\Helpers\\HelpersServiceProvider') ? 'Javaabu\\Helpers\\HelpersServiceProvider' : null,
             ManifestServiceProvider::class,
             FormsServiceProvider::class,
             TestServiceProvider::class,
-        ];
+        ]));
     }
 }

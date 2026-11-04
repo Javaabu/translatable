@@ -33,13 +33,13 @@
     "require": {
         "php": "^8.4",
         "illuminate/database": "^12.0 || ^13.0",
-        "illuminate/support": "^12.0 || ^13.0",
-        "javaabu/helpers": "^1.74"
+        "illuminate/support": "^12.0 || ^13.0"
     },
     "require-dev": {
         "inertiajs/inertia-laravel": "^2.0 || ^3.0",
         "javaabu/boost-javaabu-guidelines": "^1.4",
         "javaabu/forms": "^2.0@dev",
+        "javaabu/helpers": "^1.74",
         "javaabu/manifest": "^1.0@dev",
         "laravel/pint": "^1.25",
         "orchestra/testbench": "^10.0 || ^11.0",
@@ -50,7 +50,8 @@
     "suggest": {
         "javaabu/forms": "Required for the Blade components (^2.0)",
         "javaabu/manifest": "Ships the Inertia React components to your app (^1.0)",
-        "inertiajs/inertia-laravel": "Shares the languages with Inertia pages when translatable.views is inertia (^2.0)"
+        "inertiajs/inertia-laravel": "Shares the languages with Inertia pages when translatable.views is inertia (^2.0)",
+        "javaabu/helpers": "Use Javaabu\\Translatable\\Models\\AdminLanguage as the language model to get helpers' AdminModel (^1.74)"
     },
     "autoload": {
         "psr-4": {

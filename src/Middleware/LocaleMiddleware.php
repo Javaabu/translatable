@@ -38,7 +38,7 @@ class LocaleMiddleware
             return $locale;
         }
 
-        if (! is_api_request($request)) {
+        if ($this->usesSession($request)) {
             // then try the session
             $locale = $this->getLocaleFromSession($request);
             if ($locale) {
@@ -82,6 +82,26 @@ class LocaleMiddleware
     }
 
     /**
+     * Whether the locale is kept in the session: not for API requests, or requests without one
+     *
+     * Uses javaabu/helpers' is_api_request() when the app has it, else the `app.api_prefix` (api) path.
+     */
+    protected function usesSession(Request $request): bool
+    {
+        if (! $request->hasSession()) {
+            return false;
+        }
+
+        if (function_exists('is_api_request')) {
+            return ! is_api_request($request);
+        }
+
+        $prefix = trim((string) config('app.api_prefix', 'api'), '/');
+
+        return ! $request->is($prefix . '/*');
+    }
+
+    /**
      * Set the user locale
      */
     protected function setUserLocale($locale, Request $request, bool $set_app_locale = true): void
@@ -91,7 +111,7 @@ class LocaleMiddleware
             $locale = $locale->code;
         }
 
-        if (! is_api_request($request)) {
+        if ($this->usesSession($request)) {
             $request->session()->put('language', $locale);
         }
 

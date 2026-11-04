@@ -26,6 +26,7 @@
 - **Both stacks.** A view change goes in `resources/views/common` and `resources/js`, with the same names, data and strings, and tests in PHPUnit (both forms frameworks via the `frameworks` data provider) and Vitest.
 - **No framework classes in Blade views.** Compose javaabu/forms components; use `$layoutClasses()` for the rare wrapper.
 - **javaabu/forms, javaabu/manifest and Inertia are optional.** Never reference their classes outside the views/registration code paths, and only by string (`::class` on an unknown class is fine; instantiating isn't).
+- **Never require javaabu/helpers or javaabu/settings** (helpers pins settings v1; see #11). Only `Models/AdminLanguage.php` may use helpers; CI fails if either is in the production tree, and runs the tests without helpers (`--exclude-group helpers`).
 - **No hard-coded text.** Add a line to `lang/en`, `lang/dv` and `resources/js/locales/{en,dv}.ts`; list new Dhivehi lines for review in `docs/advanced-usage/translations-and-rtl.md`.
 - **RTL:** logical utilities only; never `left`/`right`.
 - PHP follows Javaabu's guidelines (`vendor/javaabu/boost-javaabu-guidelines`): Pint, `#[Test]` and `it_…` test names, snake_case variables. Tests use Thaana for user-facing behaviour.

@@ -53,7 +53,7 @@ class TableCells extends Component
         $url = $this->model->url($action, $locale);
 
         if ($this->isModelDbTranslatable() && $action === 'create' && ! str_contains($url, 'lang_parent=')) {
-            $url = add_query_arg('lang_parent', $this->model->getKey(), $url);
+            $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query(['lang_parent' => $this->model->getKey()]);
         }
 
         return $url;

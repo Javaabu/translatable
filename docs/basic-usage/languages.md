@@ -53,6 +53,23 @@ Languages::get('ar')->update(['active' => false]);
 
 Existing translations stay in the database; they just aren't read or offered any more. Deleting a language does the same.
 
+# Admin pages
+
+`Language` has `admin_url` (the `admin.languages.show` route), `admin_link_name` and a `search()` scope over `name`, `local_name`, `code`, `locale` and `flag`:
+
+```php
+Language::search($request->input('search'))->paginate();
+```
+
+If your admin pages or activity log need javaabu/helpers' `AdminModel` (`admin_link`, `logging_name`, `log_url`, …), install javaabu/helpers and use the `AdminLanguage` model:
+
+```php
+// config/translatable.php
+'language_model' => Javaabu\Translatable\Models\AdminLanguage::class,
+```
+
+translatable itself doesn't need helpers.
+
 # Reading the languages
 
 ```php

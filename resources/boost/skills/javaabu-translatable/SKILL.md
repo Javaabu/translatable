@@ -20,6 +20,8 @@ php artisan translatable:add-languages en dv
 
 The default locale (`translatable.default_locale`, `en`) must be one of them.
 
+The model is `translatable.language_model`. For an admin page that needs javaabu/helpers' `AdminModel`, use `Javaabu\Translatable\Models\AdminLanguage` (requires javaabu/helpers in the app); `Language` alone has `admin_url`, `admin_link_name` and `search()`.
+
 ## Making a model translatable
 
 Prefer JSON storage: one row per record, `translations` JSON for the other languages. Use DB storage (a row per locale) only when each language needs its own id, slug or URL.

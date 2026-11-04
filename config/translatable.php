@@ -10,7 +10,9 @@ return [
     'enabled' => env('TRANSLATABLE_ENABLED', true),
 
     /*
-     * The model for the languages table. Extend Javaabu\Translatable\Models\Language.
+     * The model for the languages table. Extend Javaabu\Translatable\Models\Language,
+     * or use Javaabu\Translatable\Models\AdminLanguage if your app has javaabu/helpers
+     * and wants the language to be a helpers AdminModel.
      */
     'language_model' => Language::class,
 

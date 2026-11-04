@@ -45,6 +45,23 @@ $post->save();
 
 The same goes for `fill()`, `create()` and `update()` with suffixed names, and for writing a translatable attribute in another locale (`$post->title = …` while the locale is `dv`). `addTranslation()` and `addTranslations()` still save immediately.
 
+## javaabu/helpers is no longer required
+
+v2 required javaabu/helpers, which requires javaabu/settings v1, so translatable couldn't be installed next to javaabu/settings v2. v3 doesn't need helpers (or settings).
+
+The only thing that came from helpers was the `Language` model implementing helpers' `AdminModel` (`admin_link`, `logging_name`, `log_url`, `canViewAdminLink()`, …). `Language` keeps `admin_url`, `admin_link_name` and the `search()` scope without helpers. If your app uses the rest (for example an admin page or activity log that type-hints `AdminModel`), install helpers and use the `AdminLanguage` model, which is `Language` with helpers' `AdminModel`:
+
+```bash
+composer require javaabu/helpers
+```
+
+```php
+// config/translatable.php
+'language_model' => Javaabu\Translatable\Models\AdminLanguage::class,
+```
+
+If you extended `Language` in your app, add `implements \Javaabu\Helpers\AdminModel\AdminModel` and `use \Javaabu\Helpers\AdminModel\IsAdminModel;` to your model instead (or extend `AdminLanguage`). Both use the `languages` table and keep `Language` as their morph class.
+
 ## The table components need javaabu/forms v2
 
 `<x-translatable::titles>` and `<x-translatable::table-cells>` are rebuilt on javaabu/forms v2 components, with Lucide icons instead of Font Awesome classes. Install `javaabu/forms:^2.0`. If you published the views, delete `resources/views/vendor/translatable` and publish again: the views moved to `common/`.
@@ -58,6 +75,8 @@ The same goes for `fill()`, `create()` and `update()` with suffixed names, and f
 - **JSON models cast `translations` to an array** themselves; your own cast still wins.
 - **The languages list** is cached once per request, an empty list isn't cached, it's ordered by id, and saving, deleting or restoring a language clears the cache. A custom language model that overrides `booted()` must call `parent::booted()` to keep that.
 - **The current locale** (`Languages::setCurrentLocale()`) is per request (a scoped binding), so it no longer leaks between Octane requests.
+- **The language middleware** keeps the locale in the session only when the request has one and isn't an API request. Without javaabu/helpers' `is_api_request()`, API requests are those under `app.api_prefix` (`api`).
+- **Language subclasses** use the `languages` table (`Language::$table` is set), whatever the subclass is called.
 - **Fixed:** `$model->url()` read `translatable.default_redirect` instead of `translatable.default_redirect_route`.
 
 # New

@@ -6,16 +6,26 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Javaabu\Helpers\AdminModel\AdminModel;
-use Javaabu\Helpers\AdminModel\IsAdminModel;
 use Javaabu\Translatable\Enums\Flags;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\LanguageRegistrar;
 
-class Language extends Model implements AdminModel
+/**
+ * A language translations can be written in
+ *
+ * Doesn't depend on javaabu/helpers. Apps that list languages through helpers' admin
+ * tooling can point `translatable.language_model` at {@see AdminLanguage}.
+ */
+class Language extends Model
 {
-    use IsAdminModel;
     use SoftDeletes;
+
+    /**
+     * Fixed, so subclasses (AdminLanguage, an app's own model) use the same table
+     *
+     * @var string
+     */
+    protected $table = 'languages';
 
     /**
      * The attributes that would be logged
@@ -96,6 +106,34 @@ class Language extends Model implements AdminModel
     public function getAdminUrlAttribute(): string
     {
         return route('admin.languages.show', $this);
+    }
+
+    /**
+     * The name shown in admin links
+     */
+    public function getAdminLinkNameAttribute(): string
+    {
+        return (string) $this->name;
+    }
+
+    /**
+     * Languages whose searchable attributes contain the search term
+     *
+     * The signature matches javaabu/helpers' AdminModel, so {@see AdminLanguage} can use its trait.
+     *
+     * @param  Builder<static>  $query
+     */
+    public function scopeSearch($query, $search): mixed
+    {
+        if ($search === null || $search === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $query) use ($search) {
+            foreach ($this->searchable as $attribute) {
+                $query->orWhere($this->qualifyColumn($attribute), 'like', '%' . $search . '%');
+            }
+        });
     }
 
     /**
