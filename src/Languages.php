@@ -7,7 +7,7 @@ use Javaabu\Translatable\Models\Language;
 
 class Languages
 {
-    protected static ?string $current_locale = null;
+    protected ?string $current_locale = null;
 
     public function all(): Collection
     {
@@ -77,12 +77,12 @@ class Languages
      */
     public function currentLanguageCode(): string
     {
-        return static::$current_locale ?: app()->getLocale();
+        return $this->current_locale ?: app()->getLocale();
     }
 
     public function setCurrentLocale(string $locale, bool $set_app_locale = true): void
     {
-        static::$current_locale = $locale;
+        $this->current_locale = $locale;
 
         if ($set_app_locale) {
             app()->setLocale($locale);

@@ -15,6 +15,13 @@ trait IsDbTranslatable
     use DbTranslatedUrlGenerator;
     use IsTranslatable;
 
+    /**
+     * Translations set through attributes, written to their rows after the model is saved
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    protected array $pending_translations = [];
+
     public static function bootIsDbTranslatable(): void
     {
         static::creating(function (Translatable $model) {
@@ -24,6 +31,32 @@ trait IsDbTranslatable
                 $model->lang = translation_locale();
             }
         });
+
+        static::saved(function (Translatable $model) {
+            $model->savePendingTranslations();
+        });
+    }
+
+    /**
+     * Write the translations staged through attributes (<code>$post->title_dv = …</code>)
+     */
+    public function savePendingTranslations(): void
+    {
+        $pending = $this->pending_translations;
+
+        $this->pending_translations = [];
+
+        foreach ($pending as $locale => $fields) {
+            $this->writeTranslation($locale, $fields);
+        }
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function getPendingTranslations(): array
+    {
+        return $this->pending_translations;
     }
 
     public array $fields_ignored_for_translation = ['id', 'translatable_parent_id', 'lang'];
@@ -104,6 +137,10 @@ trait IsDbTranslatable
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
+        if (array_key_exists($field, $this->pending_translations[$locale] ?? [])) {
+            return $this->pending_translations[$locale][$field];
+        }
+
         $translation = $this->getTranslation($locale);
 
         if ($translation) {
@@ -154,6 +191,10 @@ trait IsDbTranslatable
             return true;
         }
 
+        if (isset($this->pending_translations[$locale])) {
+            return true;
+        }
+
         if ($this->isDefaultTranslation()) {
             $translation = $this->translations()->where('lang', $locale);
 
@@ -172,10 +213,44 @@ trait IsDbTranslatable
     }
 
     /**
+     * Add a translation and save it to its row
+     *
      * @throws LanguageNotAllowedException
      * @throws FieldNotAllowedException
      */
-    public function addTranslation(string $locale, string $field, string $value): static
+    public function addTranslation(string $locale, string $field, mixed $value): static
+    {
+        $this->ensureTranslationAllowed($locale, $field);
+
+        return $this->writeTranslation($locale, [$field => $value]);
+    }
+
+    /**
+     * Stage a translation; the row is written when this model is saved
+     *
+     * @throws LanguageNotAllowedException
+     * @throws FieldNotAllowedException
+     */
+    protected function stageTranslation(string $locale, string $field, mixed $value): static
+    {
+        $this->ensureTranslationAllowed($locale, $field);
+
+        if ($locale === $this->primaryLocale()) {
+            $this->setAttributeInternal($field, $value);
+
+            return $this;
+        }
+
+        $this->pending_translations[$locale][$field] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @throws LanguageNotAllowedException
+     * @throws FieldNotAllowedException
+     */
+    protected function ensureTranslationAllowed(string $locale, string $field): void
     {
         if (! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
@@ -184,45 +259,55 @@ trait IsDbTranslatable
         if (! $this->isTranslatable($field)) {
             throw FieldNotAllowedException::create($field, $locale);
         }
+    }
 
+    /**
+     * Write the given fields to the row for the locale, creating it from the default translation if needed
+     *
+     * @param  array<string, mixed>  $fields
+     */
+    protected function writeTranslation(string $locale, array $fields): static
+    {
         // Get the default translation (root/parent translation). If the current record is
         // the default, we will use it, otherwise we will fetch the default translation
-        $defaultTranslation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
+        $default_translation = $this->isDefaultTranslation() ? $this : $this->defaultTranslation;
 
-        // check if the default translation is already the correct locale
-        if ($defaultTranslation->lang === $locale) {
-            $defaultTranslation->setAttributeInternal($field, $value);
+        if ($default_translation->lang === $locale) {
+            foreach ($fields as $field => $value) {
+                $default_translation->setAttributeInternal($field, $value);
+            }
 
-            $defaultTranslation->save();
+            $default_translation->save();
 
-            return $defaultTranslation;
+            return $default_translation;
         }
 
-        // check if a translated object exists for this locale
-        $newTranslation = $defaultTranslation->translations()->where('lang', $locale)->first();
+        $translation = $default_translation->translations()->where('lang', $locale)->first();
 
-        // if there is none, make a new blank translation of this object
-        if (! $newTranslation) {
-            $newTranslation = new self;
-            // copy all the attributes of the current object to the new translation
-            // this ensures no columns are left null
+        // if there is none, make a new translation of the default translation,
+        // copying its columns so that none are left empty
+        if (! $translation) {
+            $translation = new self;
 
             foreach ($this->getAllAttributes() as $attribute) {
-                // TODO: make this primary key rely on some sort of config available per model
-                if ($attribute === 'id') {
+                if ($attribute === $this->getKeyName()) {
                     continue;
                 }
 
-                $newTranslation->setAttributeInternal($attribute, $defaultTranslation->getAttributeValue($attribute));
+                $translation->setAttributeInternal($attribute, $default_translation->getAttributeValue($attribute));
             }
-            $newTranslation->setAttributeInternal('translatable_parent_id', $defaultTranslation->id);
-            $newTranslation->setAttributeInternal('lang', $locale);
+
+            $translation->setAttributeInternal('translatable_parent_id', $default_translation->getKey());
+            $translation->setAttributeInternal('lang', $locale);
         }
 
-        $newTranslation->setAttributeInternal($field, $value);
-        $newTranslation->save();
+        foreach ($fields as $field => $value) {
+            $translation->setAttributeInternal($field, $value);
+        }
 
-        return $newTranslation;
+        $translation->save();
+
+        return $translation;
     }
 
     /**

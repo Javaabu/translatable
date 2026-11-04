@@ -10,6 +10,7 @@ use Javaabu\Helpers\AdminModel\AdminModel;
 use Javaabu\Helpers\AdminModel\IsAdminModel;
 use Javaabu\Translatable\Enums\Flags;
 use Javaabu\Translatable\Facades\Languages;
+use Javaabu\Translatable\LanguageRegistrar;
 
 class Language extends Model implements AdminModel
 {
@@ -70,6 +71,18 @@ class Language extends Model implements AdminModel
             'is_rtl' => 'boolean',
             'active' => 'boolean',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        $forget = fn () => app(LanguageRegistrar::class)->forgetCachedLanguages();
+
+        static::saved($forget);
+        static::deleted($forget);
+
+        if (method_exists(static::class, 'restored')) {
+            static::restored($forget);
+        }
     }
 
     public function getRouteKeyName(): string

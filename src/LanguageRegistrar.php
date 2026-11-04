@@ -28,7 +28,7 @@ class LanguageRegistrar
     public static string $cache_driver;
 
     /**
-     * PermissionRegistrar constructor.
+     * LanguageRegistrar constructor.
      */
     public function __construct(
         string $language_class,
@@ -88,24 +88,8 @@ class LanguageRegistrar
      */
     public function getLanguages(array $params = []): Collection
     {
-        // If the languages are empty, forget the cache
-        if ($this->languages?->isEmpty()) {
-            $this->forgetCachedLanguages();
-        }
-
-        // Load up languages from cache
         if ($this->languages === null) {
-            try {
-                $this->languages = $this->cache->remember(self::$cache_key, self::$cache_expiration_time, function () {
-                    return $this->getLanguageClass()
-                        ->active()
-                        ->get();
-                });
-            } catch (QueryException $e) {
-                // silently fail if languages can't be loaded
-                Log::error('LanguageRegistrarError: ' . $e->getMessage());
-                $this->languages = collect();
-            }
+            $this->languages = $this->loadLanguages();
         }
 
         $languages = clone $this->languages;
@@ -115,6 +99,38 @@ class LanguageRegistrar
         }
 
         return $languages;
+    }
+
+    /**
+     * Load the active languages from the cache, or the database when they aren't cached
+     *
+     * An empty result isn't cached, so languages added later show up straight away.
+     */
+    protected function loadLanguages(): Collection
+    {
+        try {
+            $languages = $this->cache->get(self::$cache_key);
+
+            if ($languages instanceof Collection && $languages->isNotEmpty()) {
+                return $languages;
+            }
+
+            $languages = $this->getLanguageClass()
+                ->active()
+                ->orderBy('id')
+                ->get();
+
+            if ($languages->isNotEmpty()) {
+                $this->cache->put(self::$cache_key, $languages, self::$cache_expiration_time);
+            }
+
+            return $languages;
+        } catch (QueryException $e) {
+            // silently fail if languages can't be loaded
+            Log::error('LanguageRegistrarError: ' . $e->getMessage());
+
+            return collect();
+        }
     }
 
     /**
