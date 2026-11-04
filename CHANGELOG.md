@@ -19,3 +19,6 @@ All notable changes to `javaabu/translatable` are documented in this file.
 - `languages.local_name` column (the language's own name); `add_local_name_to_languages_table` migration for v2 apps
 - New config: `enabled`, `thaana_locales`, `views`, `inertia`
 - Fixed: `$model->url()` read `translatable.default_redirect` instead of `default_redirect_route`
+- **Blade components on javaabu/forms v2** (Onu and Bootstrap 6): `<x-translatable::text>`, `textarea` and `field` (an input per locale, in tabs or stacked, with direction, language and the Thaana keyboard), `language-switcher`, `translation-status`, `translation-notice` (adding a DB translation), and the rebuilt `titles` / `table-cells`
+- `Translatable::translationUrl()` and `Translatable::switchUrl()`
+- The `styles` config is gone: the components follow javaabu/forms' framework

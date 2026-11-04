@@ -4,12 +4,15 @@ namespace Javaabu\Translatable;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Javaabu\Translatable\Contracts\DbTranslatable;
 use Javaabu\Translatable\Contracts\Translatable as TranslatableContract;
 use Javaabu\Translatable\DbTranslatable\IsDbTranslatable;
 use Javaabu\Translatable\Facades\Languages as LanguagesFacade;
 use Javaabu\Translatable\Models\Language;
+use Throwable;
 
 /**
  * The entry point for apps and for other packages that support translatable optionally
@@ -237,6 +240,55 @@ class Translatable
                 ];
             })
             ->all();
+    }
+
+    /**
+     * The link to add or edit the model's translation in a locale, through the model's url() (v2's URL generators)
+     *
+     * Translated: the edit page in that locale. Not translated: the create page with
+     * `lang_parent` for DB translatable models, the edit page for JSON ones. Null when the
+     * model has no url() or the route doesn't exist.
+     */
+    public static function translationUrl(?Model $model, string $locale, ?bool $translated = null): ?string
+    {
+        if (! $model || ! method_exists($model, 'url')) {
+            return null;
+        }
+
+        $translated ??= $model->exists && $model->hasTranslation($locale);
+
+        $action = (! $translated && static::isDbTranslatable($model)) ? 'create' : 'edit';
+
+        try {
+            $url = $model->url($action, $locale);
+        } catch (Throwable) {
+            return null;
+        }
+
+        if ($action === 'create' && ! str_contains($url, 'lang_parent=')) {
+            $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query(['lang_parent' => $model->getKey()]);
+        }
+
+        return $url;
+    }
+
+    /**
+     * The current page in another locale: the current route with its {language} parameter
+     * swapped, or the current URL with ?lang= (which the `language` middleware reads)
+     */
+    public static function switchUrl(string $locale): string
+    {
+        $request = request();
+        $route = $request->route();
+
+        if ($route instanceof Route && $route->getName() && $route->hasParameter('language')) {
+            $url = route($route->getName(), [...$route->parameters(), 'language' => $locale]);
+            $query = Arr::except($request->query(), ['lang']);
+
+            return $query ? $url . '?' . Arr::query($query) : $url;
+        }
+
+        return $request->fullUrlWithQuery(['lang' => $locale]);
     }
 
     /**

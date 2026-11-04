@@ -2,42 +2,72 @@
 
 namespace Javaabu\Translatable\Views\Components;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\View\Component;
-use Javaabu\Translatable\Contracts\DbTranslatable;
-use Javaabu\Translatable\Contracts\Translatable;
-use Javaabu\Translatable\Facades\Languages;
+use Javaabu\Translatable\Contracts\Translatable as TranslatableContract;
+use Javaabu\Translatable\Locale;
+use Javaabu\Translatable\Translatable;
 
+/**
+ * One table cell per language (except the current one) with a link to add or edit the translation
+ *
+ * Pair with <code><x-translatable::titles /></code> in the table head.
+ */
 class TableCells extends Component
 {
+    protected string $view = 'table-cells';
+
+    /** @var Collection<int, Locale> */
     public Collection $languages;
 
     public function __construct(
-        public Translatable $model,
+        public TranslatableContract $model,
+        string $framework = '',
     ) {
-        $this->languages = Languages::allExceptCurrent();
+        parent::__construct($framework);
+
+        $current = Translatable::currentLocale();
+
+        $this->languages = Translatable::locales()->reject(fn (Locale $locale) => $locale->code === $current)->values();
     }
 
-    public function getUrl(string $action, string $locale): string
+    public function isTranslated(Locale $locale): bool
     {
+        return $this->model->hasTranslation($locale->code);
+    }
+
+    /**
+     * The link to add or edit the translation in the locale
+     */
+    public function translationUrl(Locale $locale): ?string
+    {
+        return Translatable::translationUrl($this->model, $locale->code, $this->isTranslated($locale));
+    }
+
+    /**
+     * The model's URL for an action in a locale (v2 API)
+     */
+    public function getUrl(string $action, Locale|string $locale): string
+    {
+        $locale = $locale instanceof Locale ? $locale->code : $locale;
+
         $url = $this->model->url($action, $locale);
 
-        // If the model is we need to add "lang_parent" to the params
-        if ($this->isModelDbTranslatable() && ($action === 'create')) {
-            $url = add_query_arg('lang_parent', $this->model->id, $url);
+        if ($this->isModelDbTranslatable() && $action === 'create' && ! str_contains($url, 'lang_parent=')) {
+            $url = add_query_arg('lang_parent', $this->model->getKey(), $url);
         }
 
         return $url;
     }
 
-    public function isModelDbTranslatable(): bool
+    public function linkTitle(Locale $locale): string
     {
-        return $this->model instanceof DbTranslatable;
+        return $this->isTranslated($locale)
+            ? __('translatable::strings.edit_translation_in', ['locale' => $locale->native_name])
+            : __('translatable::strings.add_translation_in', ['locale' => $locale->native_name]);
     }
 
-    public function render(): View
+    public function isModelDbTranslatable(): bool
     {
-        return view('translatable::table-cells');
+        return Translatable::isDbTranslatable($this->model);
     }
 }

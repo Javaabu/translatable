@@ -2,7 +2,9 @@
 
 namespace Javaabu\Translatable\Tests;
 
+use Javaabu\Forms\FormsServiceProvider;
 use Javaabu\Helpers\HelpersServiceProvider;
+use Javaabu\Manifest\ManifestServiceProvider;
 use Javaabu\Translatable\Tests\TestSupport\Providers\TestServiceProvider;
 use Javaabu\Translatable\TranslatableServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -16,6 +18,9 @@ abstract class TestCase extends BaseTestCase
         $this->app['config']->set('app.key', 'base64:yWa/ByhLC/GUvfToOuaPD7zDwB64qkc/QkaQOrT5IpE=');
 
         $this->app['config']->set('session.serialization', 'php');
+
+        // Views are checked for markup; injection is javaabu/manifest's job
+        $this->app['config']->set('manifest.inject', false);
     }
 
     protected function defineRoutes($router): void
@@ -34,6 +39,8 @@ abstract class TestCase extends BaseTestCase
         return [
             TranslatableServiceProvider::class,
             HelpersServiceProvider::class,
+            ManifestServiceProvider::class,
+            FormsServiceProvider::class,
             TestServiceProvider::class,
         ];
     }

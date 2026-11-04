@@ -38,9 +38,13 @@
     },
     "require-dev": {
         "javaabu/boost-javaabu-guidelines": "^1.4",
+        "javaabu/forms": "^2.0@dev",
+        "javaabu/manifest": "^1.0@dev",
         "laravel/pint": "^1.25",
         "orchestra/testbench": "^10.0 || ^11.0",
-        "phpunit/phpunit": "^11.5.3 || ^12.5.8"
+        "phpunit/phpunit": "^11.5.3 || ^12.5.8",
+        "symfony/css-selector": "^7.2 || ^8.0",
+        "symfony/dom-crawler": "^7.2 || ^8.0"
     },
     "suggest": {
         "javaabu/forms": "Required for the Blade components (^2.0)",
@@ -79,5 +83,15 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Javaabu/forms"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Javaabu/manifest"
+        }
+    ]
 }
