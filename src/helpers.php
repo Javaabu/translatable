@@ -2,12 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\URL;
 use Javaabu\Translatable\Contracts\DbTranslatable;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\ModelAttribute;
 use Javaabu\Translatable\Models\Language;
 
-if ( ! function_exists('translation_locale')) {
+if (! function_exists('translation_locale')) {
     /**
      * One function helper to get the current locale.
      */
@@ -17,7 +18,7 @@ if ( ! function_exists('translation_locale')) {
     }
 }
 
-if ( ! function_exists('appGetLocale')) {
+if (! function_exists('appGetLocale')) {
     /**
      * One function helper to get the current locale.
      */
@@ -27,7 +28,7 @@ if ( ! function_exists('appGetLocale')) {
     }
 }
 
-if ( ! function_exists('_d')) {
+if (! function_exists('_d')) {
     /**
      * Translate the given message and use the default locale if locale not specified.
      */
@@ -39,7 +40,7 @@ if ( ! function_exists('_d')) {
     }
 }
 
-if ( ! function_exists('translate_url')) {
+if (! function_exists('translate_url')) {
     /**
      * Generate a translatable url for the application.
      *
@@ -47,7 +48,7 @@ if ( ! function_exists('translate_url')) {
      */
     function translate_url(?string $path = null, array $parameters = [], ?bool $secure = null, $locale = null): string
     {
-        if ( ! $locale) {
+        if (! $locale) {
             $locale = translation_locale();
         }
 
@@ -57,7 +58,7 @@ if ( ! function_exists('translate_url')) {
     }
 }
 
-if ( ! function_exists('translate_route')) {
+if (! function_exists('translate_route')) {
     /**
      * Generate a translatable url using the route method.
      *
@@ -69,7 +70,7 @@ if ( ! function_exists('translate_route')) {
             $locale = $locale->code;
         }
 
-        if ( ! $locale) {
+        if (! $locale) {
             $locale = translation_locale();
         }
 
@@ -80,7 +81,7 @@ if ( ! function_exists('translate_route')) {
     }
 }
 
-if ( ! function_exists('translate_action')) {
+if (! function_exists('translate_action')) {
     /**
      * Generate a translatable url using the action method.
      *
@@ -92,18 +93,18 @@ if ( ! function_exists('translate_action')) {
             $locale = $locale->code;
         }
 
-        if ( ! $locale) {
+        if (! $locale) {
             $locale = translation_locale();
         }
 
         $parameters = Arr::wrap($parameters);
         $parameters['language'] = $locale;
 
-        return Illuminate\Support\Facades\URL::action($action, $parameters, $absolute);
+        return URL::action($action, $parameters, $absolute);
     }
 }
 
-if ( ! function_exists('locale_direction')) {
+if (! function_exists('locale_direction')) {
     /**
      * Generate a translatable route for the model.
      */
@@ -117,7 +118,7 @@ if ( ! function_exists('locale_direction')) {
     }
 }
 
-if ( ! function_exists('ma')) {
+if (! function_exists('ma')) {
     /**
      * Get a model attribute instance
      */
@@ -127,7 +128,7 @@ if ( ! function_exists('ma')) {
     }
 }
 
-if ( ! function_exists('translate_old')) {
+if (! function_exists('translate_old')) {
     /**
      * Retrieve an old input item or parent item value.
      */

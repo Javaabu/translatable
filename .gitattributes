@@ -9,3 +9,7 @@
 /.scrutinizer.yml   export-ignore
 /tests              export-ignore
 /.editorconfig      export-ignore
+/.github            export-ignore
+/pint.json          export-ignore
+/AGENTS.md          export-ignore
+/CLAUDE.md          export-ignore

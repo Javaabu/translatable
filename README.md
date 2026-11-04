@@ -1,10 +1,9 @@
 # Translatable
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/javaabu/translatable.svg?style=flat-square)](https://packagist.org/packages/javaabu/translatable)
-[![Test Status](../../actions/workflows/run-tests.yml/badge.svg)](../../actions/workflows/run-tests.yml)
-[![Total Downloads](https://img.shields.io/packagist/dt/javaabu/translatable.svg?style=flat-square)](https://packagist.org/packages/javaabu/translatable)
-![Code Coverage](./.github/coverage.svg)
-
+[![Tests](https://github.com/n4ff4h/translatable/actions/workflows/tests.yml/badge.svg?branch=next-gen)](https://github.com/n4ff4h/translatable/actions/workflows/tests.yml?query=branch%3Anext-gen)
+[![codecov](https://codecov.io/gh/n4ff4h/translatable/branch/next-gen/graph/badge.svg)](https://codecov.io/gh/n4ff4h/translatable/tree/next-gen)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/javaabu/translatable.svg)](https://packagist.org/packages/javaabu/translatable)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
 Adds multi-lingual to Laravel models
 

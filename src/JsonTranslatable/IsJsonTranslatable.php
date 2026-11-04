@@ -54,12 +54,12 @@ trait IsJsonTranslatable
         }
 
         // If the locale is not allowed then return null
-        if ( ! $this->isAllowedTranslationLocale($locale)) {
+        if (! $this->isAllowedTranslationLocale($locale)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
         // If the field is not in the translatable fields list then return null
-        if ( ! $this->isTranslatable($field)) {
+        if (! $this->isTranslatable($field)) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
@@ -68,7 +68,7 @@ trait IsJsonTranslatable
         if (isset($translations[$locale]) && array_key_exists($field, $translations[$locale])) {
             $value = $translations[$locale][$field];
 
-            if ( ! $value && $fallback) {
+            if (! $value && $fallback) {
                 // If the value is empty, return the default value if fallback is true
                 return $this->getAttributeValue($field);
             }
@@ -77,7 +77,7 @@ trait IsJsonTranslatable
         }
 
         // Check if translations for that locale exists
-        if ( ! isset($translations[$locale])) {
+        if (! isset($translations[$locale])) {
             return $fallback ? $this->getAttributeValue($field) : null;
         }
 
@@ -107,7 +107,7 @@ trait IsJsonTranslatable
 
         $translations = $this->getAttributeValue('translations');
 
-        if ( ! isset($translations[$locale])) {
+        if (! isset($translations[$locale])) {
             return;
         }
 
@@ -144,11 +144,11 @@ trait IsJsonTranslatable
      */
     public function addTranslation(string $locale, string $field, $value): static
     {
-        if ( ! $this->isAllowedTranslationLocale($locale)) {
+        if (! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
-        if ( ! $this->isTranslatable($field)) {
+        if (! $this->isTranslatable($field)) {
             throw FieldNotAllowedException::create($field, $locale);
         }
 
@@ -170,11 +170,11 @@ trait IsJsonTranslatable
         );
         $this->translations = $translations;
 
-        if ( ! $this->isDefaultTranslationLocale($locale)) {
+        if (! $this->isDefaultTranslationLocale($locale)) {
             $this->setTranslationAttributeValue($field, $locale, $value);
 
             // if it's a new model and the default value is not set, set the default
-            if (( ! $this->exists) && ( ! parent::getAttribute($field))) {
+            if ((! $this->exists) && (! parent::getAttribute($field))) {
                 $this->setAttributeInternal($field, $value);
             }
         }
@@ -193,14 +193,14 @@ trait IsJsonTranslatable
             throw CannotDeletePrimaryTranslationException::create($locale);
         }
 
-        if ( ! array_key_exists($locale, $this->translations)) {
+        if (! array_key_exists($locale, $this->translations)) {
             return;
         }
 
         $this->skipTranslation = true;
 
         $translations = $this->translations ?? [];
-        if ( ! $this->isDefaultTranslationLocale($locale)) {
+        if (! $this->isDefaultTranslationLocale($locale)) {
             unset($translations[$locale]);
         } else {
             throw CannotDeletePrimaryTranslationException::create($locale);
@@ -286,7 +286,7 @@ trait IsJsonTranslatable
     protected function addTranslatableAttributesToArray(array $attributes): array
     {
         foreach ($this->getTranslatables() as $key) {
-            if ( ! isset($attributes[$key])) {
+            if (! isset($attributes[$key])) {
                 continue;
             }
 

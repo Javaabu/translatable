@@ -62,13 +62,13 @@ class Language extends Model implements AdminModel
     protected function casts(): array
     {
         return [
-            'name'       => 'string',
-            'code'       => 'string',
-            'locale'     => 'string',
+            'name' => 'string',
+            'code' => 'string',
+            'locale' => 'string',
             'local_name' => 'string',
-            'flag'       => 'string',
-            'is_rtl'     => 'boolean',
-            'active'     => 'boolean',
+            'flag' => 'string',
+            'is_rtl' => 'boolean',
+            'active' => 'boolean',
         ];
     }
 

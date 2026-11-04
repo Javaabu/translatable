@@ -21,26 +21,26 @@ class TableCellTranslatedUrlGenerationTest extends TestCase
         parent::setUp();
 
         Language::create([
-            'name'   => 'English',
-            'code'   => 'en',
+            'name' => 'English',
+            'code' => 'en',
             'locale' => 'en',
-            'flag'   => '🇬🇧',
+            'flag' => '🇬🇧',
             'is_rtl' => false,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Dhivehi',
-            'code'   => 'dv',
+            'name' => 'Dhivehi',
+            'code' => 'dv',
             'locale' => 'dv',
-            'flag'   => '🇲🇻',
+            'flag' => '🇲🇻',
             'is_rtl' => true,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Japanese',
-            'code'   => 'jp',
+            'name' => 'Japanese',
+            'code' => 'jp',
             'locale' => 'jp',
-            'flag'   => '🇯🇵',
+            'flag' => '🇯🇵',
             'is_rtl' => false,
             'active' => true,
         ]);
@@ -53,15 +53,15 @@ class TableCellTranslatedUrlGenerationTest extends TestCase
 
         /** @var JsonTranslatable $article */
         $article = Article::factory()->withAuthor()->create([
-            'lang'         => 'en',
-            'title'        => 'This is an English title',
-            'slug'         => 'this-is-an-english-slug',
-            'body'         => 'This is an English body',
+            'lang' => 'en',
+            'title' => 'This is an English title',
+            'slug' => 'this-is-an-english-slug',
+            'body' => 'This is an English body',
             'translations' => [
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'slug'  => 'mee-dhivehi-slug-eh',
-                    'body'  => 'Mee dhivehi liyumeh',
+                    'slug' => 'mee-dhivehi-slug-eh',
+                    'body' => 'Mee dhivehi liyumeh',
                 ],
             ],
         ]);
@@ -82,14 +82,14 @@ class TableCellTranslatedUrlGenerationTest extends TestCase
         $this->withoutExceptionHandling();
 
         $post = Post::factory()->withAuthor()->create([
-            'lang'  => 'en',
+            'lang' => 'en',
             'title' => 'This is an English title',
         ]);
 
         app()->setLocale('dv');
 
         $dv_post = Post::factory()->withAuthor()->create([
-            'lang'  => 'dv',
+            'lang' => 'dv',
             'title' => 'Mee dhivehi title eh',
             'translatable_parent_id' => $post->id,
         ]);

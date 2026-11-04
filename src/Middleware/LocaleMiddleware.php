@@ -38,7 +38,7 @@ class LocaleMiddleware
             return $locale;
         }
 
-        if ( ! is_api_request($request)) {
+        if (! is_api_request($request)) {
             // then try the session
             $locale = $this->getLocaleFromSession($request);
             if ($locale) {
@@ -58,7 +58,7 @@ class LocaleMiddleware
             ?: $request->input('language')
                 ?: $request->query('lang');
 
-        if ( ! $locale || ! TranslatableFacade::isAllowedTranslationLocale($locale)) {
+        if (! $locale || ! TranslatableFacade::isAllowedTranslationLocale($locale)) {
             return null;
         }
 
@@ -91,7 +91,7 @@ class LocaleMiddleware
             $locale = $locale->code;
         }
 
-        if ( ! is_api_request($request)) {
+        if (! is_api_request($request)) {
             $request->session()->put('language', $locale);
         }
 

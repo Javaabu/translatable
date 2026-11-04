@@ -2,8 +2,6 @@
 
 namespace Javaabu\Translatable;
 
-use function array_key_exists;
-
 use DateInterval;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Cache\Repository;
@@ -63,7 +61,7 @@ class LanguageRegistrar
         }
 
         // if an undefined cache store is specified, fallback to 'array' which is Laravel's closest equiv to 'none'
-        if ( ! array_key_exists($cache_driver, config('cache.stores'))) {
+        if (! \array_key_exists($cache_driver, config('cache.stores'))) {
             $cache_driver = 'array';
         }
 

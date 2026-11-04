@@ -17,18 +17,18 @@ class LanguageTest extends TestCase
         parent::setUp();
 
         Language::create([
-            'name'   => 'English',
-            'code'   => 'en',
+            'name' => 'English',
+            'code' => 'en',
             'locale' => 'en',
-            'flag'   => '🇬🇧',
+            'flag' => '🇬🇧',
             'is_rtl' => false,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Dhivehi',
-            'code'   => 'dv',
+            'name' => 'Dhivehi',
+            'code' => 'dv',
             'locale' => 'dv',
-            'flag'   => '🇲🇻',
+            'flag' => '🇲🇻',
             'is_rtl' => true,
             'active' => true,
         ]);

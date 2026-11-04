@@ -103,12 +103,12 @@ class TranslatableServiceProvider extends ServiceProvider
     public function registerSingletons(): void
     {
         $this->app->singleton(Translatable::class, function () {
-            return new Translatable();
+            return new Translatable;
         });
         $this->app->alias(Translatable::class, 'translatable');
 
         $this->app->singleton(Languages::class, function () {
-            return new Languages();
+            return new Languages;
         });
         $this->app->alias(Languages::class, 'languages');
     }

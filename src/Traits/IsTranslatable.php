@@ -117,7 +117,7 @@ trait IsTranslatable
      */
     public function addTranslations(string $locale, array $fields): static
     {
-        if ( ! $this->isAllowedTranslationLocale($locale)) {
+        if (! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
@@ -137,7 +137,7 @@ trait IsTranslatable
     {
         $locale = Str::afterLast($key, '_');
 
-        if (empty($locale) || ( ! $this->isAllowedTranslationLocale($locale))) {
+        if (empty($locale) || (! $this->isAllowedTranslationLocale($locale))) {
             return [$key, null];
         }
 

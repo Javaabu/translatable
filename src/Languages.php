@@ -21,11 +21,11 @@ class Languages
 
     public function except($code): Collection
     {
-        if ( ! is_array($code)) {
+        if (! is_array($code)) {
             $code = [$code];
         }
 
-        if ( ! $code) {
+        if (! $code) {
             return $this->all();
         }
 
@@ -39,7 +39,7 @@ class Languages
      */
     public function get(?string $code = null): ?Language
     {
-        if ( ! $code) {
+        if (! $code) {
             $code = $this->currentLanguageCode();
         }
 
@@ -144,7 +144,7 @@ class Languages
             $code = $code->code;
         }
 
-        if ( ! $code) {
+        if (! $code) {
             $code = $this->currentLanguageCode();
         }
 

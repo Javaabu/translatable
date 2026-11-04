@@ -20,26 +20,26 @@ class IsJsonTranslatableCRUDTest extends TestCase
         $this->artisan('migrate:fresh');
 
         Language::create([
-            'name'   => 'English',
-            'code'   => 'en',
+            'name' => 'English',
+            'code' => 'en',
             'locale' => 'en',
-            'flag'   => '🇬🇧',
+            'flag' => '🇬🇧',
             'is_rtl' => false,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Dhivehi',
-            'code'   => 'dv',
+            'name' => 'Dhivehi',
+            'code' => 'dv',
             'locale' => 'dv',
-            'flag'   => '🇲🇻',
+            'flag' => '🇲🇻',
             'is_rtl' => true,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Japanese',
-            'code'   => 'jp',
+            'name' => 'Japanese',
+            'code' => 'jp',
             'locale' => 'jp',
-            'flag'   => '🇯🇵',
+            'flag' => '🇯🇵',
             'is_rtl' => false,
             'active' => true,
         ]);
@@ -51,9 +51,9 @@ class IsJsonTranslatableCRUDTest extends TestCase
 
             Route::post('/{language}/articles', function () {
                 $validated = request()->validate([
-                    'title'     => 'required',
-                    'body'      => 'required',
-                    'slug'      => 'required',
+                    'title' => 'required',
+                    'body' => 'required',
+                    'slug' => 'required',
                     'author_id' => 'required|exists:authors,id',
                 ]);
 
@@ -63,9 +63,9 @@ class IsJsonTranslatableCRUDTest extends TestCase
             Route::patch('/{language}/articles/{id}', function (Language $language, $articleId) {
                 $article = Article::find($articleId);
                 $validated = request()->validate([
-                    'title'     => '',
-                    'body'      => '',
-                    'slug'      => '',
+                    'title' => '',
+                    'body' => '',
+                    'slug' => '',
                     'author_id' => 'exists:authors,id',
                 ]);
 
@@ -81,16 +81,16 @@ class IsJsonTranslatableCRUDTest extends TestCase
         $article = Article::factory()->make();
 
         $response = $this->post('/en/articles', [
-            'title'     => $article->title,
-            'body'      => $article->body,
-            'slug'      => $article->slug,
+            'title' => $article->title,
+            'body' => $article->body,
+            'slug' => $article->slug,
             'author_id' => $author->id,
         ]);
         $article->id = $response->json('id');
 
         $this->assertDatabaseHas('articles', [
             'title' => $article->title,
-            'body'  => $article->body,
+            'body' => $article->body,
         ]);
 
         $this->patch('/dv/articles/' . $article->id, [
@@ -98,12 +98,12 @@ class IsJsonTranslatableCRUDTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('articles', [
-            'title'        => $article->title,
-            'body'         => $article->body,
+            'title' => $article->title,
+            'body' => $article->body,
             'translations' => Json::encode([
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'lang'  => 'dv',
+                    'lang' => 'dv',
                 ],
             ]),
         ]);
@@ -114,12 +114,12 @@ class IsJsonTranslatableCRUDTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('articles', [
-            'title'        => $article->title,
-            'body'         => $article->body,
+            'title' => $article->title,
+            'body' => $article->body,
             'translations' => Json::encode([
                 'dv' => [
                     'title' => 'Mee dhivehi title eh',
-                    'lang'  => 'dv',
+                    'lang' => 'dv',
                 ],
             ]),
         ]);
@@ -140,12 +140,12 @@ class IsJsonTranslatableCRUDTest extends TestCase
 
         Languages::setCurrentLocale('en');
         $this->assertDatabaseHas('articles', [
-            'title'        => $article->title,
-            'body'         => $article->body,
+            'title' => $article->title,
+            'body' => $article->body,
             'translations' => Json::encode([
                 'dv' => [
                     'title' => 'Mee ehen dhivehi title eh',
-                    'lang'  => 'dv',
+                    'lang' => 'dv',
                 ],
             ]),
         ]);

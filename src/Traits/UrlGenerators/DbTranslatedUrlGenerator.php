@@ -12,7 +12,7 @@ trait DbTranslatedUrlGenerator
 
     public function url(string $action = 'show', Language|string|null $locale = null, ?string $portal = null): string
     {
-        if (!$portal) {
+        if (! $portal) {
             $portal = Request::portal();
         }
 

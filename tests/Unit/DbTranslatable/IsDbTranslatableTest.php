@@ -21,26 +21,26 @@ class IsDbTranslatableTest extends TestCase
         parent::setUp();
 
         Language::create([
-            'name'   => 'English',
-            'code'   => 'en',
+            'name' => 'English',
+            'code' => 'en',
             'locale' => 'en',
-            'flag'   => '🇬🇧',
+            'flag' => '🇬🇧',
             'is_rtl' => false,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Dhivehi',
-            'code'   => 'dv',
+            'name' => 'Dhivehi',
+            'code' => 'dv',
             'locale' => 'dv',
-            'flag'   => '🇲🇻',
+            'flag' => '🇲🇻',
             'is_rtl' => true,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Japanese',
-            'code'   => 'jp',
+            'name' => 'Japanese',
+            'code' => 'jp',
             'locale' => 'jp',
-            'flag'   => '🇯🇵',
+            'flag' => '🇯🇵',
             'is_rtl' => false,
             'active' => true,
         ]);
@@ -50,7 +50,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     public function it_can_get_fields_ignored_for_translation()
     {
-        $post = new Post();
+        $post = new Post;
 
         $this->assertEquals([
             'id',
@@ -65,7 +65,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     public function it_can_get_translatable_fields()
     {
-        $post = new Post();
+        $post = new Post;
 
         $this->assertEquals([
             'title',
@@ -76,7 +76,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     public function it_can_get_non_translatable_fields()
     {
-        $post = new Post();
+        $post = new Post;
 
         $this->assertEquals([
             'slug',
@@ -86,7 +86,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     public function it_can_get_non_translatable_pivots()
     {
-        $post = new Post();
+        $post = new Post;
 
         $this->assertEquals([
             'author_id',
@@ -96,7 +96,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     public function it_can_get_all_non_translatable_fields()
     {
-        $post = new Post();
+        $post = new Post;
 
         $this->assertEquals([
             'slug',
@@ -113,7 +113,7 @@ class IsDbTranslatableTest extends TestCase
     #[Test]
     public function it_can_check_if_is_a_non_translatable_pivot()
     {
-        $post = new Post();
+        $post = new Post;
 
         $this->assertFalse($post->isNonTranslatablePivot('id'));
         $this->assertTrue($post->isNonTranslatablePivot('author_id'));
@@ -152,23 +152,23 @@ class IsDbTranslatableTest extends TestCase
     public function it_can_translate_field_via_translate_function()
     {
         $post = Post::factory()->withAuthor()->create([
-            'lang'  => 'en',
+            'lang' => 'en',
             'title' => 'This is an English title',
-            'slug'  => 'this-is-an-english-slug',
-            'body'  => 'This is an English body',
+            'slug' => 'this-is-an-english-slug',
+            'body' => 'This is an English body',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -208,16 +208,16 @@ class IsDbTranslatableTest extends TestCase
     public function it_can_translate_field_via_translate_function_without_fallback()
     {
         $post = Post::factory()->withAuthor()->create([
-            'lang'  => 'en',
+            'lang' => 'en',
             'title' => 'This is an English title',
-            'slug'  => 'this-is-an-english-slug',
-            'body'  => 'This is an English body',
+            'slug' => 'this-is-an-english-slug',
+            'body' => 'This is an English body',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -235,17 +235,17 @@ class IsDbTranslatableTest extends TestCase
     {
         $post = Post::factory()->withAuthor()->create();
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -261,17 +261,17 @@ class IsDbTranslatableTest extends TestCase
     {
         $post = Post::factory()->withAuthor()->create();
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -289,17 +289,17 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -316,17 +316,17 @@ class IsDbTranslatableTest extends TestCase
     {
         $post = Post::factory()->withAuthor()->create();
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -340,17 +340,17 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -368,17 +368,17 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -399,17 +399,17 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -428,17 +428,17 @@ class IsDbTranslatableTest extends TestCase
     {
         $post = Post::factory()->withAuthor()->create();
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -455,17 +455,17 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -485,17 +485,17 @@ class IsDbTranslatableTest extends TestCase
             'lang' => 'en',
         ]);
         $post_dv = Post::factory()->withAuthor()->create([
-            'lang'                   => 'dv',
-            'title'                  => 'Mee dhivehi title eh',
-            'slug'                   => 'mee-dhivehi-slug-eh',
-            'body'                   => 'Mee dhivehi liyumeh',
+            'lang' => 'dv',
+            'title' => 'Mee dhivehi title eh',
+            'slug' => 'mee-dhivehi-slug-eh',
+            'body' => 'Mee dhivehi liyumeh',
             'translatable_parent_id' => $post->id,
         ]);
         $post_jp = Post::factory()->withAuthor()->create([
-            'lang'                   => 'jp',
-            'title'                  => 'Kore wa taitorudesu',
-            'slug'                   => 'kore-wa-namekujidesu',
-            'body'                   => 'Kore wa kijidesu',
+            'lang' => 'jp',
+            'title' => 'Kore wa taitorudesu',
+            'slug' => 'kore-wa-namekujidesu',
+            'body' => 'Kore wa kijidesu',
             'translatable_parent_id' => $post->id,
         ]);
 
@@ -547,7 +547,7 @@ class IsDbTranslatableTest extends TestCase
     public function it_can_add_new_translation_locales_via_app_locale()
     {
         $post = Post::factory()->withAuthor()->create([
-            'lang'  => 'en',
+            'lang' => 'en',
             'title' => 'This is an English title',
         ]);
 
@@ -573,7 +573,7 @@ class IsDbTranslatableTest extends TestCase
 
         $post->addTranslations('dv', [
             'title' => 'Mee dhivehi title eh',
-            'body'  => 'Mee dhivehi liyumeh',
+            'body' => 'Mee dhivehi liyumeh',
         ]);
 
         $this->assertEquals('Mee dhivehi title eh', $post->title_dv);
@@ -596,8 +596,8 @@ class IsDbTranslatableTest extends TestCase
 
         $post->addTranslations('zh-CN', [
             'title' => '这是一个中文标题',
-            'slug'  => '这是一只中国蛞蝓',
-            'body'  => '这是一个中国人的身体',
+            'slug' => '这是一只中国蛞蝓',
+            'body' => '这是一个中国人的身体',
         ]);
     }
 
@@ -696,7 +696,7 @@ class IsDbTranslatableTest extends TestCase
     {
         $this->expectException(CannotDeletePrimaryTranslationException::class);
         $post = Post::factory()->withAuthor()->create([
-            'lang'  => 'en',
+            'lang' => 'en',
             'title' => 'This is an English title',
         ]);
 
