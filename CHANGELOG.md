@@ -22,3 +22,5 @@ All notable changes to `javaabu/translatable` are documented in this file.
 - **Blade components on javaabu/forms v2** (Onu and Bootstrap 6): `<x-translatable::text>`, `textarea` and `field` (an input per locale, in tabs or stacked, with direction, language and the Thaana keyboard), `language-switcher`, `translation-status`, `translation-notice` (adding a DB translation), and the rebuilt `titles` / `table-cells`
 - `Translatable::translationUrl()` and `Translatable::switchUrl()`
 - The `styles` config is gone: the components follow javaabu/forms' framework
+- **Inertia React components**, imported as `@javaabu/translatable` through javaabu/manifest: `TranslatableProvider`, `TranslatableField`/`Text`/`Textarea`, `LanguageSwitcher`, `TranslationStatus`, `TranslationHeadings`/`TranslationCells`, `TranslationNotice`, with `en`/`dv` strings through @javaabu/i18n
+- With `translatable.views` set to `inertia`, the languages are shared with every Inertia page as the `translatable` prop

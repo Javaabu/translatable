@@ -37,6 +37,7 @@
         "javaabu/helpers": "^1.74"
     },
     "require-dev": {
+        "inertiajs/inertia-laravel": "^2.0 || ^3.0",
         "javaabu/boost-javaabu-guidelines": "^1.4",
         "javaabu/forms": "^2.0@dev",
         "javaabu/manifest": "^1.0@dev",
@@ -48,7 +49,8 @@
     },
     "suggest": {
         "javaabu/forms": "Required for the Blade components (^2.0)",
-        "javaabu/manifest": "Ships the Inertia React components to your app (^1.0)"
+        "javaabu/manifest": "Ships the Inertia React components to your app (^1.0)",
+        "inertiajs/inertia-laravel": "Shares the languages with Inertia pages when translatable.views is inertia (^2.0)"
     },
     "autoload": {
         "psr-4": {

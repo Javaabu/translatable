@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Javaabu\Manifest\Manifest;
 use Javaabu\Translatable\Commands\AddLanguagesCommand;
 use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
 use Javaabu\Translatable\JsonTranslatable\JsonTranslatableSchema;
@@ -39,6 +40,8 @@ class TranslatableServiceProvider extends ServiceProvider
         Blade::componentNamespace('Javaabu\\Translatable\\Views\\Components', 'translatable');
 
         $this->registerInertiaSharedData();
+
+        $this->registerReactComponents();
 
         // Register the translatable macros for URL generation
         Redirect::macro('translateRoute', function ($routeName, $parameters = [], $status = 302, $headers = []) {
@@ -118,6 +121,28 @@ class TranslatableServiceProvider extends ServiceProvider
             return new Languages;
         });
         $this->app->alias(Languages::class, 'languages');
+    }
+
+    /**
+     * Ship the React components to apps as @javaabu/translatable, when javaabu/manifest is installed
+     */
+    public function registerReactComponents(): void
+    {
+        $this->callAfterResolving(Manifest::class, function ($manifest) {
+            if ($manifest->hasPackage('translatable')) {
+                return;
+            }
+
+            $manifest->package('translatable', __DIR__ . '/../resources')
+                ->js('js')
+                ->npm([
+                    '@javaabu/forms' => 'github:Javaabu/react-forms#next-gen',
+                    '@javaabu/i18n' => 'github:Javaabu/i18n#build-on-git-install',
+                ], peer_dependencies: [
+                    'react' => '^18.3 || ^19.0',
+                    'react-dom' => '^18.3 || ^19.0',
+                ]);
+        });
     }
 
     /**
