@@ -75,8 +75,10 @@ If you extended `Language` in your app, add `implements \Javaabu\Helpers\AdminMo
 - **JSON models cast `translations` to an array** themselves; your own cast still wins.
 - **The languages list** is cached once per request, an empty list isn't cached, it's ordered by id, and saving, deleting or restoring a language clears the cache. A custom language model that overrides `booted()` must call `parent::booted()` to keep that.
 - **The current locale** (`Languages::setCurrentLocale()`) is per request (a scoped binding), so it no longer leaks between Octane requests.
+- **New DB translation rows** get their own `created_at` and `updated_at`. v2 copied them from the parent row along with the other columns.
 - **The language middleware** keeps the locale in the session only when the request has one and isn't an API request. Without javaabu/helpers' `is_api_request()`, API requests are those under `app.api_prefix` (`api`).
 - **Language subclasses** use the `languages` table (`Language::$table` is set), whatever the subclass is called.
+- **Fixed:** apps that use immutable dates (`Date::use(CarbonImmutable::class)`, as Laravel's starter kits do) failed while booting translatable in the console.
 - **Fixed:** `$model->url()` read `translatable.default_redirect` instead of `translatable.default_redirect_route`.
 
 # New

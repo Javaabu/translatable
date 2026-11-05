@@ -285,12 +285,20 @@ trait IsDbTranslatable
         $translation = $default_translation->translations()->where('lang', $locale)->first();
 
         // if there is none, make a new translation of the default translation,
-        // copying its columns so that none are left empty
+        // copying its columns so that none are left empty. Its own key and
+        // timestamps are left for Eloquent to set.
         if (! $translation) {
             $translation = new self;
 
+            $skipped = [$this->getKeyName()];
+
+            if ($this->usesTimestamps()) {
+                $skipped[] = $this->getCreatedAtColumn();
+                $skipped[] = $this->getUpdatedAtColumn();
+            }
+
             foreach ($this->getAllAttributes() as $attribute) {
-                if ($attribute === $this->getKeyName()) {
+                if (in_array($attribute, $skipped, true)) {
                     continue;
                 }
 

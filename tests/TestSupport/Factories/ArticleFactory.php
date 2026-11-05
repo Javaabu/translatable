@@ -3,7 +3,6 @@
 namespace Javaabu\Translatable\Tests\TestSupport\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 use Javaabu\Translatable\Tests\TestSupport\Models\Article;
 use Javaabu\Translatable\Tests\TestSupport\Models\Author;
 
@@ -18,8 +17,8 @@ class ArticleFactory extends Factory
             'slug' => $this->faker->slug(),
             'body' => $this->faker->paragraph(5),
             'lang' => $this->faker->locale(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 

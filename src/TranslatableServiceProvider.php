@@ -2,7 +2,7 @@
 
 namespace Javaabu\Translatable;
 
-use Carbon\Carbon;
+use DateTimeInterface;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
@@ -241,7 +241,7 @@ class TranslatableServiceProvider extends ServiceProvider
         });
     }
 
-    protected function generateMigrationName(string $migrationFileName, Carbon $now): string
+    protected function generateMigrationName(string $migrationFileName, DateTimeInterface $now): string
     {
         $migrationsPath = 'migrations/' . dirname($migrationFileName) . '/';
         $migrationFileName = basename($migrationFileName);

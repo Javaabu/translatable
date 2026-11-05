@@ -121,6 +121,22 @@ class StagedTranslationsTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_new_db_translation_rows_their_own_timestamps(): void
+    {
+        $this->travelTo(now()->subDay());
+        $post = Post::factory()->withAuthor()->create(['lang' => 'en', 'title' => 'Welcome']);
+        $this->travelBack();
+
+        $post->addTranslation('dv', 'title', 'މަރުޙަބާ');
+
+        $translation = $post->fresh()->getTranslation('dv');
+
+        $this->assertTrue($translation->created_at->isToday());
+        $this->assertTrue($translation->updated_at->isToday());
+        $this->assertTrue($post->fresh()->created_at->isYesterday());
+    }
+
+    #[Test]
     public function it_updates_the_parent_row_from_a_translation_row(): void
     {
         $post = Post::factory()->withAuthor()->create(['lang' => 'en', 'title' => 'Welcome']);
