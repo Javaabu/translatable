@@ -107,6 +107,8 @@ Inertia React (`@javaabu/translatable` through javaabu/manifest, with `TRANSLATA
 </Form>
 ```
 
+Its npm packages (`@javaabu/forms`, `@javaabu/i18n`, `react`, `react-dom`) are declared for manifest's `pages` scope: `php artisan manifest:check` asks for them only when `package.json` has `@inertiajs/react` (or with `--scope=pages`). Blade apps don't need them.
+
 ## Other components
 
 | Blade | React | |

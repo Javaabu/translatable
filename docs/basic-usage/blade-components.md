@@ -6,6 +6,8 @@ sidebar_position: 5
 
 The components are built on [javaabu/forms](https://github.com/Javaabu/forms) v2, so install it (`composer require javaabu/forms:^2.0`) and they follow its framework (`forms.framework`: `onu` or `bootstrap-6`). Every one has a [React twin](./react-components.md).
 
+They need no npm packages from translatable: its React dependencies (`@javaabu/forms`, `@javaabu/i18n`, React) are only for Inertia apps, so `php artisan manifest:check` doesn't ask a Blade app for them.
+
 # Per-locale fields
 
 ```blade

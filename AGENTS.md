@@ -25,6 +25,7 @@
 - **Input names are `{field}_{locale}`** for every locale. Setting them stages translations until `save()`; `addTranslation()` saves.
 - **Both stacks.** A view change goes in `resources/views/common` and `resources/js`, with the same names, data and strings, and tests in PHPUnit (both forms frameworks via the `frameworks` data provider) and Vitest.
 - **No framework classes in Blade views.** Compose javaabu/forms components; use `$layoutClasses()` for the rare wrapper.
+- **npm packages for the React components go in manifest's `pages` scope** (`npm(..., for: 'pages')`); only something a registered Blade asset imports belongs in the default `assets` scope. `tests/Feature/Views/ManifestCheckTest.php` checks a Blade app isn't asked for them.
 - **javaabu/forms, javaabu/manifest and Inertia are optional.** Never reference their classes outside the views/registration code paths, and only by string (`::class` on an unknown class is fine; instantiating isn't).
 - **Dates may be immutable.** Apps call `Date::use(CarbonImmutable::class)`, so type-hint `DateTimeInterface` or `CarbonInterface` (never `Carbon\Carbon`) and use the return value of `add…()`/`sub…()`. CI runs the suite with `TRANSLATABLE_IMMUTABLE_DATES=1`; `protected bool $immutable_dates = true` does it for one test class.
 - **Never require javaabu/helpers or javaabu/settings** (helpers pins settings v1; see #11). Only `Models/AdminLanguage.php` may use helpers; CI fails if either is in the production tree, and runs the tests without helpers (`--exclude-group helpers`).

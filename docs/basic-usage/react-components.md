@@ -9,7 +9,7 @@ The React components mirror the [Blade components](./blade-components.md). They'
 # Setup
 
 1. Install javaabu/manifest and add its Vite plugin ([its docs](https://github.com/Javaabu/manifest)). `@javaabu/translatable` then resolves to `vendor/javaabu/translatable/resources/js`; `php artisan manifest:types` adds the TypeScript paths.
-2. Install the npm packages it uses (`php artisan manifest:check` lists them):
+2. Install the npm packages it uses. `php artisan manifest:check` lists them once your `package.json` has `@inertiajs/react` (they're declared for manifest's `pages` scope, so Blade-only apps aren't asked for them; `--scope=pages` checks them anyway):
 
    ```bash
    pnpm add github:Javaabu/react-forms#next-gen github:Javaabu/i18n#build-on-git-install

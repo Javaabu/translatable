@@ -133,6 +133,8 @@ class TranslatableServiceProvider extends ServiceProvider
                 return;
             }
 
+            // No Blade assets: the React components are only imported through @javaabu/translatable,
+            // so Blade apps aren't asked for their npm packages (manifest's pages scope)
             $manifest->package('translatable', __DIR__ . '/../resources')
                 ->js('js')
                 ->npm([
@@ -141,7 +143,7 @@ class TranslatableServiceProvider extends ServiceProvider
                 ], peer_dependencies: [
                     'react' => '^18.3 || ^19.0',
                     'react-dom' => '^18.3 || ^19.0',
-                ]);
+                ], for: 'pages');
         });
     }
 
