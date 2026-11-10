@@ -5,28 +5,29 @@ sidebar_position: 1.0
 
 # Introduction
 
-Welcome to the documentation for Translatable, a Laravel package that adds multi-lingual support to your models.
-
-This package allows your Laravel model attributes to be translated automatically according to the current `app()->getLocale()`. This means you can easily create applications that cater to a global audience, without having to worry about the complexities of localization.
-
-Here's a quick example of how it works:
+Translatable makes Eloquent model attributes multilingual. Attributes are read in the current locale automatically, each locale can be read and written directly (`title_dv`), and forms get one input per language.
 
 ```php
 app()->setLocale('en');
-$post->title // This is an English title
+$post->title;    // Welcome
 
 app()->setLocale('dv');
-$post->title // Mee dhivehi title eh
+$post->title;    // މަރުޙަބާ
 
-$post->title_en // This is an English title
-$post->title_dv // Mee dhivehi title eh
+$post->title_en; // Welcome
+$post->title_dv; // މަރުޙަބާ
 ```
 
-As you can see, it's incredibly simple to get and set translations for your model attributes. You can even add new translations on the fly:
+It has two ways to store translations:
 
-```php
-// to add title for dv language
-$post->title_dv = "Mee Dhivehi title eh";
-```
+- **JSON** (`IsJsonTranslatable`): the model's own columns hold its primary language, and a `translations` JSON column holds the others. One row per record.
+- **DB** (`IsDbTranslatable`): every language is its own row, linked to the original by `translatable_parent_id`.
 
-Throughout this documentation, we'll explore all the features of Translatable in detail, from basic usage to advanced customization. We'll also cover how to contribute to the project and where to find help if you need it.
+And it ships the views to edit them, for both of Javaabu's stacks:
+
+- **Blade** components on [javaabu/forms](https://github.com/Javaabu/forms) v2: per-language tabs for a field, a language switcher, translation status badges and the add-translation flow.
+- **Inertia React** components on [@javaabu/forms](https://github.com/Javaabu/react-forms), shipped to your app through [javaabu/manifest](https://github.com/Javaabu/manifest).
+
+Other Javaabu packages (permissions, settings, locations, menus, cms, …) support translatable optionally, through the [contract for package authors](./advanced-usage/for-package-authors.md).
+
+Dhivehi is a first-class language: Thaana keyboard on Dhivehi inputs, right-to-left layouts, and every string of the package in English and Dhivehi.

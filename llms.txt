@@ -1,0 +1,42 @@
+# javaabu/translatable
+
+> Multilingual Eloquent models for Laravel. Attributes are read in the current locale, each locale is readable and writable as `title_dv`, and translations are stored as JSON on the row (IsJsonTranslatable) or as a row per locale (IsDbTranslatable). Ships Blade components (javaabu/forms v2) and Inertia React components (@javaabu/forms, through javaabu/manifest), and the contract other Javaabu packages use for optional translation support.
+
+Paths are relative to this file. In a project, that's vendor/javaabu/translatable/.
+
+## Rules
+
+- Languages are rows of the `languages` table; only active ones can be translated into. Add them with `php artisan translatable:add-languages en dv`. The default locale (`translatable.default_locale`) must be one of them.
+- Make a model translatable with `implements JsonTranslatable` + `use IsJsonTranslatable` (or `DbTranslatable` + `IsDbTranslatable`), list fields in `protected array $translatable`, and add `$table->jsonTranslatable()` (or `dbTranslatable()`) to its migration. Prefer JSON unless each language needs its own row, id or slug.
+- Forms have one input per locale named `{field}_{locale}`, the default locale included (`title_en`, `title_dv`). Never invent other names.
+- Validate with `Translatable::rules($model_or_class, $rules)`; save with `fill()`/`create()`/`update()` on the validated data. Suffixed attributes are written on `save()`; only `addTranslation()`/`addTranslations()` save immediately.
+- Read with `$model->title` (current locale, falls back), `$model->title_dv` (no fallback by default), `$model->translate('title', 'dv', fallback: false)`, or `Translatable::values($model)` for every locale.
+- In Blade use `<x-translatable::text>`, `textarea` or `field type="…"` for translatable fields, inside `<x-forms::form :model>`. In React use `TranslatableText`/`TranslatableTextarea`/`TranslatableField` under a `TranslatableProvider`.
+- Routes whose locale comes from the URL use the `language` middleware and a `{language}` parameter; build links with `translate_route()` or `$model->url($action, $locale)`.
+- Packages that support translatable optionally: `suggest` it, guard every call with `class_exists(\Javaabu\Translatable\Translatable::class) && Translatable::enabled()` / `supports()`, and follow docs/advanced-usage/for-package-authors.md. Don't import `@javaabu/translatable` from another package's React code.
+- Dhivehi inputs get `dir="rtl"` and the Thaana keyboard automatically; use Thaana in tests of user-facing behaviour.
+- In tests, use `Javaabu\Translatable\Testing\InteractsWithLanguages::setUpLanguages(['en', 'dv'])`.
+
+## Docs
+
+- [Introduction](docs/intro.md): what the package does
+- [Requirements](docs/requirements.md): versions and optional packages
+- [Installation & Setup](docs/installation-and-setup.md): installing, languages, a first model, the middleware, publishing
+- [Upgrading from v2](docs/upgrading.md): required steps and behaviour changes
+- [Languages](docs/basic-usage/languages.md): adding, switching off and reading languages, Locale objects
+- [Making models translatable](docs/basic-usage/making-models-translatable.md): JSON vs DB, model options, the primary locale
+- [Reading and writing translations](docs/basic-usage/reading-and-writing-translations.md): attributes, suffixes, addTranslation(), deleting
+- [Forms and validation](docs/basic-usage/forms-and-validation.md): per-locale inputs, Translatable::rules(), saving, adding DB translations
+- [Blade components](docs/basic-usage/blade-components.md): fields, language switcher, status, table cells, notice
+- [React components](docs/basic-usage/react-components.md): setup through javaabu/manifest, every component
+- [Locales and URLs](docs/basic-usage/locales-and-urls.md): the language middleware, helpers, model URLs
+- [For package authors](docs/advanced-usage/for-package-authors.md): optional translatable support in other packages
+- [Configuration](docs/advanced-usage/configuration.md): every config key
+- [Dhivehi, RTL and strings](docs/advanced-usage/translations-and-rtl.md): overriding strings, direction, Thaana, lines to review
+- [Testing](docs/advanced-usage/testing.md): InteractsWithLanguages
+- [API reference](docs/advanced-usage/api-reference.md): every public class, method and helper
+- [AI assistants](docs/ai-assistants.md): Laravel Boost, and these docs from other assistants
+- [Questions and Security](docs/questions-and-security.md): where to get help
+- [Changelog](docs/changelog.md): where changes are listed
+- [About Us](docs/about-us.md): Javaabu
+- [Contributing to the docs](docs/contributing-to-docs.md): how the docs are built

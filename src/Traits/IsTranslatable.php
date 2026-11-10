@@ -4,17 +4,48 @@ namespace Javaabu\Translatable\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Javaabu\Translatable\Exceptions\FieldNotAllowedException;
 use Javaabu\Translatable\Exceptions\LanguageNotAllowedException;
 use Javaabu\Translatable\Facades\Languages;
 use Javaabu\Translatable\Facades\Translatable;
 use Javaabu\Translatable\Models\Language;
-use Schema;
 
 trait IsTranslatable
 {
     private bool $skipTranslation = false;
+
+    /**
+     * Get the translatable fields
+     *
+     * Reads the model's `$translatable` property. Override to compute them.
+     *
+     * @return array<int, string>
+     */
+    public function getTranslatables(): array
+    {
+        return property_exists($this, 'translatable') ? $this->translatable : [];
+    }
+
+    /**
+     * The locale the model's own columns are written in
+     *
+     * Existing rows without a `lang` (columns added to a table that already had data)
+     * are in the default locale; new models are in the current locale.
+     */
+    public function primaryLocale(): string
+    {
+        $lang = $this->getAttributeValue('lang');
+
+        if ($lang) {
+            return $lang;
+        }
+
+        return $this->exists
+            ? Languages::defaultLanguageCode()
+            : translation_locale();
+    }
 
     public function getNonTranslatablePivots(): array
     {
@@ -117,7 +148,7 @@ trait IsTranslatable
      */
     public function addTranslations(string $locale, array $fields): static
     {
-        if ( ! $this->isAllowedTranslationLocale($locale)) {
+        if (! $this->isAllowedTranslationLocale($locale)) {
             throw LanguageNotAllowedException::create($locale);
         }
 
@@ -129,6 +160,71 @@ trait IsTranslatable
     }
 
     /**
+     * Get the translatable fillable attributes, suffixed with every allowed locale
+     *
+     * <code>['title']</code> gives <code>['title_en', 'title_dv']</code>
+     *
+     * @return array<int, string>
+     */
+    public function getFillableTranslatables(): array
+    {
+        $translatable_fillables = $this->getFillable()
+            ? array_intersect($this->getTranslatables(), $this->getFillable())
+            : $this->getTranslatables();
+
+        $language_codes = $this->getAllowedTranslationLocales();
+
+        $suffixed_fillables = [];
+
+        foreach ($translatable_fillables as $fillable) {
+            foreach ($language_codes as $code) {
+                $suffixed_fillables[] = $fillable . '_' . $code;
+            }
+        }
+
+        return $suffixed_fillables;
+    }
+
+    protected function fillableTranslatablesFromArray(array $attributes): array
+    {
+        if ($this->totallyGuarded()) {
+            return [];
+        }
+
+        return array_intersect_key($attributes, array_flip($this->getFillableTranslatables()));
+    }
+
+    /**
+     * Fill the model, including suffixed translations (<code>title_dv</code>) of fillable translatable fields
+     *
+     * Translations are written when the model is saved.
+     *
+     * @return $this
+     *
+     * @throws FieldNotAllowedException
+     * @throws LanguageNotAllowedException
+     */
+    public function fill(array $attributes): static
+    {
+        $fillable_translatables = $this->fillableTranslatablesFromArray($attributes);
+
+        parent::fill(array_diff_key($attributes, $fillable_translatables));
+
+        foreach ($fillable_translatables as $key => $value) {
+            $this->setAttribute($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Stage a translation in memory; it is written when the model is saved
+     *
+     * @return $this
+     */
+    abstract protected function stageTranslation(string $locale, string $field, mixed $value): static;
+
+    /**
      * Get the field and locale for a given attribute if possible
      *
      * <code>'title_en'</code> would return <code>['title', 'en']</code>
@@ -137,7 +233,7 @@ trait IsTranslatable
     {
         $locale = Str::afterLast($key, '_');
 
-        if (empty($locale) || ( ! $this->isAllowedTranslationLocale($locale))) {
+        if (empty($locale) || (! $this->isAllowedTranslationLocale($locale))) {
             return [$key, null];
         }
 
@@ -247,18 +343,20 @@ trait IsTranslatable
         [$field, $locale] = $this->getFieldAndLocale($key);
 
         if ($locale && $this->isTranslatable($field)) {
-            return $this->addTranslation($locale, $field, $value);
+            return $this->stageTranslation($locale, $field, $value);
         }
 
         // set to translation via app locale
-        $lang = $this->getAttribute('lang');
-        $locale = translation_locale();
-        if (empty($lang)) {
-            parent::setAttribute('lang', $locale);
-            $lang = $locale;
+        $lang = $this->primaryLocale();
+
+        if (empty($this->getAttributeValue('lang'))) {
+            parent::setAttribute('lang', $lang);
         }
-        if ($locale !== $lang && $this->isTranslatable($field)) {
-            return $this->addTranslation($locale, $field, $value);
+
+        $locale = translation_locale();
+
+        if ($locale !== $lang && $this->isTranslatable($key) && $this->isAllowedTranslationLocale($locale)) {
+            return $this->stageTranslation($locale, $key, $value);
         }
 
         return parent::setAttribute($key, $value);
@@ -283,7 +381,7 @@ trait IsTranslatable
     public function localeDirection(): Attribute
     {
         return Attribute::get(function () {
-            return Languages::getDirection($this->lang);
+            return Languages::getDirection($this->primaryLocale());
         });
     }
 

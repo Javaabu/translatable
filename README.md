@@ -1,102 +1,58 @@
 # Translatable
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/javaabu/translatable.svg?style=flat-square)](https://packagist.org/packages/javaabu/translatable)
-[![Test Status](../../actions/workflows/run-tests.yml/badge.svg)](../../actions/workflows/run-tests.yml)
-[![Total Downloads](https://img.shields.io/packagist/dt/javaabu/translatable.svg?style=flat-square)](https://packagist.org/packages/javaabu/translatable)
-![Code Coverage](./.github/coverage.svg)
+[![Tests](https://github.com/n4ff4h/translatable/actions/workflows/tests.yml/badge.svg?branch=next-gen)](https://github.com/n4ff4h/translatable/actions/workflows/tests.yml?query=branch%3Anext-gen)
+[![codecov](https://codecov.io/gh/n4ff4h/translatable/branch/next-gen/graph/badge.svg)](https://codecov.io/gh/n4ff4h/translatable/tree/next-gen)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/javaabu/translatable.svg)](https://packagist.org/packages/javaabu/translatable)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
+Multilingual Eloquent models for Laravel. Attributes are read in the current locale, every locale is readable and writable as `title_dv`, and translations are stored as JSON on the row or as a row per locale. Ships Blade components ([javaabu/forms](https://github.com/Javaabu/forms) v2) and Inertia React components ([@javaabu/forms](https://github.com/Javaabu/react-forms)), with Dhivehi and RTL built in.
 
-Adds multi-lingual to Laravel models
+```php
+class Post extends Model implements JsonTranslatable
+{
+    use IsJsonTranslatable;
+
+    protected array $translatable = ['title', 'body'];
+}
+
+$post = Post::create(['title_en' => 'Welcome', 'title_dv' => 'މަރުޙަބާ']);
+
+app()->setLocale('dv');
+$post->title;    // މަރުޙަބާ
+$post->title_en; // Welcome
+```
+
+```blade
+<x-forms::form :model="$post">
+    <x-translatable::text name="title" :label="__('Title')" required />
+</x-forms::form>
+```
 
 ## Installation
 
-You can install the package via composer:
-
 ```bash
 composer require javaabu/translatable
+php artisan vendor:publish --tag="translatable-migrations"
+php artisan migrate
+php artisan translatable:add-languages en dv
 ```
 
-
-## Usage
-
-To get started with this package, you can simply add `$table->dbTranslatable();` or `$table->jsonTranslatable();` to your migration `up` function.
-
-```php
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-use Javaabu\Translatable\DbTranslatable\DbTranslatableSchema;
-
-return new class extends Migration {
-    public function up(): void
-    {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-
-            // ...
-
-            $table->dbTranslatable();
-            // OR
-            $table->jsonTranslatable();
-        });
-    }
-
-    public function down(): void
-    {
-        Schema::dropIfExists('posts');
-    }
-};
-```
-
-And then all you need to do is add the `Translatable` implementation using the `IsDbTranslatable` or `IsJsonTranslatable` trait.
-
-```php
-...
-
-class Post extends Model implements Translatable
-{
-    use IsDbTranslatable;
-    // OR
-    use IsJsonTranslatable;
-
-...
-```
-
-Now, your models will automatically be translated according to the current `app()->getLocale()`.
-
-```php
-app()->setLocale('en');
-$post->title // This is an English title
-
-app()->setLocale('dv');
-$post->title // Mee dhivehi title eh
-
-$post->title_en // This is an English title
-$post->title_dv // Mee dhivehi title eh
-```
-
-To add different translations, all you need to do is
-
-```php
-// to add title for dv language
-$post->title_dv = "Mee Dhivehi title eh";
-```
+Upgrading from v2? See [docs/upgrading.md](docs/upgrading.md).
 
 ## Documentation
 
-You'll find the documentation on [https://docs.javaabu.com/translatable](https://docs.javaabu.com/translatable).
+You'll find the documentation on [https://docs.javaabu.com/translatable](https://docs.javaabu.com/translatable), and in [`docs/`](docs/intro.md). Package authors adding optional translation support: [docs/advanced-usage/for-package-authors.md](docs/advanced-usage/for-package-authors.md). AI assistants: [llms.txt](llms.txt).
 
 Find yourself stuck using the package? Found a bug? Do you have general questions or suggestions for improving this package? Feel free to create an [issue](../../issues) on GitHub, we'll try to address it as soon as possible.
 
 If you've found a bug regarding security please mail [info@javaabu.com](mailto:info@javaabu.com) instead of using the issue tracker.
 
-
 ## Testing
 
-You can run the tests with
-
-``` bash
-./vendor/bin/phpunit
+```bash
+composer test
+composer lint
+pnpm install && pnpm check
 ```
 
 ## Changelog

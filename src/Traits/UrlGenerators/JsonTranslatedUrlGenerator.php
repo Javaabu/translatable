@@ -11,7 +11,7 @@ trait JsonTranslatedUrlGenerator
 
     public function url(string $action = 'show', Language|string|null $locale = null, ?string $portal = null): string
     {
-        if ( ! $portal) {
+        if (! $portal) {
             $portal = Request::portal();
         }
 
@@ -21,7 +21,7 @@ trait JsonTranslatedUrlGenerator
 
         $params = $this->getAdditionalRouteParams($action, $locale, $portal);
 
-        if ( ! in_array($action, ['index', 'store', 'create', 'trash'])) {
+        if (! in_array($action, ['index', 'store', 'create', 'trash'])) {
             $params[] = $this->routeKeyForPortal($portal);
         }
 

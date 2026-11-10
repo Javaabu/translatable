@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<phpunit cacheDirectory=".phpunit.cache"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          backupGlobals="false"
@@ -17,11 +18,6 @@
       <directory>src</directory>
     </include>
   </source>
-  <logging>
-    <junit outputFile="build/report.junit.xml"/>
-    <testdoxHtml outputFile="build/coverage"/>
-    <testdoxText outputFile="build/coverage.txt"/>
-  </logging>
   <php>
     <env name="APP_ENV" value="testing"/>
     <env name="APP_MAINTENANCE_DRIVER" value="file"/>

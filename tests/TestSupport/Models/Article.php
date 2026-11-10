@@ -30,7 +30,7 @@ class Article extends Model implements JsonTranslatable
 
     protected static function newFactory(): ArticleFactory
     {
-        return new ArticleFactory();
+        return new ArticleFactory;
     }
 
     public function getTranslatables(): array

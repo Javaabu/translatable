@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('locale');
             $table->string('name');
+            $table->string('local_name')->nullable();
             $table->string('flag');
             $table->boolean('is_rtl');
             $table->boolean('active');

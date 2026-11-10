@@ -11,7 +11,7 @@ class ModelTest extends TestCase
     #[Test]
     public function it_can_make_a_new_instance_of_the_model_even_if_the_languages_table_is_missing(): void
     {
-        $article = new Article();
+        $article = new Article;
 
         $this->assertInstanceOf(Article::class, $article);
     }

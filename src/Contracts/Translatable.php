@@ -15,6 +15,8 @@ interface Translatable
 
     /**
      * Get the translatable fields
+     *
+     * @return array<int, string>
      */
     public function getTranslatables(): array;
 
@@ -91,7 +93,7 @@ interface Translatable
      *
      * @throws LanguageNotAllowedException
      */
-    public function addTranslation(string $locale, string $field, string $value): static;
+    public function addTranslation(string $locale, string $field, mixed $value): static;
 
     /**
      * Add a new locale to this object

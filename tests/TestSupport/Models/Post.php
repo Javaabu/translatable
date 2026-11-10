@@ -26,7 +26,7 @@ class Post extends Model implements Translatable
 
     protected static function newFactory(): PostFactory
     {
-        return new PostFactory();
+        return new PostFactory;
     }
 
     public function author(): BelongsTo

@@ -19,26 +19,26 @@ class LocaleMiddlewareTest extends TestCase
         parent::setUp();
 
         Language::create([
-            'name'   => 'English',
-            'code'   => 'en',
+            'name' => 'English',
+            'code' => 'en',
             'locale' => 'en',
-            'flag'   => '🇬🇧',
+            'flag' => '🇬🇧',
             'is_rtl' => false,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Dhivehi',
-            'code'   => 'dv',
+            'name' => 'Dhivehi',
+            'code' => 'dv',
             'locale' => 'dv',
-            'flag'   => '🇲🇻',
+            'flag' => '🇲🇻',
             'is_rtl' => true,
             'active' => true,
         ]);
         Language::create([
-            'name'   => 'Japanese',
-            'code'   => 'jp',
+            'name' => 'Japanese',
+            'code' => 'jp',
             'locale' => 'jp',
-            'flag'   => '🇯🇵',
+            'flag' => '🇯🇵',
             'is_rtl' => false,
             'active' => true,
         ]);
@@ -131,5 +131,28 @@ class LocaleMiddlewareTest extends TestCase
         ]);
         // when language doesn't exist, it falls back to default language
         $req_fr->assertContent('en');
+    }
+
+    #[Test]
+    public function it_doesnt_keep_the_locale_in_the_session_for_api_requests(): void
+    {
+        config(['app.api_prefix' => 'api']);
+
+        Route::group(['middleware' => ['web', 'language']], function () {
+            Route::get('/api/getlang', fn () => app()->getLocale());
+            Route::get('/getlang', fn () => app()->getLocale());
+        });
+
+        $this->get('/api/getlang?lang=dv')->assertContent('dv')->assertSessionMissing('language');
+        $this->get('/getlang?lang=dv')->assertContent('dv')->assertSessionHas('language', 'dv');
+    }
+
+    #[Test]
+    public function it_works_without_a_session(): void
+    {
+        Route::get('/no-session/getlang', fn () => app()->getLocale())->middleware('language');
+
+        $this->get('/no-session/getlang?lang=dv')->assertContent('dv');
+        $this->get('/no-session/getlang')->assertContent('en');
     }
 }

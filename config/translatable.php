@@ -1,10 +1,24 @@
 <?php
 
-return [
-    // Allows for custom models
-    'language_model'                 => Javaabu\Translatable\Models\Language::class,
+use Javaabu\Translatable\Models\Language;
 
-    // Standard fields to be ignored for translation on all models
+return [
+    /*
+     * Turn translations off without uninstalling the package. Other packages
+     * check this through Translatable::enabled().
+     */
+    'enabled' => env('TRANSLATABLE_ENABLED', true),
+
+    /*
+     * The model for the languages table. Extend Javaabu\Translatable\Models\Language,
+     * or use Javaabu\Translatable\Models\AdminLanguage if your app has javaabu/helpers
+     * and wants the language to be a helpers AdminModel.
+     */
+    'language_model' => Language::class,
+
+    /*
+     * Columns that are never translated, on every model
+     */
     'fields_ignored_for_translation' => [
         'id',
         'lang',
@@ -13,28 +27,50 @@ return [
         'deleted_at',
     ],
 
-    // Whether attr_dv should fall back to app locale if translations do not exist
-    'lang_suffix_should_fallback'    => false,
+    /*
+     * Whether suffixed attributes (title_dv) fall back to the model's own
+     * value when the translation is missing
+     */
+    'lang_suffix_should_fallback' => false,
 
-    // Default locale before translations are added
-    'default_locale'                 => 'en',
+    /*
+     * The default translation locale: the language of a model's own columns
+     * when it has no `lang`, and the first language in the views
+     */
+    'default_locale' => 'en',
 
-    // Cache configuration for the Language Registrar
-    'cache'                          => [
+    /*
+     * Locales whose free-text inputs get the Thaana keyboard in the views
+     */
+    'thaana_locales' => ['dv'],
+
+    /*
+     * Which views the app uses: 'blade' (javaabu/forms) or 'inertia'
+     * (React with @javaabu/forms, shipped through javaabu/manifest)
+     */
+    'views' => env('TRANSLATABLE_VIEWS', 'blade'),
+
+    /*
+     * With 'inertia' views, the languages are shared with every page as this prop
+     */
+    'inertia' => [
+        'share' => true,
+        'prop' => 'translatable',
+    ],
+
+    /*
+     * Cache for the active languages
+     */
+    'cache' => [
         'expiration_time' => DateInterval::createFromDateString('24 hours'),
-        'key'             => 'translation.languages.cache',
-        'driver'          => 'default',
+        'key' => 'translation.languages.cache',
+        'driver' => 'default',
     ],
 
-    'styles' => [
-        'table-cell-wrapper' => 'd-flex justify-content-center align-items-center',
-
-        'icons' => [
-            'add'  => 'fas fa-plus',
-            'edit' => 'fas fa-edit',
-        ],
-    ],
-
-    'default_portal'         => 'web',
+    /*
+     * Used by $model->url() when a DB translatable model has no translation in
+     * the requested locale on the default portal
+     */
+    'default_portal' => 'web',
     'default_redirect_route' => 'home',
 ];

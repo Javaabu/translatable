@@ -12,7 +12,7 @@ trait DbTranslatedUrlGenerator
 
     public function url(string $action = 'show', Language|string|null $locale = null, ?string $portal = null): string
     {
-        if (!$portal) {
+        if (! $portal) {
             $portal = Request::portal();
         }
 
@@ -38,7 +38,7 @@ trait DbTranslatedUrlGenerator
         } else {
             // If the portal is the default portal, and there is no translation available, redirect to default route
             if ($portal === config('translatable.default_portal')) {
-                return translate_route(config('translatable.default_redirect'));
+                return translate_route(config('translatable.default_redirect_route'));
             }
 
             // Switch to the create route if no translation exists
